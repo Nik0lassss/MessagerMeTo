@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MessagerNik</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="btnTakePicture">Capture Image</string>
+    <string name="btnRecordVideo">Record Video</string>
+    <string name="or">(or)</string>
+    <string name="btnUploadToServer">Upload to Server</string>
+    <string name="title_activity_upload">UploadActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="login_lyout_edit_text_login_or_email_text">Login or email</string>
+    <string name="login_lyout_edit_text_password">Password</string>
+    <string name="login_lyout_btn_login">Login</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="fragment_create_account_edt_first_name_string">Frist Name</string>
+    <string name="fragment_create_account_edt_last_name_string">Last Name</string>
+    <string name="fragment_create_account_edt_login_string">Login or password</string>
+    <string name="fragment_create_account_edt_password_string">Password</string>
+    <string name="fragment_create_account_edt_confirm_password_string">Confirm Password</string>
+    <string name="fragment_create_account_btn_create_account_string">Create Account</string>
+    <string name="login_layout_btn_create_account_string">Create Account</string>
+</resources>
