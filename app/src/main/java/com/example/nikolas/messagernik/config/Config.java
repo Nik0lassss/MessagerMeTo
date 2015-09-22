@@ -2,7 +2,7 @@ package com.example.nikolas.messagernik.config;
 
 public class Config {
 	// File upload url (replace the ip with your server address)
-    public static final String SERVER_URL= "http://192.168.174.1:8080/server/";
+    public static final String SERVER_URL= "http://192.168.113.1:8080/server/";
 	public static final String FILE_UPLOAD_URL = SERVER_URL+"rest/upload";
 
     public static final String GET_USER_URL="rest/user/";

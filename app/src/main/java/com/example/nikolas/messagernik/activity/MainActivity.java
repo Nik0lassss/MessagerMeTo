@@ -27,7 +27,7 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
 
     @Override
     public void onFragmentInteraction(User meUser) {
-    getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance("","")).addToBackStack("").commit();
+    getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance(meUser.getFirst_name(),meUser.getLast_name())).addToBackStack("").commit();
     }
 
     @Override
