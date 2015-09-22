@@ -8,10 +8,11 @@ import android.os.Bundle;
 
 import com.example.nikolas.messagernik.CreateAccountFragment;
 import com.example.nikolas.messagernik.LoginFragment;
+import com.example.nikolas.messagernik.MainPageFragment;
 import com.example.nikolas.messagernik.R;
 import com.example.nikolas.messagernik.entity.User;
 
-public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener{
+public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, MainPageFragment.OnMainPageFragmentInteractionListener{
 
 
     @Override
@@ -26,6 +27,11 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
 
     @Override
     public void onFragmentInteraction(User meUser) {
-    //getFragmentManager().beginTransaction().replace(R.id.containerMain, CreateAccountFragment.newInstance()).addToBackStack("").commit();
+    getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance("","")).addToBackStack("").commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

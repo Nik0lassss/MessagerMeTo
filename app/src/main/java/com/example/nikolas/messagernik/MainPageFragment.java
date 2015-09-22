@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MainPageFragment.OnFragmentInteractionListener} interface
+ * {@link MainPageFragment.OnMainPageFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MainPageFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -27,7 +27,7 @@ public class MainPageFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnMainPageFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -78,7 +78,7 @@ public class MainPageFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnMainPageFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -101,7 +101,7 @@ public class MainPageFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnMainPageFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }

@@ -16,7 +16,7 @@ public class User {
     private Integer id;
     private String first_name;
     private String last_name;
-
+    private SecurityUser securityUser;
 
 
 
@@ -29,6 +29,12 @@ public class User {
         this.last_name = last_name;
     }
 
+    public User(Integer id, String first_name, String last_name, SecurityUser securityUser) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.securityUser = securityUser;
+    }
 
 
     public Integer getId() {
@@ -55,13 +61,29 @@ public class User {
         this.last_name = last_name;
     }
 
+    public SecurityUser getSecurityUser() {
+        return securityUser;
+    }
+
+    public void setSecurityUser(SecurityUser securityUser) {
+        this.securityUser = securityUser;
+    }
+
     public static User fromJson(final JSONObject object)
     {
-      final   Integer id =object.optInt("id",0);
+      final   Integer id =object.optInt("id", 0);
       final   String firstName = object.optString("first_name", "");
       final   String lastName = object.optString("last_name","");
-        return  new User(id,firstName,lastName);
+        SecurityUser securityUser = new SecurityUser();
+        try {
+            JSONObject securityJSONObject = object.getJSONObject("securityUser");
+            securityUser.setId(securityJSONObject.optInt("id",0));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  new User(id,firstName,lastName,securityUser);
     }
+
     public static ArrayList<User> fromJson(final JSONArray arrayObject)
     {
     final ArrayList<User> userArrayList = new ArrayList<User>();
@@ -75,5 +97,6 @@ public class User {
         }
         return  userArrayList;
     }
+
 
 }

@@ -17,6 +17,7 @@ import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.receiver.Receiver;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,7 +89,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onResponse(String response) {
             try {
-                onResponseGet (User.fromJson(new JSONObject(response)));
+                onResponseGet (User.fromJson(new JSONArray(response)).get(0));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
