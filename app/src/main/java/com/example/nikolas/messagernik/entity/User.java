@@ -18,6 +18,16 @@ public class User {
     private String last_name;
     private SecurityUser securityUser;
 
+    public User(Integer id, String first_name, String last_name, SecurityUser securityUser, String photoAvatar) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.securityUser = securityUser;
+        this.photoAvatar = photoAvatar;
+    }
+
+    private String photoAvatar;
+
 
 
     public User() {
@@ -68,12 +78,20 @@ public class User {
     public void setSecurityUser(SecurityUser securityUser) {
         this.securityUser = securityUser;
     }
+    public String getPhotoAvatar() {
+        return photoAvatar;
+    }
+
+    public void setPhotoAvatar(String photoAvatar) {
+        this.photoAvatar = photoAvatar;
+    }
 
     public static User fromJson(final JSONObject object)
     {
       final   Integer id =object.optInt("id", 0);
       final   String firstName = object.optString("first_name", "");
       final   String lastName = object.optString("last_name","");
+        final   String photoAvatar = object.optString("photo_avatar","");
         SecurityUser securityUser = new SecurityUser();
         try {
             JSONObject securityJSONObject = object.getJSONObject("securityUser");
@@ -97,6 +115,7 @@ public class User {
         }
         return  userArrayList;
     }
+
 
 
 }
