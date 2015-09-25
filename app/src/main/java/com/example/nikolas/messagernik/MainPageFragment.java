@@ -18,7 +18,7 @@ import android.widget.TextView;
  * Use the {@link MainPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainPageFragment extends Fragment implements ProfileFragment.OnFragmentInteractionListener{
+public class MainPageFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,14 +59,14 @@ public class MainPageFragment extends Fragment implements ProfileFragment.OnFrag
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance("","")).commit();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        //getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance("","")).commit();
+
         
         return rootView;
     }
@@ -95,10 +95,7 @@ public class MainPageFragment extends Fragment implements ProfileFragment.OnFrag
         mListener = null;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 
     /**
      * This interface must be implemented by activities that contain this

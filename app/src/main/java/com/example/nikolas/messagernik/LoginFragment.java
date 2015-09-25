@@ -111,7 +111,7 @@ public class LoginFragment extends Fragment {
              HashMap<String ,String > values = new HashMap<String, String>();
              values.put("login",editTextLogin.getText().toString());
              values.put("password",editTextPassword.getText().toString());
-         receiver.sendPostRequest(values,Config.LOGIN_URL);
+             receiver.sendPostRequest(values,Config.LOGIN_URL);
          }
      };
 
