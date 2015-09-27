@@ -7,12 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
-
-import java.util.ArrayList;
 
 
 /**
@@ -71,13 +66,8 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance(mParam1,mParam2)).commit();
-        ListView navigationDraweListView = (ListView) rootView.findViewById(R.id.left_drawer);
-        ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("Test");
-        arrayList.add("Test");
-        arrayList.add("Test");
-        navigationDraweListView.setAdapter(new NavigationDrawerBaseAdapter(getActivity(),arrayList));
+        //getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance("","")).commit();
+        
         return rootView;
     }
 
@@ -105,6 +95,10 @@ public class MainPageFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
     /**
      * This interface must be implemented by activities that contain this
