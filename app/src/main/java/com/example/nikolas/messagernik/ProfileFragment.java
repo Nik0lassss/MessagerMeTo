@@ -7,13 +7,16 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
+ * {@link ProfileFragment.OnProfileFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -29,7 +32,7 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnProfileFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -65,9 +68,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         textViewFirstName=(TextView) rootView.findViewById(R.id.fragment_main_page_txt_first_name);
         textViewLastName=(TextView)rootView.findViewById(R.id.fragment_main_page_txt_last_name);
+
         textViewLastName.setText(mParam1);
         textViewFirstName.setText(mParam2);
         // Inflate the layout for this fragment
@@ -85,7 +89,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnProfileFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -108,7 +112,7 @@ public class ProfileFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnProfileFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }

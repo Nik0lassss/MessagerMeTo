@@ -7,7 +7,12 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
+
+import java.util.ArrayList;
 
 
 /**
@@ -18,7 +23,7 @@ import android.widget.TextView;
  * Use the {@link MainPageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainPageFragment extends Fragment implements ProfileFragment.OnFragmentInteractionListener{
+public class MainPageFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -66,8 +71,13 @@ public class MainPageFragment extends Fragment implements ProfileFragment.OnFrag
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        //getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance("","")).commit();
-        
+        getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance(mParam1,mParam2)).commit();
+        ListView navigationDraweListView = (ListView) rootView.findViewById(R.id.left_drawer);
+        ArrayList<String> arrayList = new ArrayList<String>();
+        arrayList.add("Test");
+        arrayList.add("Test");
+        arrayList.add("Test");
+        navigationDraweListView.setAdapter(new NavigationDrawerBaseAdapter(getActivity(),arrayList));
         return rootView;
     }
 
@@ -95,10 +105,6 @@ public class MainPageFragment extends Fragment implements ProfileFragment.OnFrag
         mListener = null;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

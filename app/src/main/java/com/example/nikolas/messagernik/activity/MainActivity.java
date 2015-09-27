@@ -9,10 +9,11 @@ import android.os.Bundle;
 import com.example.nikolas.messagernik.CreateAccountFragment;
 import com.example.nikolas.messagernik.LoginFragment;
 import com.example.nikolas.messagernik.MainPageFragment;
+import com.example.nikolas.messagernik.ProfileFragment;
 import com.example.nikolas.messagernik.R;
 import com.example.nikolas.messagernik.entity.User;
 
-public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, MainPageFragment.OnMainPageFragmentInteractionListener{
+public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, MainPageFragment.OnMainPageFragmentInteractionListener,ProfileFragment.OnProfileFragmentInteractionListener{
 
 
     @Override
