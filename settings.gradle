@@ -1,0 +1,1 @@
+include ':app', ':httpcore-4.3.3', ':httpclient-4.3.6', ':httpmime-4.3.6', ':jsoup-1.8.2', ':volley'

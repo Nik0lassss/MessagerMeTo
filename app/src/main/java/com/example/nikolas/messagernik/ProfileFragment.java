@@ -7,10 +7,13 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
+import com.example.nikolas.messagernik.api.ImageSetImageViewAcyncTask;
+import com.example.nikolas.messagernik.config.Config;
 
 
 /**
@@ -28,6 +31,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private TextView textViewFirstName;
     private TextView textViewLastName;
+    private ImageView imageViewProfilePicture;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -63,6 +67,7 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -71,9 +76,10 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         textViewFirstName=(TextView) rootView.findViewById(R.id.fragment_main_page_txt_first_name);
         textViewLastName=(TextView)rootView.findViewById(R.id.fragment_main_page_txt_last_name);
-
+        imageViewProfilePicture= (ImageView)rootView.findViewById(R.id.fragment_main_page_image_view_avatar);
         textViewLastName.setText(mParam1);
         textViewFirstName.setText(mParam2);
+        new ImageSetImageViewAcyncTask(imageViewProfilePicture).execute(Config.GET_IMAGE_URL+"IMG_20150918_231355");
         // Inflate the layout for this fragment
         return rootView;
     }

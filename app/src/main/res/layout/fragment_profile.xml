@@ -7,8 +7,9 @@
 
         <ImageView
             android:id="@+id/fragment_main_page_image_view_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_width="match_parent"
+            android:scaleType="center"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/fragment_main_page_txt_first_name"

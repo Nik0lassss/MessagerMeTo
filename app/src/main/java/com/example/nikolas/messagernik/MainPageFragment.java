@@ -66,7 +66,7 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        //getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance("","")).commit();
+        getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance(mParam1,mParam2)).commit();
         
         return rootView;
     }
@@ -95,10 +95,6 @@ public class MainPageFragment extends Fragment {
         mListener = null;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this
