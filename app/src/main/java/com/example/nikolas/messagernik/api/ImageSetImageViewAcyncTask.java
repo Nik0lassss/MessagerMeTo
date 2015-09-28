@@ -4,19 +4,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.io.InputStream;
 
 /**
  * Created by Nikolas on 28.09.2015.
  */
-public class ImageSetImageViewAcyncTask extends AsyncTask<String,Void,Bitmap>{
+public class ImageSetImageViewAcyncTask extends AsyncTask<String,String,Bitmap>{
 
 
     ImageView imageView;
-
-    public ImageSetImageViewAcyncTask(ImageView imageView) {
+    ProgressBar progressBar;
+    public ImageSetImageViewAcyncTask(ImageView imageView,ProgressBar progressBar) {
         this.imageView = imageView;
+        this.progressBar=progressBar;
     }
 
 
@@ -47,8 +49,8 @@ public class ImageSetImageViewAcyncTask extends AsyncTask<String,Void,Bitmap>{
     }
 
     @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
+    protected void onProgressUpdate(String... values) {
+        progressBar.setProgress(Integer.parseInt(values[0]));
     }
 
     @Override

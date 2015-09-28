@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     private TextView textViewFirstName;
     private TextView textViewLastName;
     private ImageView imageViewProfilePicture;
+    private ProgressBar progressBar;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -77,9 +79,10 @@ public class ProfileFragment extends Fragment {
         textViewFirstName=(TextView) rootView.findViewById(R.id.fragment_main_page_txt_first_name);
         textViewLastName=(TextView)rootView.findViewById(R.id.fragment_main_page_txt_last_name);
         imageViewProfilePicture= (ImageView)rootView.findViewById(R.id.fragment_main_page_image_view_avatar);
+        progressBar= (ProgressBar)rootView.findViewById(R.id.fragment_profile_pr_bar);
         textViewLastName.setText(mParam1);
         textViewFirstName.setText(mParam2);
-        new ImageSetImageViewAcyncTask(imageViewProfilePicture).execute(Config.GET_IMAGE_URL+"IMG_20150918_231355");
+        new ImageSetImageViewAcyncTask(imageViewProfilePicture,progressBar).execute(Config.GET_IMAGE_URL+"IMG_20150918_234733");
         // Inflate the layout for this fragment
         return rootView;
     }
