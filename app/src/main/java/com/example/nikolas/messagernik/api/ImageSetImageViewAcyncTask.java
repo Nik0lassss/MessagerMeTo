@@ -3,10 +3,17 @@ package com.example.nikolas.messagernik.api;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by Nikolas on 28.09.2015.
@@ -24,17 +31,59 @@ public class ImageSetImageViewAcyncTask extends AsyncTask<String,String,Bitmap>{
 
     @Override
     protected Bitmap doInBackground(String... urls) {
-        String url = urls[0];
+//        String url = urls[0];
+//        Bitmap iconBitmap=null;
+//        try{
+//            InputStream in =new java.net.URL(url).openStream();
+//            iconBitmap = BitmapFactory.decodeStream(in);
+//        }
+//        catch (Exception e)
+//        {
+//
+//            e.printStackTrace();
+//        }
+        int count;
         Bitmap iconBitmap=null;
-        try{
-            InputStream in =new java.net.URL(url).openStream();
-            iconBitmap = BitmapFactory.decodeStream(in);
-        }
-        catch (Exception e)
-        {
+        try {
+            URL url = new URL(urls[0]);
+            URLConnection conection = url.openConnection();
+            conection.connect();
+            // this will be useful so that you can show a tipical 0-100% progress
+            // bar
+            int lenghtOfFile = conection.getContentLength();
 
-            e.printStackTrace();
+            // download the file
+            InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+            // Output stream
+            //OutputStream output = new FileOutputStream("/sdcard/downloadedfile.jpg");
+
+            byte data[] = new byte[1024];
+
+            long total = 0;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            while ((count = input.read(data)) != -1) {
+                total += count;
+                // publishing the progress....
+                // After this onProgressUpdate will be called
+                publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+                baos.write(data,0,count);
+            }
+            byte[] imageData = baos.toByteArray();
+         iconBitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length);
+            // flushing output
+            baos.flush();
+           // output.flush();
+            baos.close();
+            // closing streams
+           // output.close();
+
+            input.close();
+
+        } catch (Exception e) {
+            Log.e("Error: ", e.getMessage());
         }
+        //return iconBitmap;
         return iconBitmap;
     }
 

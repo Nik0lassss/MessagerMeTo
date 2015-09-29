@@ -15,7 +15,7 @@
     <ImageView
         android:id="@+id/fragment_main_page_image_view_avatar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:scaleType="center" />
 
     <TextView

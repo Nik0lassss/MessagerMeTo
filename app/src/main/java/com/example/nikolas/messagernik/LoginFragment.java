@@ -124,6 +124,7 @@ public class LoginFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onResponseGet(User user) {
         if (mListener != null) {
+
            mListener.onFragmentInteraction(user);
         }
     }
