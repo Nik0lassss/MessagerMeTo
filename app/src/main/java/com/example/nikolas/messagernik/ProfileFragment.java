@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
         progressBar= (ProgressBar)rootView.findViewById(R.id.fragment_profile_pr_bar);
         textViewLastName.setText(mParam1);
         textViewFirstName.setText(mParam2);
-        new ImageSetImageViewAcyncTask(imageViewProfilePicture,progressBar).execute(Config.GET_IMAGE_URL+"Jellyfish");
+        new ImageSetImageViewAcyncTask(imageViewProfilePicture,progressBar).execute(Config.GET_IMAGE_URL+"IMG_20150918_234733");
         // Inflate the layout for this fragment
         return rootView;
     }

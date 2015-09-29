@@ -1,5 +1,8 @@
 package com.example.nikolas.messagernik.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Nikolas on 18.09.2015.
  */
-public class User {
+public class User implements Parcelable {
 
 
 
@@ -46,6 +49,25 @@ public class User {
         this.securityUser = securityUser;
     }
 
+
+    protected User(Parcel in) {
+        first_name = in.readString();
+        last_name = in.readString();
+        securityUser = in.readParcelable(SecurityUser.class.getClassLoader());
+        photoAvatar = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public Integer getId() {
         return id;
@@ -117,5 +139,16 @@ public class User {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(first_name);
+        dest.writeString(last_name);
+        dest.writeParcelable(securityUser, flags);
+        dest.writeString(photoAvatar);
+    }
 }
