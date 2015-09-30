@@ -5,18 +5,10 @@
     android:orientation="vertical"
     tools:context="com.example.nikolas.messagernik.MainPageFragment">
 
-    <ProgressBar
-        android:id="@+id/fragment_profile_pr_bar"
+    <com.example.nikolas.messagernik.entity.system.ImageViewWithProgressBarView
+        android:id="@+id/fragment_profile_imageview_with_progressbar_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleHorizontal"
-        />
-
-    <ImageView
-        android:id="@+id/fragment_main_page_image_view_avatar"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:scaleType="center" />
+        android:layout_height="wrap_content"></com.example.nikolas.messagernik.entity.system.ImageViewWithProgressBarView>
 
     <TextView
         android:id="@+id/fragment_main_page_txt_first_name"

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.nikolas.messagernik.entity.User;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,23 +29,17 @@ public class MainPageFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private User profileUser;
     private OnMainPageFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainPageFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static MainPageFragment newInstance(String param1, String param2) {
+    public static MainPageFragment newInstance(User user) {
         MainPageFragment fragment = new MainPageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable("user_to_profile_fragment", user);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,9 +51,11 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        profileUser= new User();
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+            profileUser=getArguments().getParcelable("user_to_profile_fragment");
         }
 
     }
@@ -66,8 +64,8 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        getFragmentManager().beginTransaction().add(R.id.additional_content_frame,ProfileFragment.newInstance(mParam1,mParam2)).commit();
-        
+        getFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
+
         return rootView;
     }
 
@@ -101,7 +99,7 @@ public class MainPageFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

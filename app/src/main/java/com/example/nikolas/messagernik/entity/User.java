@@ -121,7 +121,7 @@ public class User implements Parcelable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return  new User(id,firstName,lastName,securityUser);
+        return  new User(id,firstName,lastName,securityUser,photoAvatar);
     }
 
     public static ArrayList<User> fromJson(final JSONArray arrayObject)

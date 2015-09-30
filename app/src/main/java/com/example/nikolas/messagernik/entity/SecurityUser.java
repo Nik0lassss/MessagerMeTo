@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by User on 22.09.2015.
  */
-public class SecurityUser implements Parcelable{
+public class SecurityUser implements Parcelable {
     private Integer id;
 
 
@@ -20,6 +20,7 @@ public class SecurityUser implements Parcelable{
 
 
     protected SecurityUser(Parcel in) {
+        id=in.readInt();
     }
 
     public static final Creator<SecurityUser> CREATOR = new Creator<SecurityUser>() {
@@ -47,8 +48,11 @@ public class SecurityUser implements Parcelable{
         return 0;
     }
 
+
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
     }
 }
 

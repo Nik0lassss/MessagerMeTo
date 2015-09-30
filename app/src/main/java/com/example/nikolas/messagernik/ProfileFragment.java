@@ -7,7 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
 import com.example.nikolas.messagernik.api.ImageSetImageViewAcyncTask;
 import com.example.nikolas.messagernik.config.Config;
+import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.system.ImageView;
+import com.example.nikolas.messagernik.entity.system.ImageViewWithProgressBarView;
 
 
 /**
@@ -34,40 +37,31 @@ public class ProfileFragment extends Fragment {
     private TextView textViewLastName;
     private ImageView imageViewProfilePicture;
     private ProgressBar progressBar;
+    ImageViewWithProgressBarView imageViewWithProgressBarView;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private User profileUser;
     private OnProfileFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
+
+    public static ProfileFragment newInstance(User user) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable("user_to_profile_fragment", user);
         fragment.setArguments(args);
         return fragment;
     }
 
     public ProfileFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            profileUser= getArguments().getParcelable("user_to_profile_fragment");
         }
 
     }
@@ -76,14 +70,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        textViewFirstName=(TextView) rootView.findViewById(R.id.fragment_main_page_txt_first_name);
-        textViewLastName=(TextView)rootView.findViewById(R.id.fragment_main_page_txt_last_name);
-        imageViewProfilePicture= (ImageView)rootView.findViewById(R.id.fragment_main_page_image_view_avatar);
-        progressBar= (ProgressBar)rootView.findViewById(R.id.fragment_profile_pr_bar);
-        textViewLastName.setText(mParam1);
-        textViewFirstName.setText(mParam2);
-        new ImageSetImageViewAcyncTask(imageViewProfilePicture,progressBar).execute(Config.GET_IMAGE_URL+"IMG_20150918_234733");
-        // Inflate the layout for this fragment
+        textViewFirstName = (TextView) rootView.findViewById(R.id.fragment_main_page_txt_first_name);
+        textViewLastName = (TextView) rootView.findViewById(R.id.fragment_main_page_txt_last_name);
+        imageViewWithProgressBarView = (ImageViewWithProgressBarView) rootView.findViewById(R.id.fragment_profile_imageview_with_progressbar_view);
+        textViewLastName.setText(profileUser.getFirst_name());
+        textViewFirstName.setText(profileUser.getLast_name());
+        imageViewWithProgressBarView.setImageUrl(profileUser.getPhotoAvatar());
+
         return rootView;
     }
 
