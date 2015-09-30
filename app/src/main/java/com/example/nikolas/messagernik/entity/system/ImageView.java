@@ -1,13 +1,7 @@
 package com.example.nikolas.messagernik.entity.system;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 

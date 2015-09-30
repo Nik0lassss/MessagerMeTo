@@ -5,10 +5,10 @@
     android:orientation="vertical"
     tools:context="com.example.nikolas.messagernik.MainPageFragment">
 
-    <com.example.nikolas.messagernik.entity.system.ImageViewWithProgressBarView
+    <com.example.nikolas.messagernik.entity.system.ImageProgressView
         android:id="@+id/fragment_profile_imageview_with_progressbar_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.example.nikolas.messagernik.entity.system.ImageViewWithProgressBarView>
+        android:layout_height="wrap_content"></com.example.nikolas.messagernik.entity.system.ImageProgressView>
 
     <TextView
         android:id="@+id/fragment_main_page_txt_first_name"
