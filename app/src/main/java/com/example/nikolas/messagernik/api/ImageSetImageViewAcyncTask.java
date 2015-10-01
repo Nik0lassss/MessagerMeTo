@@ -53,7 +53,7 @@ public class ImageSetImageViewAcyncTask extends AsyncTask<String,String,Bitmap>{
             int lenghtOfFile = conection.getContentLength();
 
             // download the file
-            InputStream input = new BufferedInputStream(url.openStream(), 8192);
+            InputStream input = new BufferedInputStream(url.openStream(), 512);
 
             // Output stream
             //OutputStream output = new FileOutputStream("/sdcard/downloadedfile.jpg");
@@ -70,7 +70,9 @@ public class ImageSetImageViewAcyncTask extends AsyncTask<String,String,Bitmap>{
                 baos.write(data,0,count);
             }
             byte[] imageData = baos.toByteArray();
-         iconBitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length);
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
+         iconBitmap = BitmapFactory.decodeByteArray(imageData,0,imageData.length,options);
             // flushing output
             baos.flush();
            // output.flush();

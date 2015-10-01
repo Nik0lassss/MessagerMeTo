@@ -12,5 +12,5 @@
         android:id="@+id/image_progress_bar_view_image_view_avatar"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:scaleType="center" />
+        android:scaleType="centerCrop" />
 </LinearLayout>

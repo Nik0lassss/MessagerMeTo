@@ -62,13 +62,13 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        //navigationDrawerListView = (ListView)rootView.findViewById(R.id.left_drawer);
-//        ArrayList<String> navigationDrawerListViewArrayList = new ArrayList<String>();
-//        navigationDrawerListViewArrayList.add("Profile");
-//        navigationDrawerListViewArrayList.add("Photo");
-//        NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(),navigationDrawerListViewArrayList);
-//        navigationDrawerListView.setAdapter(navAdapter);
-        //getFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
+        navigationDrawerListView = (ListView)rootView.findViewById(R.id.left_drawer);
+        ArrayList<String> navigationDrawerListViewArrayList = new ArrayList<String>();
+        navigationDrawerListViewArrayList.add("Profile");
+        navigationDrawerListViewArrayList.add("Photo");
+        NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(),navigationDrawerListViewArrayList);
+       navigationDrawerListView.setAdapter(navAdapter);
+        getFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
 
         return rootView;
     }

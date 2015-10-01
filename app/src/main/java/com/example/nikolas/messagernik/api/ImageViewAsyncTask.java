@@ -72,7 +72,9 @@ public class ImageViewAsyncTask extends AsyncTask<String,String,Bitmap> {
                 baos.write(data,0,count);
             }
             byte[] imageData = baos.toByteArray();
-            iconBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPurgeable = true;
+            iconBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length,options);
             // flushing output
             baos.flush();
             // output.flush();
