@@ -29,4 +29,14 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.LOGIN_URL);
         return  0;
     }
+    public static int createAccount(Response.ErrorListener errorListener,Response.Listener responseListener,String firstName,String lastName, String login,String password)
+    {
+        HashMap<String ,String > values = new HashMap<String, String>();
+        values.put("firstName",firstName);
+        values.put("lastName",lastName);
+        values.put("login",login);
+        values.put("password",password);
+        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT);
+        return  0;
+    }
 }
