@@ -18,16 +18,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.receiver.Receiver;
+import com.example.nikolas.messagernik.verification.Verificator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 
-public class CreateAccountFragment extends Fragment {
+public class CreateAccountFragment extends Fragment implements ServerApi.onUpdateAccountFragmentListener{
 
     private ImageView userCoverPhoto;
-    private EditText edtxtFirstName, edtxtLastName, edtxtUserLogin,edtxtUserPassword,edtUserConfirmPassword;
+    private EditText edtxtFirstName, edtxtLastName, edtxtUserLogin, edtxtUserPassword, edtUserConfirmPassword;
     private Button btnRegistration;
+    private Verificator verificator;
+
 
     public static CreateAccountFragment newInstance() {
         CreateAccountFragment fragment = new CreateAccountFragment();
@@ -42,16 +46,16 @@ public class CreateAccountFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
+        switch (requestCode) {
             case 0:
-                if(resultCode == -1){
+                if (resultCode == -1) {
                     Uri selectedImage = data.getData();
                     userCoverPhoto.setImageURI(selectedImage);
                 }
 
                 break;
             case 1:
-                if(resultCode == -1){
+                if (resultCode == -1) {
                     Uri selectedImage = data.getData();
                     userCoverPhoto.setImageURI(selectedImage);
 
@@ -71,29 +75,19 @@ public class CreateAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_create_account, container, false);
         userCoverPhoto = (ImageView) rootView.findViewById(R.id.fragment_create_account_image_view_user_cover);
-        edtxtFirstName=(EditText) rootView.findViewById(R.id.fragment_create_account_edt_first_name);
-        edtxtLastName = (EditText)rootView.findViewById(R.id.fragment_create_account_edt_last_name);
-        edtxtUserLogin= (EditText)rootView.findViewById(R.id.fragment_create_account_edt_login);
-        edtxtUserPassword=(EditText)rootView.findViewById(R.id.fragment_create_account_edt_password);
+        edtxtFirstName = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_first_name);
+        edtxtLastName = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_last_name);
+        edtxtUserLogin = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_login);
+        edtxtUserPassword = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_password);
         edtUserConfirmPassword = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_confirm_password);
-        btnRegistration = (Button)rootView.findViewById(R.id.fragment_create_account_btn_create_account);
+        btnRegistration = (Button) rootView.findViewById(R.id.fragment_create_account_btn_create_account);
         btnRegistration.setOnClickListener(btnCreateAccountOnClickListener);
         userCoverPhoto.setOnClickListener(imageOnClickListener);
+        verificator = new Verificator();
         return rootView;
     }
-    Response.Listener response = new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-            //Toast.makeText(getContext(),"Succesful create account",Toast.LENGTH_LONG).show();
-        }
-    };
 
-    Response.ErrorListener erroreResponse = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError volleyError) {
-            //Toast.makeText(getContext(),"Errore create account",Toast.LENGTH_LONG).show();
-        }
-    };
+
     View.OnClickListener imageOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -105,8 +99,14 @@ public class CreateAccountFragment extends Fragment {
     View.OnClickListener btnCreateAccountOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(edtxtUserPassword.getText().equals(edtUserConfirmPassword.getText())) ServerApi.createAccount(erroreResponse,response,edtxtFirstName.getText().toString(),edtxtLastName.getText().toString(),edtxtUserLogin.getText().toString(),edtxtUserPassword.getText().toString());
-           // else  Toast.makeText(getContext(),"Password error",Toast.LENGTH_LONG).show();
+            verificator.setFirstName(edtxtFirstName.getText().toString());
+            verificator.setLastName(edtxtLastName.getText().toString());
+            verificator.setLogin(edtxtUserLogin.getText().toString());
+            verificator.setPassword(edtxtUserPassword.getText().toString());
+            verificator.setConfirmPassword(edtUserConfirmPassword.getText().toString());
+            if (verificator.equelsPassword())
+                ServerApi.createAccount(verificator.getFirstName(), verificator.getLastName(), verificator.getLogin(), verificator.getPassword());
+            // else  Toast.makeText(getContext(),"Password error",Toast.LENGTH_LONG).show();
         }
     };
 
@@ -124,4 +124,8 @@ public class CreateAccountFragment extends Fragment {
     }
 
 
+    @Override
+    public void onGetResponseFromServerCreateAccount(int id) {
+
+    }
 }

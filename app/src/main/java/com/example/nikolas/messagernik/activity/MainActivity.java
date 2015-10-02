@@ -11,6 +11,7 @@ import com.example.nikolas.messagernik.LoginFragment;
 import com.example.nikolas.messagernik.MainPageFragment;
 import com.example.nikolas.messagernik.ProfileFragment;
 import com.example.nikolas.messagernik.R;
+import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.User;
 
 public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, MainPageFragment.OnMainPageFragmentInteractionListener,ProfileFragment.OnProfileFragmentInteractionListener{
@@ -23,6 +24,7 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction().add(R.id.containerMain,LoginFragment.newInstance("","")).commit();
         }
+        ServerApi.setUpRecuever(getApplicationContext());
     }
 
 
