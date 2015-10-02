@@ -51,6 +51,22 @@ public class Receiver {
         getUpdateOnDateRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueque.add(getUpdateOnDateRequest);
     }
+    public void sendPutRequest(final Map<String, String> mp, String URL) {
+
+        StringRequest getUpdateOnDateRequest = new StringRequest(
+                Request.Method.PUT, URL, response
+                , errorListener) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = mp;
+                return params;
+            }
+        };
+
+        getUpdateOnDateRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        mQueque.add(getUpdateOnDateRequest);
+    }
+
     public void sendGetRequest(final Map<String, String> mp, String URL) {
 
         StringRequest getUpdateOnDateRequest = new StringRequest(
