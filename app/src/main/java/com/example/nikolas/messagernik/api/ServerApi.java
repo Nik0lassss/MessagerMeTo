@@ -1,5 +1,6 @@
 package com.example.nikolas.messagernik.api;
 
+import android.app.Fragment;
 import android.content.Context;
 
 import com.android.volley.Response;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 public class ServerApi {
 
     private static Receiver receiver;
-
+  private static onUpdateAccountFragmentListener onUpdateAccountFragmentListenerInterface;
     public static void setUpRecuever(Context context) {
         receiver = new Receiver(context);
     }
@@ -23,6 +24,7 @@ public class ServerApi {
     private static Response.Listener response = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
+            onUpdateAccountFragmentListenerInterface.onGetResponseFromServerCreateAccount(1);
 
             //Toast.makeText(getContext(),"Succesful create account",Toast.LENGTH_LONG).show();
         }
@@ -49,7 +51,8 @@ public class ServerApi {
     {
         public void onGetResponseFromServerCreateAccount(int id);
     }
-    public static int createAccount(String firstName, String lastName, String login, String password) {
+    public static int createAccount(Fragment listenerFragment,String firstName, String lastName, String login, String password) {
+        onUpdateAccountFragmentListenerInterface=(onUpdateAccountFragmentListener)listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("firstName", firstName);
         values.put("lastName", lastName);

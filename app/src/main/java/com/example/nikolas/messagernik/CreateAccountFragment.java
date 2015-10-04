@@ -31,6 +31,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     private EditText edtxtFirstName, edtxtLastName, edtxtUserLogin, edtxtUserPassword, edtUserConfirmPassword;
     private Button btnRegistration;
     private Verificator verificator;
+    private Fragment fragment;
 
 
     public static CreateAccountFragment newInstance() {
@@ -67,6 +68,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragment=this;
 
     }
 
@@ -105,7 +107,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
             verificator.setPassword(edtxtUserPassword.getText().toString());
             verificator.setConfirmPassword(edtUserConfirmPassword.getText().toString());
             if (verificator.equelsPassword())
-                ServerApi.createAccount(verificator.getFirstName(), verificator.getLastName(), verificator.getLogin(), verificator.getPassword());
+                ServerApi.createAccount(fragment,verificator.getFirstName(), verificator.getLastName(), verificator.getLogin(), verificator.getPassword());
             // else  Toast.makeText(getContext(),"Password error",Toast.LENGTH_LONG).show();
         }
     };
@@ -126,6 +128,6 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
 
     @Override
     public void onGetResponseFromServerCreateAccount(int id) {
-
+Toast.makeText(getActivity(),"Ok create",Toast.LENGTH_LONG).show();
     }
 }
