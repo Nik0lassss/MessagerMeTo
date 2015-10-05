@@ -13,8 +13,10 @@ import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.receiver.Receiver;
 
 import org.json.JSONArray;
@@ -33,7 +35,7 @@ import java.util.Map;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFragmentListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,7 +49,7 @@ public class LoginFragment extends Fragment {
 
     private EditText editTextLogin, editTextPassword;
     private Button btnSend,btnCreateAccount;
-
+    private Fragment fragment;
 
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
@@ -70,6 +72,7 @@ public class LoginFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         receiver = new Receiver(getActivity(),response,errorListener);
+        fragment = this;
     }
 
     @Override
@@ -79,7 +82,7 @@ public class LoginFragment extends Fragment {
         editTextLogin = (EditText)rootView.findViewById(R.id.login_layout_edit_text_login_or_email);
         editTextPassword = (EditText)rootView.findViewById(R.id.login_layout_edit_text_password);
         btnSend = (Button) rootView.findViewById(R.id.login_layout_btn_login);
-        btnSend.setOnClickListener(btnSendOnClickListener);
+        btnSend.setOnClickListener(btnSendOnClickListenerTest);
         btnCreateAccount = (Button)rootView.findViewById(R.id.login_layout_btn_create_account);
         btnCreateAccount.setOnClickListener(btnCreateAccountListenenr);
 
@@ -89,7 +92,9 @@ public class LoginFragment extends Fragment {
         @Override
         public void onResponse(String response) {
             try {
-                onResponseGet (User.fromJson(new JSONArray(response)).get(0));
+                ResponseObject responseObject =ResponseObject.fromJson(new JSONObject(response));
+                JSONArray jsonArray = (JSONArray)responseObject.getResponseObject();
+                onResponseGet(User.fromJson((JSONObject)jsonArray.get(0)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -114,7 +119,12 @@ public class LoginFragment extends Fragment {
              receiver.sendPostRequest(values,Config.LOGIN_URL);
          }
      };
-
+    View.OnClickListener btnSendOnClickListenerTest = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ServerApi.loginUser(fragment,editTextLogin.getText().toString(),editTextPassword.getText().toString());
+        }
+    };
     View.OnClickListener btnCreateAccountListenenr= new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -144,6 +154,18 @@ public class LoginFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onUpdateFragment(Object object) {
+        String response = (String) object;
+        try {
+            ResponseObject responseObject =ResponseObject.fromJson(new JSONObject(response));
+            JSONArray jsonArray = (JSONArray)responseObject.getResponseObject();
+            onResponseGet(User.fromJson((JSONObject)jsonArray.get(0)));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

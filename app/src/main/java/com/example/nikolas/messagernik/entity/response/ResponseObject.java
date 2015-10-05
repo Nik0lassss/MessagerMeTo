@@ -1,5 +1,7 @@
 package com.example.nikolas.messagernik.entity.response;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
@@ -34,7 +36,8 @@ public class ResponseObject {
 
     public static ResponseObject fromJson(final JSONObject objectResponse) {
         final Integer code = objectResponse.optInt("code");
-        final JSONObject object = objectResponse.optJSONObject("responseObject");
+        final JSONArray object;
+        object = objectResponse.optJSONArray("responseObject");
         return new ResponseObject(code,object);
     };
 }

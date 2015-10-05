@@ -6,9 +6,11 @@ import android.content.Context;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
+import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.receiver.Receiver;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Created by User on 23.09.2015.
@@ -17,6 +19,7 @@ public class ServerApi {
 
     private static Receiver receiver;
   private static onUpdateAccountFragmentListener onUpdateAccountFragmentListenerInterface;
+    private static onUpdateLoginFragmentListener onUpdateLoginFragmentListenerInterface;
     public static void setUpRecuever(Context context) {
         receiver = new Receiver(context);
     }
@@ -24,8 +27,8 @@ public class ServerApi {
     private static Response.Listener response = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
-            onUpdateAccountFragmentListenerInterface.onGetResponseFromServerCreateAccount(1);
-
+            //onUpdateAccountFragmentListenerInterface.onGetResponseFromServerCreateAccount(1);
+            onUpdateLoginFragmentListenerInterface.onUpdateFragment(response);
             //Toast.makeText(getContext(),"Succesful create account",Toast.LENGTH_LONG).show();
         }
     };
@@ -40,17 +43,24 @@ public class ServerApi {
         return 0;
     }
 
-    public static int loginUser(Response.ErrorListener errorListener, Response.Listener responseListener, String login, String password) {
+    public static int loginUser(Fragment listenerFragment, String login, String password) {
+        onUpdateLoginFragmentListenerInterface = (onUpdateLoginFragmentListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("login", login);
         values.put("password", password);
-        receiver.sendPostRequest(values, Config.LOGIN_URL);
+        receiver.sendPostRequest(values, Config.LOGIN_URL,response,erroreResponse);
         return 0;
     }
     public interface onUpdateAccountFragmentListener
     {
         public void onGetResponseFromServerCreateAccount(int id);
     }
+
+    public interface onUpdateLoginFragmentListener
+    {
+    public  void onUpdateFragment(Object object);
+    }
+
     public static int createAccount(Fragment listenerFragment,String firstName, String lastName, String login, String password) {
         onUpdateAccountFragmentListenerInterface=(onUpdateAccountFragmentListener)listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
