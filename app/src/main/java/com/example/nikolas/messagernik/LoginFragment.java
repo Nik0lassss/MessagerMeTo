@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.activity.UploadActivity;
 import com.example.nikolas.messagernik.api.ServerApi;
+import com.example.nikolas.messagernik.api.UploadFileToServer;
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
@@ -156,12 +157,14 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
     View.OnClickListener btnTestLisntenr = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent testIntent = new Intent(fragment.getActivity(), UploadActivity.class);
+//            Intent testIntent = new Intent(fragment.getActivity(), UploadActivity.class);
             String path=getRealPathFromURI(fragment.getActivity(),imageUri);
-            testIntent.putExtra("filePath",path);
+//            testIntent.putExtra("filePath",path);
+//
+//            testIntent.putExtra("isImage", true);
+//            startActivity(testIntent);
 
-            testIntent.putExtra("isImage", true);
-            startActivity(testIntent);
+            new UploadFileToServer(path).execute();
         }
     };
     View.OnClickListener btnTestSelectImageListnener = new View.OnClickListener() {
