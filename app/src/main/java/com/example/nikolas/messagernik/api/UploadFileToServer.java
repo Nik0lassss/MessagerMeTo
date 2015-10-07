@@ -3,6 +3,7 @@ package com.example.nikolas.messagernik.api;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.AndroidMultiPartEntity;
@@ -26,21 +27,23 @@ import java.io.IOException;
 public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     private long totalSize = 0;
     private String filePath;
-
-    public UploadFileToServer(String filePath) {
+    private ProgressBar progressBar;
+    public UploadFileToServer(String filePath,ProgressBar prBar) {
         this.filePath = filePath;
+        this.progressBar=prBar;
     }
 
     @Override
     protected void onPreExecute() {
         // setting progress bar to zero
-
+        progressBar.setProgress(0);
         super.onPreExecute();
     }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
         // Making progress bar visible
+        progressBar.setProgress(progress[0]);
 
     }
 

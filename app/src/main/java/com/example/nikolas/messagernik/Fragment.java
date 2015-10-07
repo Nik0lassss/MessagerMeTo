@@ -1,7 +1,6 @@
 package com.example.nikolas.messagernik;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.nikolas.messagernik.activity.UploadActivity;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.api.UploadFileToServer;
 import com.example.nikolas.messagernik.config.Config;
@@ -32,14 +32,14 @@ import java.util.HashMap;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link android.app.Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
+ * {@link Fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFragmentListener {
+public class Fragment extends android.app.Fragment implements ServerApi.onUpdateFragmentListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -53,10 +53,12 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
     private Uri imageUri;
     private EditText editTextLogin, editTextPassword;
     private Button btnSend, btnCreateAccount, btnTest, btnTestSelectImage;
-    private Fragment fragment;
+    private android.widget.ImageView imageBanner;
+    private ProgressBar prBar;
+    private android.app.Fragment fragment;
 
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static Fragment newInstance(String param1, String param2) {
+        Fragment fragment = new Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,7 +66,7 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
         return fragment;
     }
 
-    public LoginFragment() {
+    public Fragment() {
         // Required empty public constructor
     }
 
@@ -86,7 +88,8 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
             case 0:
                 if (resultCode == -1) {
                     Uri selectedImage = data.getData();
-                    imageUri =selectedImage;
+                    imageUri = selectedImage;
+                    imageBanner.setImageURI(selectedImage);
                     //userCoverPhoto.setImageURI(selectedImage);
                 }
 
@@ -94,7 +97,8 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
             case 1:
                 if (resultCode == -1) {
                     Uri selectedImage = data.getData();
-                    imageUri =selectedImage;
+                    imageUri = selectedImage;
+                    imageBanner.setImageURI(selectedImage);
                     //userCoverPhoto.setImageURI(selectedImage);
 
                 }
@@ -116,6 +120,8 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
         btnTest.setOnClickListener(btnTestLisntenr);
         btnTestSelectImage = (Button) rootView.findViewById(R.id.login_layout_btn_test_select_image);
         btnTestSelectImage.setOnClickListener(btnTestSelectImageListnener);
+        prBar = (ProgressBar) rootView.findViewById(R.id.login_layout_progress_bar);
+        imageBanner =(android.widget.ImageView)rootView.findViewById(R.id.login_layout_image_view_banner);
         return rootView;
     }
 
@@ -140,11 +146,12 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
 
         }
     };
+
     public String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
@@ -154,17 +161,18 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
             }
         }
     }
+
     View.OnClickListener btnTestLisntenr = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 //            Intent testIntent = new Intent(fragment.getActivity(), UploadActivity.class);
-            String path=getRealPathFromURI(fragment.getActivity(),imageUri);
+            String path = getRealPathFromURI(fragment.getActivity(), imageUri);
 //            testIntent.putExtra("filePath",path);
 //
 //            testIntent.putExtra("isImage", true);
 //            startActivity(testIntent);
 
-            new UploadFileToServer(path).execute();
+            new UploadFileToServer(path,prBar).execute();
         }
     };
     View.OnClickListener btnTestSelectImageListnener = new View.OnClickListener() {
@@ -227,8 +235,12 @@ public class LoginFragment extends Fragment implements ServerApi.onUpdateLoginFr
         String response = (String) object;
         try {
             ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
-            JSONArray jsonArray = (JSONArray) responseObject.getResponseObject();
-            onResponseGet(User.fromJson((JSONObject) jsonArray.get(0)));
+            if (responseObject.getCode() != 0) {
+                Toast.makeText(getActivity(),"Incorrect login or password",Toast.LENGTH_LONG).show();
+            } else {
+                JSONArray jsonArray = (JSONArray) responseObject.getResponseObject();
+                onResponseGet(User.fromJson((JSONObject) jsonArray.get(0)));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

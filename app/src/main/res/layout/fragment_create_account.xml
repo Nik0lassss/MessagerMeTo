@@ -1,8 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<FrameLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.nikolas.messagernik.CreateAccountFragment">
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,27 +20,27 @@
     <EditText
         android:id="@+id/fragment_create_account_edt_first_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:hint="@string/fragment_create_account_edt_first_name_string"/>
     <EditText
         android:id="@+id/fragment_create_account_edt_last_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="65dp"
         android:hint="@string/fragment_create_account_edt_last_name_string"/>
     <EditText
         android:id="@+id/fragment_create_account_edt_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:hint = "@string/fragment_create_account_edt_login_string"/>
     <EditText
         android:id="@+id/fragment_create_account_edt_password"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
         android:hint="@string/fragment_create_account_edt_password_string"/>
     <EditText
         android:id="@+id/fragment_create_account_edt_confirm_password"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="65dp"
         android:hint="@string/fragment_create_account_edt_confirm_password_string"/>
     <Button
         android:id="@+id/fragment_create_account_btn_create_account"
@@ -45,3 +49,4 @@
         android:text="@string/fragment_create_account_btn_create_account_string"/>
 </LinearLayout>
 </FrameLayout>
+</ScrollView>
