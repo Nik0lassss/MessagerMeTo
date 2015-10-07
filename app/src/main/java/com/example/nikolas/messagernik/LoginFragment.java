@@ -31,15 +31,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Fragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Fragment extends android.app.Fragment implements ServerApi.onUpdateFragmentListener {
+
+public class LoginFragment extends android.app.Fragment implements ServerApi.onUpdateFragmentListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,8 +50,8 @@ public class Fragment extends android.app.Fragment implements ServerApi.onUpdate
     private ProgressBar prBar;
     private android.app.Fragment fragment;
 
-    public static Fragment newInstance(String param1, String param2) {
-        Fragment fragment = new Fragment();
+    public static LoginFragment newInstance(String param1, String param2) {
+        LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,7 +59,7 @@ public class Fragment extends android.app.Fragment implements ServerApi.onUpdate
         return fragment;
     }
 
-    public Fragment() {
+    public LoginFragment() {
         // Required empty public constructor
     }
 
@@ -160,7 +153,8 @@ public class Fragment extends android.app.Fragment implements ServerApi.onUpdate
                 cursor.close();
             }
         }
-    }
+
+    };
 
     View.OnClickListener btnTestLisntenr = new View.OnClickListener() {
         @Override

@@ -57,7 +57,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         String responseString = null;
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL+"/ivan");
 
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
