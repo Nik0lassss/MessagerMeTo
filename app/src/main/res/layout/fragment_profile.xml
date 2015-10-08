@@ -1,29 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.nikolas.messagernik.MainPageFragment">
+    android:layout_height="match_parent">
 
-    <com.example.nikolas.messagernik.entity.system.ImageProgressView
-        android:id="@+id/fragment_profile_imageview_with_progressbar_view"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.example.nikolas.messagernik.entity.system.ImageProgressView>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.nikolas.messagernik.MainPageFragment">
 
-    <TextView
-        android:id="@+id/fragment_main_page_txt_first_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/fragment_main_page_txt_last_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <com.example.nikolas.messagernik.entity.system.ImageProgressView
+            android:id="@+id/fragment_profile_imageview_with_progressbar_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.example.nikolas.messagernik.entity.system.ImageProgressView>
 
-    <TextView
-        android:id="@+id/fragment_main_page_txt_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/fragment_main_page_txt_first_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/fragment_main_page_txt_last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/fragment_main_page_txt_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>

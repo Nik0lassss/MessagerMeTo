@@ -22,6 +22,7 @@ import com.example.nikolas.messagernik.api.UploadFileToServer;
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
+import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.receiver.Receiver;
 
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Receiver receiver;
+    //private Receiver receiver;
     private OnFragmentInteractionListener mListener;
     private Uri imageUri;
     private EditText editTextLogin, editTextPassword;
@@ -70,7 +71,7 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        receiver = new Receiver(getActivity(), response, errorListener);
+        //receiver = new Receiver(getActivity(), response, errorListener);
         fragment = this;
     }
 
@@ -118,55 +119,41 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
         return rootView;
     }
 
-    Response.Listener response = new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-            try {
-                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
-                JSONArray jsonArray = (JSONArray) responseObject.getResponseObject();
-                onResponseGet(User.fromJson((JSONObject) jsonArray.get(0)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//    Response.Listener response = new Response.Listener<String>() {
+//        @Override
+//        public void onResponse(String response) {
+//            try {
+//                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
+//                JSONArray jsonArray = (JSONArray) responseObject.getResponseObject();
+//                onResponseGet(User.fromJson((JSONObject) jsonArray.get(0)));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//
+//    };
+//
+//    Response.ErrorListener errorListener = new Response.ErrorListener() {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//
+//        }
+//    };
 
 
-    };
-
-    Response.ErrorListener errorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-
-        }
-    };
-
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-    };
 
     View.OnClickListener btnTestLisntenr = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 //            Intent testIntent = new Intent(fragment.getActivity(), UploadActivity.class);
-            String path = getRealPathFromURI(fragment.getActivity(), imageUri);
+            String path = Helper.getRealPathFromURI(fragment.getActivity(), imageUri);
 //            testIntent.putExtra("filePath",path);
 //
 //            testIntent.putExtra("isImage", true);
 //            startActivity(testIntent);
 
-            new UploadFileToServer(path,prBar).execute();
+            new UploadFileToServer(path, editTextLogin.getText().toString(),prBar).execute();
         }
     };
     View.OnClickListener btnTestSelectImageListnener = new View.OnClickListener() {
@@ -177,15 +164,15 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
             startActivityForResult(pickPhoto, 1);
         }
     };
-    View.OnClickListener btnSendOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            HashMap<String, String> values = new HashMap<String, String>();
-            values.put("login", editTextLogin.getText().toString());
-            values.put("password", editTextPassword.getText().toString());
-            receiver.sendPostRequest(values, Config.LOGIN_URL);
-        }
-    };
+//    View.OnClickListener btnSendOnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            HashMap<String, String> values = new HashMap<String, String>();
+//            values.put("login", editTextLogin.getText().toString());
+//            values.put("password", editTextPassword.getText().toString());
+//            receiver.sendPostRequest(values, Config.LOGIN_URL);
+//        }
+//    };
     View.OnClickListener btnSendOnClickListenerTest = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

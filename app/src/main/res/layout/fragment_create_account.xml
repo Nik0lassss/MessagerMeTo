@@ -17,6 +17,11 @@
         android:layout_height="160dp"
         android:src="@drawable/avatar_img"
        />
+    <ProgressBar
+        android:id="@+id/fragment_create_account_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
     <EditText
         android:id="@+id/fragment_create_account_edt_first_name"
         android:layout_width="match_parent"

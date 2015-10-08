@@ -11,6 +11,5 @@
     <com.example.nikolas.messagernik.entity.system.ImageView
         android:id="@+id/image_progress_bar_view_image_view_avatar"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:scaleType="centerCrop" />
+        android:layout_height="250dp" />
 </LinearLayout>

@@ -26,11 +26,12 @@ import java.io.IOException;
  */
 public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     private long totalSize = 0;
-    private String filePath;
+    private String filePath,loginUser;
     private ProgressBar progressBar;
-    public UploadFileToServer(String filePath,ProgressBar prBar) {
+    public UploadFileToServer(String filePath,String loginUser, ProgressBar prBar) {
         this.filePath = filePath;
         this.progressBar=prBar;
+        this.loginUser=loginUser;
     }
 
     @Override
@@ -57,7 +58,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         String responseString = null;
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL+"/ivan");
+        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL+"/"+loginUser);
 
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -110,7 +111,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         //Log.e(TAG, "Response from server: " + result);
 
         // showing the server response in an alert dialog
-        //showAlert(result);
+
 
         super.onPostExecute(result);
     }

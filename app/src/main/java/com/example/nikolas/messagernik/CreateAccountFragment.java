@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.api.ServerApi;
+import com.example.nikolas.messagernik.api.UploadFileToServer;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.receiver.Receiver;
 import com.example.nikolas.messagernik.verification.Verificator;
 
@@ -32,7 +35,8 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     private Button btnRegistration;
     private Verificator verificator;
     private Fragment fragment;
-
+    private ProgressBar prBar;
+    private Uri uploadImageUri;
 
     public static CreateAccountFragment newInstance() {
         CreateAccountFragment fragment = new CreateAccountFragment();
@@ -51,6 +55,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
             case 0:
                 if (resultCode == -1) {
                     Uri selectedImage = data.getData();
+                    uploadImageUri = selectedImage;
                     userCoverPhoto.setImageURI(selectedImage);
                 }
 
@@ -58,6 +63,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
             case 1:
                 if (resultCode == -1) {
                     Uri selectedImage = data.getData();
+                    uploadImageUri = selectedImage;
                     userCoverPhoto.setImageURI(selectedImage);
 
                 }
@@ -83,6 +89,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
         edtxtUserPassword = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_password);
         edtUserConfirmPassword = (EditText) rootView.findViewById(R.id.fragment_create_account_edt_confirm_password);
         btnRegistration = (Button) rootView.findViewById(R.id.fragment_create_account_btn_create_account);
+        prBar = (ProgressBar) rootView.findViewById(R.id.fragment_create_account_progress_bar);
         btnRegistration.setOnClickListener(btnCreateAccountOnClickListener);
         userCoverPhoto.setOnClickListener(imageOnClickListener);
         verificator = new Verificator();
@@ -129,5 +136,15 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     @Override
     public void onUpdateFragment(Object object) {
         Toast.makeText(getActivity(), "Succesful create account", Toast.LENGTH_SHORT).show();
+        if(null!= uploadImageUri)
+        {
+            String path = Helper.getRealPathFromURI(fragment.getActivity(), uploadImageUri);
+//            testIntent.putExtra("filePath",path);
+//
+//            testIntent.putExtra("isImage", true);
+//            startActivity(testIntent);
+            new UploadFileToServer(path, verificator.getLogin(), prBar).execute();
+        }
+
     }
 }

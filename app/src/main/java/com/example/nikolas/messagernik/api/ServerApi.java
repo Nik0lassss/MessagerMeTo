@@ -50,12 +50,23 @@ public class ServerApi {
         return 0;
     }
 
+
     public interface onUpdateFragmentListener
     {
     public  void onUpdateFragment(Object object);
     }
 
     public static int createAccount(Fragment listenerFragment,String firstName, String lastName, String login, String password) {
+        onUpdateFragmentListenerInterface=(onUpdateFragmentListener)listenerFragment;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("firstName", firstName);
+        values.put("lastName", lastName);
+        values.put("login", login);
+        values.put("password", password);
+        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT,response,erroreResponse);
+        return 0;
+    }
+    public static int createAccount(Fragment listenerFragment,String firstName, String lastName, String login, String password,String imageProfileName) {
         onUpdateFragmentListenerInterface=(onUpdateFragmentListener)listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("firstName", firstName);
