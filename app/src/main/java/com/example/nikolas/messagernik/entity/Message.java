@@ -97,8 +97,8 @@ public class Message implements Parcelable {
         User userFrom = null;
         User userTo = null;
         try {
-            userFrom = (User) User.fromJson(jsonObject.getJSONObject("from_id"));
-            userTo = (User) User.fromJson(jsonObject.getJSONObject("to_id"));
+            userFrom = (User) User.fromJson(jsonObject.getJSONObject("user_from"));
+            userTo = (User) User.fromJson(jsonObject.getJSONObject("user_to"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

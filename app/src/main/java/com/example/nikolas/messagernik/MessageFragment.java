@@ -7,11 +7,18 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.response.ResponseList;
+import com.example.nikolas.messagernik.entity.response.ResponseObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -23,6 +30,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateFragm
     private User user;
     private Fragment fragment;
     private MessageAdapter messageAdapter;
+    private ListView listView;
+    private ArrayList<Message> messageArrayList;
 
     private LoginFragment.OnFragmentInteractionListener mListener;
 
@@ -47,27 +56,39 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateFragm
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER_KEY);
         }
-        messageAdapter = new MessageAdapter();
+        messageArrayList=new ArrayList<>();
+        messageAdapter = new MessageAdapter(getActivity(),messageArrayList);
         ServerApi.getRecieveMessage(fragment, user.getId());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_message, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_message, container, false);
+        listView = (ListView) rootView.findViewById(R.id.fragment_message_listview);
+        listView.setAdapter(messageAdapter);
+        return rootView;
     }
 
     @Override
     public void onUpdateFragment(Object object) {
-        // messageAdapter.updateMessageArrayList((ArrayList<Message>) object);
+        String response = (String) object;
+        ResponseList responseObject = null;
+        try {
+            responseObject = ResponseList.fromJson(new JSONObject(response));
+            messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
+            messageAdapter.updateMessageArrayList(messageArrayList);
+            messageAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class ResponseList {
     private int code;
-    private Object responseList;
+    private JSONArray responseList;
 
-    public ResponseList(int code, Object responseList) {
+    public ResponseList(int code, JSONArray responseList) {
         this.code = code;
         this.responseList = responseList;
     }
@@ -21,7 +21,7 @@ public class ResponseList {
         this.code = code;
     }
 
-    public ResponseList(Object responseList) {
+    public ResponseList(JSONArray responseList) {
         this.responseList = responseList;
     }
 
@@ -38,7 +38,7 @@ public class ResponseList {
         return responseList;
     }
 
-    public void setResponseList(List<Object> responseList) {
+    public void setResponseList(JSONArray responseList) {
         this.responseList = responseList;
     }
 
