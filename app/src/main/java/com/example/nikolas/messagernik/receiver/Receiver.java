@@ -109,4 +109,15 @@ public class Receiver {
         getUpdateOnDateRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueque.add(getUpdateOnDateRequest);
     }
+    public void sendGetRequest( String URL,Response.Listener<String> response,Response.ErrorListener errorListener) {
+
+        StringRequest getUpdateOnDateRequest = new StringRequest(
+                Request.Method.GET, URL, response
+                , errorListener) {
+
+        };
+
+        getUpdateOnDateRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        mQueque.add(getUpdateOnDateRequest);
+    }
 }

@@ -1,17 +1,21 @@
 package com.example.nikolas.messagernik;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.helper.FragmentGetter;
 
 import java.util.ArrayList;
 
@@ -34,6 +38,7 @@ public class MainPageFragment extends Fragment {
     private User profileUser;
     private OnMainPageFragmentInteractionListener mListener;
     private ListView navigationDrawerListView;
+    private DrawerLayout drawerLayout;
 
     // TODO: Rename and change types and number of parameters
     public static MainPageFragment newInstance(User user) {
@@ -51,9 +56,9 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        profileUser= new User();
+        profileUser = new User();
         if (getArguments() != null) {
-            profileUser=getArguments().getParcelable(ARG_PARAM_USER);
+            profileUser = getArguments().getParcelable(ARG_PARAM_USER);
         }
 
     }
@@ -62,14 +67,16 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        navigationDrawerListView = (ListView)rootView.findViewById(R.id.left_drawer);
+        navigationDrawerListView = (ListView) rootView.findViewById(R.id.left_drawer);
         ArrayList<String> navigationDrawerListViewArrayList = new ArrayList<String>();
-        navigationDrawerListViewArrayList.add("Profile");
-        navigationDrawerListViewArrayList.add("Photo");
-        NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(),navigationDrawerListViewArrayList);
-       navigationDrawerListView.setAdapter(navAdapter);
+        navigationDrawerListViewArrayList.add(0, "Messages");
+        navigationDrawerListViewArrayList.add(1, "Profile");
+        navigationDrawerListViewArrayList.add(2, "Photo");
+        drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
+        NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(), navigationDrawerListViewArrayList);
+        navigationDrawerListView.setAdapter(navAdapter);
         getFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
-
+        navigationDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
         return rootView;
     }
 
@@ -103,7 +110,7 @@ public class MainPageFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -111,6 +118,31 @@ public class MainPageFragment extends Fragment {
     public interface OnMainPageFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        public DrawerItemClickListener() {
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+
+        private void selectItem(int position) {
+            Fragment fragment = FragmentGetter.getFragment(position);
+            if (null != fragment) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(MessageFragment.ARG_USER_KEY, profileUser);
+                fragment.setArguments(bundle);
+            }
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.additional_content_frame, fragment).commit();
+            navigationDrawerListView.setItemChecked(position, true);
+            drawerLayout.closeDrawer(navigationDrawerListView);
+            //get fragment
+        }
     }
 
 }

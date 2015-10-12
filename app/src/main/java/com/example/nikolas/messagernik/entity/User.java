@@ -17,15 +17,16 @@ public class User implements Parcelable {
 
 
     private Integer id;
+    private String user_login;
     private String first_name;
     private String last_name;
-    private SecurityUser securityUser;
+
+
 
     public User(Integer id, String first_name, String last_name, SecurityUser securityUser, String photoAvatar) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
-        this.securityUser = securityUser;
         this.photoAvatar = photoAvatar;
     }
 
@@ -36,24 +37,12 @@ public class User implements Parcelable {
     public User() {
     }
 
-    public User(Integer id, String first_name, String last_name) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-    }
-
-    public User(Integer id, String first_name, String last_name, SecurityUser securityUser) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.securityUser = securityUser;
-    }
 
 
     protected User(Parcel in) {
         first_name = in.readString();
         last_name = in.readString();
-        securityUser = in.readParcelable(SecurityUser.class.getClassLoader());
+        user_login = in.readString();
         photoAvatar = in.readString();
     }
 
@@ -68,6 +57,14 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public User(Integer id, String user_login, String first_name, String last_name,  String photoAvatar) {
+        this.id = id;
+        this.user_login = user_login;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.photoAvatar = photoAvatar;
+    }
 
     public Integer getId() {
         return id;
@@ -93,16 +90,6 @@ public class User implements Parcelable {
         this.last_name = last_name;
     }
 
-    public SecurityUser getSecurityUser() {
-        return securityUser;
-    }
-
-    public void setSecurityUser(SecurityUser securityUser) {
-        this.securityUser = securityUser;
-    }
-    public String getPhotoAvatar() {
-        return photoAvatar;
-    }
 
     public void setPhotoAvatar(String photoAvatar) {
         this.photoAvatar = photoAvatar;
@@ -110,18 +97,12 @@ public class User implements Parcelable {
 
     public static User fromJson(final JSONObject object)
     {
-      final   Integer id =object.optInt("id", 0);
+      final   Integer id =object.optInt("user_id", 0);
       final   String firstName = object.optString("first_name", "");
       final   String lastName = object.optString("last_name","");
         final   String photoAvatar = object.optString("photo_avatar","");
-        SecurityUser securityUser = new SecurityUser();
-        try {
-            JSONObject securityJSONObject = object.getJSONObject("securityUser");
-            securityUser.setId(securityJSONObject.optInt("id",0));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return  new User(id,firstName,lastName,securityUser,photoAvatar);
+       final String user_login = object.optString("user_login","");
+        return  new User(id,user_login,firstName,lastName,photoAvatar);
     }
 
     public static ArrayList<User> fromJson(final JSONArray arrayObject)
@@ -148,7 +129,19 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(first_name);
         dest.writeString(last_name);
-        dest.writeParcelable(securityUser, flags);
+        dest.writeString(user_login);
         dest.writeString(photoAvatar);
+    }
+
+    public String getUser_login() {
+        return user_login;
+    }
+
+    public void setUser_login(String user_login) {
+        this.user_login = user_login;
+    }
+
+    public String getPhotoAvatar() {
+        return photoAvatar;
     }
 }

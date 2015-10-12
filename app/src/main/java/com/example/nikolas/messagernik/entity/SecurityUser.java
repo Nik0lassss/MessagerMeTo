@@ -8,12 +8,7 @@ import android.os.Parcelable;
  */
 public class SecurityUser implements Parcelable {
     private Integer id;
-
-
-    public SecurityUser(Integer id) {
-        this.id = id;
-
-    }
+    private String password;
 
     public SecurityUser() {
     }
@@ -21,6 +16,7 @@ public class SecurityUser implements Parcelable {
 
     protected SecurityUser(Parcel in) {
         id=in.readInt();
+        password=in.readString();
     }
 
     public static final Creator<SecurityUser> CREATOR = new Creator<SecurityUser>() {
@@ -34,6 +30,11 @@ public class SecurityUser implements Parcelable {
             return new SecurityUser[size];
         }
     };
+
+    public SecurityUser(String password, Integer id) {
+        this.password = password;
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -53,6 +54,7 @@ public class SecurityUser implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeString(password);
     }
 }
 

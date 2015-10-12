@@ -219,8 +219,8 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
             if (responseObject.getCode() != 0) {
                 Toast.makeText(getActivity(),"Incorrect login or password",Toast.LENGTH_LONG).show();
             } else {
-                JSONArray jsonArray = (JSONArray) responseObject.getResponseObject();
-                onResponseGet(User.fromJson((JSONObject) jsonArray.get(0)));
+                JSONObject jsonObject = (JSONObject) responseObject.getResponseObject();
+                onResponseGet(User.fromJson((JSONObject) jsonObject));
             }
         } catch (JSONException e) {
             e.printStackTrace();

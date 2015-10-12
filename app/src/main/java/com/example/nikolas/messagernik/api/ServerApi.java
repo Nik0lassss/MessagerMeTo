@@ -18,6 +18,7 @@ public class ServerApi {
     private static Receiver receiver;
 
     private static onUpdateFragmentListener onUpdateFragmentListenerInterface;
+
     public static void setUpRecuever(Context context) {
         receiver = new Receiver(context);
     }
@@ -31,12 +32,13 @@ public class ServerApi {
         }
     };
 
-    private static  Response.ErrorListener erroreResponse = new Response.ErrorListener() {
+    private static Response.ErrorListener erroreResponse = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
             //Toast.makeText(getContext(),"Errore create account",Toast.LENGTH_LONG).show();
         }
     };
+
     public static int createUserAccount(String firstName, String lastName, String password, String login) {
         return 0;
     }
@@ -46,34 +48,42 @@ public class ServerApi {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("login", login);
         values.put("password", password);
-        receiver.sendPostRequest(values, Config.LOGIN_URL,response,erroreResponse);
+        receiver.sendPostRequest(values, Config.LOGIN_URL, response, erroreResponse);
         return 0;
     }
 
 
-    public interface onUpdateFragmentListener
-    {
-    public  void onUpdateFragment(Object object);
+    public interface onUpdateFragmentListener {
+        public void onUpdateFragment(Object object);
     }
 
-    public static int createAccount(Fragment listenerFragment,String firstName, String lastName, String login, String password) {
-        onUpdateFragmentListenerInterface=(onUpdateFragmentListener)listenerFragment;
+    public static int getRecieveMessage(Fragment listenerFragment, Integer id) {
+        onUpdateFragmentListenerInterface = (onUpdateFragmentListener) listenerFragment;
+        receiver.sendGetRequest(Config.GET_RECIEVED_MESSAGE+id,response,erroreResponse);
+        return 0;
+    }
+
+    ;
+
+    public static int createAccount(Fragment listenerFragment, String firstName, String lastName, String login, String password) {
+        onUpdateFragmentListenerInterface = (onUpdateFragmentListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("firstName", firstName);
         values.put("lastName", lastName);
         values.put("login", login);
         values.put("password", password);
-        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT,response,erroreResponse);
+        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT, response, erroreResponse);
         return 0;
     }
-    public static int createAccount(Fragment listenerFragment,String firstName, String lastName, String login, String password,String imageProfileName) {
-        onUpdateFragmentListenerInterface=(onUpdateFragmentListener)listenerFragment;
+
+    public static int createAccount(Fragment listenerFragment, String firstName, String lastName, String login, String password, String imageProfileName) {
+        onUpdateFragmentListenerInterface = (onUpdateFragmentListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("firstName", firstName);
         values.put("lastName", lastName);
         values.put("login", login);
         values.put("password", password);
-        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT,response,erroreResponse);
+        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT, response, erroreResponse);
         return 0;
     }
 }

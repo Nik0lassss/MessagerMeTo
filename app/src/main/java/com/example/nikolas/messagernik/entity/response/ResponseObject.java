@@ -36,8 +36,12 @@ public class ResponseObject {
 
     public static ResponseObject fromJson(final JSONObject objectResponse) {
         final Integer code = objectResponse.optInt("code");
-        final JSONArray object;
-        object = objectResponse.optJSONArray("responseObject");
+        JSONObject object=null;
+        try {
+            object = objectResponse.getJSONObject("responseObject");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return new ResponseObject(code,object);
     };
 }
