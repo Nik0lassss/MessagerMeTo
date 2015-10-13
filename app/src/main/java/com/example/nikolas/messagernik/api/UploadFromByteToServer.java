@@ -1,8 +1,7 @@
 package com.example.nikolas.messagernik.api;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.nikolas.messagernik.config.Config;
@@ -13,25 +12,29 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by User on 06.10.2015.
+ * Created by Nikolas on 14.10.2015.
  */
-public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+public class UploadFromByteToServer extends AsyncTask<Void, Integer, String> {
     private long totalSize = 0;
-    private String filePath,loginUser;
+    private String loginUser;
     private ProgressBar progressBar;
-    public UploadFileToServer(String filePath,String loginUser, ProgressBar prBar) {
-        this.filePath = filePath;
-        this.progressBar=prBar;
-        this.loginUser=loginUser;
+    private Bitmap bitmap;
+
+    public UploadFromByteToServer(Bitmap bitmap, String loginUser, ProgressBar prBar) {
+        this.bitmap = bitmap;
+        this.progressBar = prBar;
+        this.loginUser = loginUser;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         String responseString = null;
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL+"/"+loginUser);
+        HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL + "/" + loginUser);
 
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -69,11 +72,14 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
                             publishProgress((int) ((num / (float) totalSize) * 100));
                         }
                     });
-
-            File sourceFile = new File(filePath);
-
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+            byte[] bytes = bao.toByteArray();
+            String photoName = "TMP.jpg";
+            //File sourceFile = new File(filePath);
+            entity.addPart("file", new ByteArrayBody(bytes, photoName));
             // Adding file data to http body
-            entity.addPart("file", new FileBody(sourceFile));
+            //entity.addPart("file", new FileBody(sourceFile));
             // Extra parameters if you want to pass to server
 //            entity.addPart("website",
 //                    new StringBody("www.androidhive.info"));
@@ -116,3 +122,4 @@ public class UploadFileToServer extends AsyncTask<Void, Integer, String> {
     }
 
 }
+

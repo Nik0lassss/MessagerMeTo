@@ -28,6 +28,8 @@ import com.example.nikolas.messagernik.verification.Verificator;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.File;
+
 
 public class CreateAccountFragment extends Fragment implements ServerApi.onUpdateFragmentListener {
 
@@ -73,11 +75,14 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
             case PIC_CROP:
                 if (data != null) {
                     // get the returned data
+                    uploadImageUri = data.getData();
+
                     Bundle extras = data.getExtras();
                     // get the cropped bitmap
                     Bitmap selectedBitmap = extras.getParcelable("data");
 
                     userCoverPhoto.setImageBitmap(selectedBitmap);
+
                 }
                 break;
         }
@@ -170,7 +175,9 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     public void onUpdateFragment(Object object) {
         Toast.makeText(getActivity(), "Succesful create account", Toast.LENGTH_SHORT).show();
         if (null != uploadImageUri) {
+
             String path = Helper.getRealPathFromURI(fragment.getActivity(), uploadImageUri);
+            File uploadFile = new File(path);
 //            testIntent.putExtra("filePath",path);
 //
 //            testIntent.putExtra("isImage", true);
