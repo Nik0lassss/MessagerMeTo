@@ -2,6 +2,7 @@ package com.example.nikolas.messagernik;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -57,6 +58,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
                     Uri selectedImage = data.getData();
                     uploadImageUri = selectedImage;
                     userCoverPhoto.setImageURI(selectedImage);
+                    cropeImage();
                 }
 
                 break;
@@ -65,10 +67,41 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
                     Uri selectedImage = data.getData();
                     uploadImageUri = selectedImage;
                     userCoverPhoto.setImageURI(selectedImage);
+                    cropeImage();
+                }
+                break;
+            case PIC_CROP:
+                if (data != null) {
+                    // get the returned data
+                    Bundle extras = data.getExtras();
+                    // get the cropped bitmap
+                    Bitmap selectedBitmap = extras.getParcelable("data");
 
+                    userCoverPhoto.setImageBitmap(selectedBitmap);
                 }
                 break;
         }
+    }
+    final int PIC_CROP = 2;
+    private void cropeImage() {
+        //call the standard crop action intent (the user device may not support it)
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        //indicate image type and Uri
+        cropIntent.setDataAndType(uploadImageUri, "image/*");
+        //set crop properties
+        cropIntent.putExtra("crop", "true");
+        //indicate aspect of desired crop
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("scale", true);
+        cropIntent.putExtra("noFaceDetection", false);
+        //indicate output X and Y
+        cropIntent.putExtra("outputX", 256);
+        cropIntent.putExtra("outputY", 256);
+        //retrieve data on return
+        cropIntent.putExtra("return-data", true);
+        //start the activity - we handle returning in onActivityResult
+        startActivityForResult(cropIntent, PIC_CROP);
     }
 
     @Override
@@ -136,8 +169,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     @Override
     public void onUpdateFragment(Object object) {
         Toast.makeText(getActivity(), "Succesful create account", Toast.LENGTH_SHORT).show();
-        if(null!= uploadImageUri)
-        {
+        if (null != uploadImageUri) {
             String path = Helper.getRealPathFromURI(fragment.getActivity(), uploadImageUri);
 //            testIntent.putExtra("filePath",path);
 //

@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.R;
 import com.example.nikolas.messagernik.entity.Message;
+import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 
 import java.util.ArrayList;
 
@@ -56,6 +58,8 @@ public class MessageAdapter extends BaseAdapter {
         ((TextView)view.findViewById(R.id.message_item_text_view)).setText(messageArrayList.get(position).getMessage());
         ((TextView)view.findViewById(R.id.message_item_text_view_from)).setText(messageArrayList.get(position).getFromUser().getFirst_name());
         ((TextView)view.findViewById(R.id.message_item_text_view_to)).setText(messageArrayList.get(position).getToUser().getFirst_name());
+        ((ImageProgressViewScale)view.findViewById(R.id.message_item_imageview_avatart_from)).setImageUrl(messageArrayList.get(position).getFromUser().getPhotoAvatar());
+        ((ImageProgressViewScale)view.findViewById(R.id.message_item_imageview_avatart_to)).setImageUrl(messageArrayList.get(position).getToUser().getPhotoAvatar());
         return view;
     }
 }
