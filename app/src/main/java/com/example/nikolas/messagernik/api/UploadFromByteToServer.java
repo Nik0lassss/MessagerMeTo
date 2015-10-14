@@ -27,12 +27,13 @@ import java.io.IOException;
  */
 public class UploadFromByteToServer extends AsyncTask<Void, Integer, String> {
     private long totalSize = 0;
-    private String loginUser;
+    private String loginUser, filename;
     private ProgressBar progressBar;
-    private Bitmap bitmap;
+    private byte[] bytes;
 
-    public UploadFromByteToServer(Bitmap bitmap, String loginUser, ProgressBar prBar) {
-        this.bitmap = bitmap;
+    public UploadFromByteToServer(byte[] bytes, String filename, String loginUser, ProgressBar prBar) {
+        this.filename=filename;
+        this.bytes=bytes;
         this.progressBar = prBar;
         this.loginUser = loginUser;
     }
@@ -72,18 +73,12 @@ public class UploadFromByteToServer extends AsyncTask<Void, Integer, String> {
                             publishProgress((int) ((num / (float) totalSize) * 100));
                         }
                     });
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao);
-            byte[] bytes = bao.toByteArray();
-            String photoName = "TMP.jpg";
-            //File sourceFile = new File(filePath);
+            //ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+            //byte[] bytes = bao.toByteArray();
+            String photoName = filename;
             entity.addPart("file", new ByteArrayBody(bytes, photoName));
-            // Adding file data to http body
-            //entity.addPart("file", new FileBody(sourceFile));
-            // Extra parameters if you want to pass to server
-//            entity.addPart("website",
-//                    new StringBody("www.androidhive.info"));
-//            entity.addPart("email", new StringBody("abc@gmail.com"));
+
 
             totalSize = entity.getContentLength();
             httppost.setEntity(entity);

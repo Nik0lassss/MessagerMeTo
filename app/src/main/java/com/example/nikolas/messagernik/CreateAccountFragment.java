@@ -1,11 +1,11 @@
 package com.example.nikolas.messagernik;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +16,21 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.api.ServerApi;
-import com.example.nikolas.messagernik.api.UploadFileToServer;
-import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.response.ResponseObject;
+import com.example.nikolas.messagernik.helper.FileHelper;
 import com.example.nikolas.messagernik.helper.Helper;
-import com.example.nikolas.messagernik.receiver.Receiver;
+import com.example.nikolas.messagernik.helper.ImageHelper;
 import com.example.nikolas.messagernik.verification.Verificator;
 
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class CreateAccountFragment extends Fragment implements ServerApi.onUpdateFragmentListener {
@@ -39,6 +41,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     private Verificator verificator;
     private Fragment fragment;
     private ProgressBar prBar;
+    private byte[] uploadImageByteArray;
     private Uri uploadImageUri;
 
     public static CreateAccountFragment newInstance() {
@@ -60,7 +63,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
                     Uri selectedImage = data.getData();
                     uploadImageUri = selectedImage;
                     userCoverPhoto.setImageURI(selectedImage);
-                    cropeImage();
+                    openCropImage(uploadImageUri);
                 }
 
                 break;
@@ -69,45 +72,27 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
                     Uri selectedImage = data.getData();
                     uploadImageUri = selectedImage;
                     userCoverPhoto.setImageURI(selectedImage);
-                    cropeImage();
+                    openCropImage(uploadImageUri);
                 }
                 break;
-            case PIC_CROP:
+            case ImageHelper.PIC_CROP:
                 if (data != null) {
                     // get the returned data
-                    uploadImageUri = data.getData();
-
                     Bundle extras = data.getExtras();
                     // get the cropped bitmap
                     Bitmap selectedBitmap = extras.getParcelable("data");
-
+                    uploadImageByteArray = FileHelper.BitmapToByteArray(selectedBitmap);
                     userCoverPhoto.setImageBitmap(selectedBitmap);
 
                 }
                 break;
         }
     }
-    final int PIC_CROP = 2;
-    private void cropeImage() {
-        //call the standard crop action intent (the user device may not support it)
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        //indicate image type and Uri
-        cropIntent.setDataAndType(uploadImageUri, "image/*");
-        //set crop properties
-        cropIntent.putExtra("crop", "true");
-        //indicate aspect of desired crop
-        cropIntent.putExtra("aspectX", 1);
-        cropIntent.putExtra("aspectY", 1);
-        cropIntent.putExtra("scale", true);
-        cropIntent.putExtra("noFaceDetection", false);
-        //indicate output X and Y
-        cropIntent.putExtra("outputX", 256);
-        cropIntent.putExtra("outputY", 256);
-        //retrieve data on return
-        cropIntent.putExtra("return-data", true);
-        //start the activity - we handle returning in onActivityResult
-        startActivityForResult(cropIntent, PIC_CROP);
+
+    public void openCropImage(Uri cropImageUri) {
+        startActivityForResult(ImageHelper.initCropeImage(cropImageUri), ImageHelper.PIC_CROP);
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,9 +136,9 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
             verificator.setLogin(edtxtUserLogin.getText().toString());
             verificator.setPassword(edtxtUserPassword.getText().toString());
             verificator.setConfirmPassword(edtUserConfirmPassword.getText().toString());
-            if (verificator.equelsPassword())
+            if (verificator.validate())
                 ServerApi.createAccount(fragment, verificator.getFirstName(), verificator.getLastName(), verificator.getLogin(), verificator.getPassword());
-            // else  Toast.makeText(getContext(),"Password error",Toast.LENGTH_LONG).show();
+            else Toast.makeText(fragment.getActivity(), "Validate error", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -173,16 +158,27 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
 
     @Override
     public void onUpdateFragment(Object object) {
-        Toast.makeText(getActivity(), "Succesful create account", Toast.LENGTH_SHORT).show();
-        if (null != uploadImageUri) {
+        ResponseObject responseObject = null;
+        try {
+            responseObject = ResponseObject.fromJson(new JSONObject((String) object));
 
-            String path = Helper.getRealPathFromURI(fragment.getActivity(), uploadImageUri);
-            File uploadFile = new File(path);
-//            testIntent.putExtra("filePath",path);
-//
-//            testIntent.putExtra("isImage", true);
-//            startActivity(testIntent);
-            new UploadFileToServer(path, verificator.getLogin(), prBar).execute();
+            switch (responseObject.getCode()) {
+                case 0:
+                    Toast.makeText(getActivity(), "Succesful create account", Toast.LENGTH_SHORT).show();
+                    if (null != uploadImageUri) {
+                        ServerApi.uploadFileToServer(uploadImageByteArray, FileHelper.UriToFile(uploadImageUri).getName().toString(), verificator.getLogin(), prBar);
+                    }
+                    break;
+                case 1:
+                    Toast.makeText(getActivity(), "Errore server", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
     }

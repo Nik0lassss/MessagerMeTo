@@ -13,6 +13,7 @@ import com.example.nikolas.messagernik.ProfileFragment;
 import com.example.nikolas.messagernik.R;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.helper.FileHelper;
 
 public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, MainPageFragment.OnMainPageFragmentInteractionListener,ProfileFragment.OnProfileFragmentInteractionListener{
 
@@ -21,6 +22,7 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FileHelper.initFileHelper(this);
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance("", "")).commit();
         }

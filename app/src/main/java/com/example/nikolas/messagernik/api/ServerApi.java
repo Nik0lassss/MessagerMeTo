@@ -2,11 +2,19 @@ package com.example.nikolas.messagernik.api;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
+import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.receiver.Receiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -26,21 +34,46 @@ public class ServerApi {
     private static Response.Listener response = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
-            //onUpdateAccountFragmentListenerInterface.onGetResponseFromServerCreateAccount(1);
             onUpdateFragmentListenerInterface.onUpdateFragment(response);
-            //Toast.makeText(getContext(),"Succesful create account",Toast.LENGTH_LONG).show();
         }
     };
 
     private static Response.ErrorListener erroreResponse = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
-            //Toast.makeText(getContext(),"Errore create account",Toast.LENGTH_LONG).show();
         }
     };
 
-    public static int createUserAccount(String firstName, String lastName, String password, String login) {
-        return 0;
+    private static Response.Listener loginListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            String response = (String) object;
+            try {
+                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
+                if (responseObject.getCode() != 0) {
+                } else {
+                    JSONObject jsonObject = (JSONObject) responseObject.getResponseObject();
+                    User user = User.fromJson((JSONObject) jsonObject);
+                    onUpdateFragmentListenerInterface.onUpdateFragment(user);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    public static void getAllUsers(Fragment listenerFragment) {
+        onUpdateFragmentListenerInterface = (onUpdateFragmentListener) listenerFragment;
+        receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);
+    }
+
+
+    public static void uploadFileToServer(String path, String login, ProgressBar prBar) {
+        new UploadFileToServer(path, login, prBar).execute();
+    }
+
+    public static void uploadFileToServer(byte[] bytes, String filename, String login, ProgressBar prBar) {
+        new UploadFromByteToServer(bytes, filename, login, prBar).execute();
     }
 
     public static int loginUser(Fragment listenerFragment, String login, String password) {
@@ -48,7 +81,7 @@ public class ServerApi {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("login", login);
         values.put("password", password);
-        receiver.sendPostRequest(values, Config.LOGIN_URL, response, erroreResponse);
+        receiver.sendPostRequest(values, Config.LOGIN_URL, loginListener, erroreResponse);
         return 0;
     }
 
@@ -59,7 +92,7 @@ public class ServerApi {
 
     public static int getRecieveMessage(Fragment listenerFragment, Integer id) {
         onUpdateFragmentListenerInterface = (onUpdateFragmentListener) listenerFragment;
-        receiver.sendGetRequest(Config.GET_RECIEVED_MESSAGE+id,response,erroreResponse);
+        receiver.sendGetRequest(Config.GET_RECIEVED_MESSAGE + id, response, erroreResponse);
         return 0;
     }
 
@@ -76,14 +109,4 @@ public class ServerApi {
         return 0;
     }
 
-    public static int createAccount(Fragment listenerFragment, String firstName, String lastName, String login, String password, String imageProfileName) {
-        onUpdateFragmentListenerInterface = (onUpdateFragmentListener) listenerFragment;
-        HashMap<String, String> values = new HashMap<String, String>();
-        values.put("firstName", firstName);
-        values.put("lastName", lastName);
-        values.put("login", login);
-        values.put("password", password);
-        receiver.sendPutRequest(values, Config.CREATE_ACCOUNT, response, erroreResponse);
-        return 0;
-    }
 }

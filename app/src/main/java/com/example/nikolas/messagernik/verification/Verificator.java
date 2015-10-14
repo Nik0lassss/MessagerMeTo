@@ -60,6 +60,18 @@ public class Verificator {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+    public boolean validate()
+    {
+        if(equelsPassword())
+        {
+            if(!password.equals("") || !confirmPassword.equals("") || !login.equals("") || !firstName.equals("") || !lastName.equals(""))
+            {
+                return true;
+            }
+            else return false;
+        }
+        return false;
+    }
     public boolean equelsPassword()
     {
         if (password.equals(confirmPassword)) return true;

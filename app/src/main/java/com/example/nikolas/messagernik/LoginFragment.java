@@ -213,19 +213,21 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
 
     @Override
     public void onUpdateFragment(Object object) {
-        String response = (String) object;
-        try {
-            ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
-            if (responseObject.getCode() != 0) {
-                Toast.makeText(getActivity(),"Incorrect login or password",Toast.LENGTH_LONG).show();
-            } else {
-                JSONObject jsonObject = (JSONObject) responseObject.getResponseObject();
-                onResponseGet(User.fromJson((JSONObject) jsonObject));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        String response = (String) object;
+//        try {
+//            ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
+//            if (responseObject.getCode() != 0) {
+//                Toast.makeText(getActivity(),"Incorrect login or password",Toast.LENGTH_LONG).show();
+//            } else {
+//                JSONObject jsonObject = (JSONObject) responseObject.getResponseObject();
+//                onResponseGet(User.fromJson((JSONObject) jsonObject));
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        onResponseGet((User) object);
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
