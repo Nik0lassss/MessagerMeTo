@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,14 @@ import android.widget.Toast;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.helper.FileHelper;
-import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.ImageHelper;
 import com.example.nikolas.messagernik.verification.Verificator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
-
-public class CreateAccountFragment extends Fragment implements ServerApi.onUpdateFragmentListener {
+public class CreateAccount extends Fragment implements ServerApi.onUpdateListener {
 
     private ImageView userCoverPhoto;
     private EditText edtxtFirstName, edtxtLastName, edtxtUserLogin, edtxtUserPassword, edtUserConfirmPassword;
@@ -44,13 +36,13 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
     private byte[] uploadImageByteArray;
     private Uri uploadImageUri;
 
-    public static CreateAccountFragment newInstance() {
-        CreateAccountFragment fragment = new CreateAccountFragment();
+    public static CreateAccount newInstance() {
+        CreateAccount fragment = new CreateAccount();
 
         return fragment;
     }
 
-    public CreateAccountFragment() {
+    public CreateAccount() {
 
     }
 
@@ -157,7 +149,7 @@ public class CreateAccountFragment extends Fragment implements ServerApi.onUpdat
 
 
     @Override
-    public void onUpdateFragment(Object object) {
+    public void onUpdate(Object object) {
         ResponseObject responseObject = null;
         try {
             responseObject = ResponseObject.fromJson(new JSONObject((String) object));

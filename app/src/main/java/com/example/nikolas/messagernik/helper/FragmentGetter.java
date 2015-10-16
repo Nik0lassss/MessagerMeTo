@@ -3,8 +3,7 @@ package com.example.nikolas.messagernik.helper;
 
 import android.app.Fragment;
 
-import com.example.nikolas.messagernik.MainPageFragment;
-import com.example.nikolas.messagernik.MessageFragment;
+import com.example.nikolas.messagernik.Message;
 
 /**
  * Created by User on 12.10.2015.
@@ -14,7 +13,7 @@ public class FragmentGetter {
         switch(position)
         {
             case 0:
-                return  MessageFragment.newInstance();
+                return  Message.newInstance();
             default:
                 return null;
         }

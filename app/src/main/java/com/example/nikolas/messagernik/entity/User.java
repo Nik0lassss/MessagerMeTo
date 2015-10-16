@@ -15,12 +15,10 @@ import java.util.ArrayList;
 public class User implements Parcelable {
 
 
-
     private Integer id;
     private String user_login;
     private String first_name;
     private String last_name;
-
 
 
     public User(Integer id, String first_name, String last_name, SecurityUser securityUser, String photoAvatar) {
@@ -33,10 +31,8 @@ public class User implements Parcelable {
     private String photoAvatar;
 
 
-
     public User() {
     }
-
 
 
     protected User(Parcel in) {
@@ -58,7 +54,7 @@ public class User implements Parcelable {
         }
     };
 
-    public User(Integer id, String user_login, String first_name, String last_name,  String photoAvatar) {
+    public User(Integer id, String user_login, String first_name, String last_name, String photoAvatar) {
         this.id = id;
         this.user_login = user_login;
         this.first_name = first_name;
@@ -95,28 +91,41 @@ public class User implements Parcelable {
         this.photoAvatar = photoAvatar;
     }
 
-    public static User fromJson(final JSONObject object)
-    {
-      final   Integer id =object.optInt("user_id", 0);
-      final   String firstName = object.optString("first_name", "");
-      final   String lastName = object.optString("last_name","");
-        final   String photoAvatar = object.optString("photo_avatar","");
-       final String user_login = object.optString("user_login","");
-        return  new User(id,user_login,firstName,lastName,photoAvatar);
+    public static User fromJson(final JSONObject object) {
+        final Integer id = object.optInt("user_id", 0);
+        final String firstName = object.optString("first_name", "");
+        final String lastName = object.optString("last_name", "");
+        final String photoAvatar = object.optString("photo_avatar", "");
+        final String user_login = object.optString("user_login", "");
+        return new User(id, user_login, firstName, lastName, photoAvatar);
     }
 
-    public static ArrayList<User> fromJson(final JSONArray arrayObject)
-    {
-    final ArrayList<User> userArrayList = new ArrayList<User>();
-        for (int i=0;i<arrayObject.length();i++)
-        {
+    public static User fromJsonWithToken(final JSONObject object) {
+        JSONObject userJson=null;
+        try {
+             userJson = object.getJSONObject("user");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final Integer id = userJson.optInt("user_id", 0);
+        final String firstName = userJson.optString("first_name", "");
+        final String lastName = userJson.optString("last_name", "");
+        final String photoAvatar = userJson.optString("photo_avatar", "");
+        final String user_login = userJson.optString("user_login", "");
+        return new User(id, user_login, firstName, lastName, photoAvatar);
+    }
+
+    public static ArrayList<User> fromJson(final JSONArray arrayObject) {
+        final ArrayList<User> userArrayList = new ArrayList<User>();
+        for (int i = 0; i < arrayObject.length(); i++) {
             try {
                 final User user = fromJson(arrayObject.getJSONObject(i));
-                if(null != user) userArrayList.add(user);
+                if (null != user) userArrayList.add(user);
             } catch (JSONException e) {
             }
         }
-        return  userArrayList;
+        return userArrayList;
     }
 
 

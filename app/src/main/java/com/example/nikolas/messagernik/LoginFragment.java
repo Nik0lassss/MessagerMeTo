@@ -1,48 +1,26 @@
 package com.example.nikolas.messagernik;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.api.UploadFileToServer;
-import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.User;
-import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.helper.Helper;
-import com.example.nikolas.messagernik.receiver.Receiver;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
+import com.example.nikolas.messagernik.interfaces.UpdateLoginFragmentInterface;
+import com.example.nikolas.messagernik.listeners.LoginFragmentListener;
 
 
+public class LoginFragment extends android.app.Fragment implements UpdateLoginFragmentInterface.onUpdateLoginFragmentListener{
 
-public class LoginFragment extends android.app.Fragment implements ServerApi.onUpdateFragmentListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    //private Receiver receiver;
     private OnFragmentInteractionListener mListener;
     private Uri imageUri;
     private EditText editTextLogin, editTextPassword;
@@ -51,25 +29,19 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
     private ProgressBar prBar;
     private android.app.Fragment fragment;
 
-    public static LoginFragment newInstance(String param1, String param2) {
+    public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     public LoginFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
         //receiver = new Receiver(getActivity(), response, errorListener);
         fragment = this;
@@ -84,7 +56,6 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
                     Uri selectedImage = data.getData();
                     imageUri = selectedImage;
                     imageBanner.setImageURI(selectedImage);
-                    //userCoverPhoto.setImageURI(selectedImage);
                 }
 
                 break;
@@ -93,8 +64,6 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
                     Uri selectedImage = data.getData();
                     imageUri = selectedImage;
                     imageBanner.setImageURI(selectedImage);
-                    //userCoverPhoto.setImageURI(selectedImage);
-
                 }
                 break;
         }
@@ -119,40 +88,12 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
         return rootView;
     }
 
-//    Response.Listener response = new Response.Listener<String>() {
-//        @Override
-//        public void onResponse(String response) {
-//            try {
-//                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
-//                JSONArray jsonArray = (JSONArray) responseObject.getResponseObject();
-//                onResponseGet(User.fromJson((JSONObject) jsonArray.get(0)));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//
-//    };
-//
-//    Response.ErrorListener errorListener = new Response.ErrorListener() {
-//        @Override
-//        public void onErrorResponse(VolleyError error) {
-//
-//        }
-//    };
-
 
 
     View.OnClickListener btnTestLisntenr = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            Intent testIntent = new Intent(fragment.getActivity(), UploadActivity.class);
             String path = Helper.getRealPathFromURI(fragment.getActivity(), imageUri);
-//            testIntent.putExtra("filePath",path);
-//
-//            testIntent.putExtra("isImage", true);
-//            startActivity(testIntent);
-
             new UploadFileToServer(path, editTextLogin.getText().toString(),prBar).execute();
         }
     };
@@ -164,15 +105,7 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
             startActivityForResult(pickPhoto, 1);
         }
     };
-//    View.OnClickListener btnSendOnClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            HashMap<String, String> values = new HashMap<String, String>();
-//            values.put("login", editTextLogin.getText().toString());
-//            values.put("password", editTextPassword.getText().toString());
-//            receiver.sendPostRequest(values, Config.LOGIN_URL);
-//        }
-//    };
+
     View.OnClickListener btnSendOnClickListenerTest = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -182,11 +115,11 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
     View.OnClickListener btnCreateAccountListenenr = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            getFragmentManager().beginTransaction().replace(R.id.containerMain, CreateAccountFragment.newInstance()).addToBackStack(this.getClass().getName()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.containerMain, CreateAccount.newInstance()).addToBackStack(this.getClass().getName()).commit();
         }
     };
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onResponseGet(User user) {
         if (mListener != null) {
 
@@ -212,7 +145,13 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
     }
 
     @Override
-    public void onUpdateFragment(Object object) {
+    public void onUpdate(User user) {
+        onResponseGet(user);
+    }
+
+    @Override
+    public void onUpdate(Object object) {
+        String className = object.getClass().getName();
 //        String response = (String) object;
 //        try {
 //            ResponseObject responseObject = ResponseObject.fromJson(new JSONObject(response));
@@ -225,20 +164,18 @@ public class LoginFragment extends android.app.Fragment implements ServerApi.onU
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        onResponseGet((User) object);
+     if(className.equals(User.class.getName())) {
+         onResponseGet((User) object);
+         return;
+     }
+      if(className.equals(User.class.getName()))
+      {
+
+      }
+
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
 
         public void onFragmentInteraction(User user);
