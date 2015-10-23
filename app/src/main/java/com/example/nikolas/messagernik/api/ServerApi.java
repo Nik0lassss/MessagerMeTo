@@ -8,16 +8,20 @@ import android.widget.ProgressBar;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
+import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.response.ResponseList;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.interfaces.UpdateLoginFragmentInterface;
 import com.example.nikolas.messagernik.listeners.LoginFragmentListener;
 import com.example.nikolas.messagernik.receiver.Receiver;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -30,6 +34,7 @@ public class ServerApi {
 
     private static onUpdateListener onUpdateListenerInterface;
     private static UpdateLoginFragmentInterface.onUpdateLoginFragmentListener onUpdateLoginFragmenyListenerInterface;
+
     public static void setUpReciever(Context context) {
         receiver = new Receiver(context);
     }
@@ -65,6 +70,38 @@ public class ServerApi {
 //            }
 //        }
 //    };
+
+    private static Response.Listener getConversationListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            ResponseList responseObject = null;
+             ArrayList<Message> messageArrayList;
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                 responseObject = ResponseList.fromJson(jsonObject);
+                messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
+                //onUpdateListenerInterface.onUpdate(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+    private static Response.Listener getUserListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            Boolean isValid = false;
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                ResponseObject responseObject = ResponseObject.fromJson(jsonObject);
+                User user = User.fromJson((JSONObject) responseObject.getResponseObject());
+                onUpdateListenerInterface.onUpdate(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
     private static Response.Listener validateSecretTockenListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
@@ -79,6 +116,19 @@ public class ServerApi {
 
         }
     };
+
+    public static void getUser(Activity listenerFragment, String tocken) {
+        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("secretTocken", tocken);
+        receiver.sendPostRequest(values, Config.USER_GET_URL, getUserListener, erroreResponse);
+    }
+    public static void getConversation(Fragment listenerFragment, Integer userId) {
+        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("userId", userId.toString());
+        receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
+    }
 
     public static void getAllUsers(Fragment listenerFragment) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;

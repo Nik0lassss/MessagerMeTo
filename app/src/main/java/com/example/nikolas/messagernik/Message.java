@@ -60,7 +60,8 @@ public class Message extends Fragment implements ServerApi.onUpdateListener {
         }
         messageArrayList=new ArrayList<>();
         messageAdapter = new MessageAdapter(getActivity(),messageArrayList);
-        ServerApi.getRecieveMessage(fragment, user.getId());
+        //ServerApi.getRecieveMessage(fragment, user.getId());
+        ServerApi.getConversation(fragment,user.getId());
     }
 
     @Override

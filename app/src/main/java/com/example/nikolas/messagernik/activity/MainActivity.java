@@ -30,7 +30,8 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
         }
         if (SecretTocken.isCorrectToken())
             ServerApi.validateSecretTocken(this, SecretTocken.getSecretTockenString());
-        else getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
+        else
+            getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
 
     }
 
@@ -44,14 +45,16 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
     @Override
     public void onUpdate(Object object) {
 
-        if(object.getClass().getName().equals(Boolean.class.getName()))
+        if (object.getClass().getName().equals(Boolean.class.getName())) {
+            boolean isValid = (boolean) object;
+            if (isValid) {
+                ServerApi.getUser(this, SecretTocken.getSecretTockenString());
+            } else
+                getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
+        }
+        if(object.getClass().getName().equals(User.class.getName()))
         {
-            boolean isValid=(boolean) object;
-           if(isValid)
-           {
-
-           }
-            else getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User)object)).commit();
         }
     }
 }
