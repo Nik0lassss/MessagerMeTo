@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Message extends Fragment implements ServerApi.onUpdateListener {
@@ -58,10 +59,10 @@ public class Message extends Fragment implements ServerApi.onUpdateListener {
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER_KEY);
         }
-        messageArrayList=new ArrayList<>();
-        messageAdapter = new MessageAdapter(getActivity(),messageArrayList);
+        messageArrayList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(getActivity(), messageArrayList);
         //ServerApi.getRecieveMessage(fragment, user.getId());
-        ServerApi.getConversation(fragment,user.getId());
+        ServerApi.getConversation(fragment, user.getId());
     }
 
     @Override
@@ -75,16 +76,23 @@ public class Message extends Fragment implements ServerApi.onUpdateListener {
 
     @Override
     public void onUpdate(Object object) {
-        String response = (String) object;
-        ResponseList responseObject = null;
         try {
-            responseObject = ResponseList.fromJson(new JSONObject(response));
-            messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
+            messageArrayList = (ArrayList<com.example.nikolas.messagernik.entity.Message>) object;
             messageAdapter.updateMessageArrayList(messageArrayList);
             messageAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+//        String response = (String) object;
+//        ResponseList responseObject = null;
+//        try {
+//            responseObject = ResponseList.fromJson(new JSONObject(response));
+//            messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
+//            messageAdapter.updateMessageArrayList(messageArrayList);
+//            messageAdapter.notifyDataSetChanged();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

@@ -80,7 +80,7 @@ public class ServerApi {
                 JSONObject jsonObject = new JSONObject((String) object);
                  responseObject = ResponseList.fromJson(jsonObject);
                 messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
-                //onUpdateListenerInterface.onUpdate(user);
+                onUpdateListenerInterface.onUpdate(messageArrayList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

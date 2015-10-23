@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.nikolas.messagernik.Message">
 
-    <ExpandableListView
+    <ListView
         android:id="@+id/fragment_message_expandable_contacnt_list_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ExpandableListView>
+        android:layout_height="wrap_content"></ListView>
 
     <ListView
         android:id="@+id/fragment_message_listview"
