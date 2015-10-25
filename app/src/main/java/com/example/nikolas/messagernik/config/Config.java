@@ -9,6 +9,7 @@ public class Config {
     public static final String GET_CONVERSATION_URL="rest/conversation/";
     public static final String LOGIN_URL=SERVER_URL+GET_USER_URL+"login";
     public static final String USER_GET_URL=SERVER_URL+GET_USER_URL+"get";
+    public static final String USER_GET_NEW_MESSAGE=SERVER_URL+GET_USER_URL+"message/getNew";
     public static final String CONVERSATION_GET_URL=SERVER_URL+GET_CONVERSATION_URL+"get";
     public static final String IMAGE_PATH="rest/image/";
     public static final String GET_IMAGE_URL=SERVER_URL+IMAGE_PATH;

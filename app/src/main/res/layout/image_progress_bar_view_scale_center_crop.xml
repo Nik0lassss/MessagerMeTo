@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
     <ProgressBar
         android:id="@+id/image_progress_bar_view_pr_bar"
-        android:layout_width="wrap_content"
+        android:layout_width="200px"
         android:layout_height="wrap_content"
         style="?android:attr/progressBarStyleHorizontal"
         />
     <com.example.nikolas.messagernik.entity.system.ImageView
         android:id="@+id/image_progress_bar_view_image_view_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="200px"
+        android:layout_height="200px" />
 </LinearLayout>

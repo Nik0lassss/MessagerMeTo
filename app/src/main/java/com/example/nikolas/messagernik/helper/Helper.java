@@ -9,6 +9,7 @@ import android.provider.MediaStore;
  * Created by User on 08.10.2015.
  */
 public class Helper {
+    private static Context context;
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
@@ -24,4 +25,16 @@ public class Helper {
         }
 
     };
+    public static void initHelper(Context context)
+    {
+     Helper.context=context;
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void setContext(Context context) {
+        Helper.context = context;
+    }
 }

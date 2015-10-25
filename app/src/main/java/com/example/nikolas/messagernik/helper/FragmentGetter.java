@@ -3,7 +3,7 @@ package com.example.nikolas.messagernik.helper;
 
 import android.app.Fragment;
 
-import com.example.nikolas.messagernik.Message;
+import com.example.nikolas.messagernik.ConversationFragment;
 
 /**
  * Created by User on 12.10.2015.
@@ -13,7 +13,7 @@ public class FragmentGetter {
         switch(position)
         {
             case 0:
-                return  Message.newInstance();
+                return  ConversationFragment.newInstance();
             default:
                 return null;
         }

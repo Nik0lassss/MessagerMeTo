@@ -12,6 +12,7 @@ import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.helper.FileHelper;
+import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.SharedPreferencesHelper;
 
 public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, ServerApi.onUpdateListener {
@@ -25,6 +26,7 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
         SharedPreferencesHelper.initSharedPreferencesHelper(this);
         ServerApi.setUpReciever(getApplicationContext());
         SecretTocken.initialSecretTocken();
+        Helper.initHelper(this);
         if (null == savedInstanceState) {
 
         }

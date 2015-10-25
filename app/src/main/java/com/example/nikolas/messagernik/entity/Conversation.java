@@ -7,43 +7,56 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by User on 12.10.2015.
  */
-public class Message implements Parcelable {
+public class Conversation implements Parcelable {
     private Integer id;
     private User fromUser;
     private User toUser;
     private String message;
+    private Timestamp time;
 
-    public Message(Integer id, User fromUser, User toUser, String message) {
+    public Conversation(Integer id, User fromUser, User toUser, String message) {
         this.id = id;
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.message = message;
     }
 
-    protected Message(Parcel in) {
+    protected Conversation(Parcel in) {
+
         fromUser = in.readParcelable(User.class.getClassLoader());
         toUser = in.readParcelable(User.class.getClassLoader());
         message = in.readString();
+        time =Timestamp.valueOf(in.readString());
     }
 
-    public static final Creator<Message> CREATOR = new Creator<Message>() {
+    public static final Creator<Conversation> CREATOR = new Creator<Conversation>() {
         @Override
-        public Message createFromParcel(Parcel in) {
-            return new Message(in);
+        public Conversation createFromParcel(Parcel in) {
+            return new Conversation(in);
         }
 
         @Override
-        public Message[] newArray(int size) {
-            return new Message[size];
+        public Conversation[] newArray(int size) {
+            return new Conversation[size];
         }
     };
 
-    public Message() {
+    public Conversation() {
+    }
+
+    public Conversation(Integer id, User fromUser, User toUser, String message, Timestamp time) {
+        this.id = id;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.message = message;
+        this.time = time;
     }
 
 
@@ -86,36 +99,53 @@ public class Message implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeParcelable(fromUser, flags);
         dest.writeParcelable(toUser, flags);
         dest.writeString(message);
+        dest.writeString(time.toString());
     }
 
-    public static Message fromJson(final JSONObject jsonObject) {
+    public static Conversation fromJson(final JSONObject jsonObject) {
         final Integer userId = jsonObject.optInt("id", 0);
         String message = jsonObject.optString("message", "");
         User userFrom = null;
         User userTo = null;
+        Timestamp timestamp=null;
+        Date dateObj;
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         try {
             userFrom = (User) User.fromJson(jsonObject.getJSONObject("user_from"));
             userTo = (User) User.fromJson(jsonObject.getJSONObject("user_to"));
+            String time= jsonObject.optString("time","");
+            long timeLong = Long.parseLong(time);
+            dateObj = new Date(timeLong);
+            timestamp= new Timestamp(dateObj.getTime());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return new Message(userId, userFrom, userTo, message);
+        return new Conversation(userId, userFrom, userTo, message,timestamp);
     }
 
-    public static ArrayList<Message> fromJson(final JSONArray jsonArray) {
-        ArrayList<Message> messageArrayList = new ArrayList<>();
+    public static ArrayList<Conversation> fromJson(final JSONArray jsonArray) {
+        ArrayList<Conversation> conversationArrayList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                final Message message = fromJson(jsonArray.getJSONObject(i));
-                if (null != message) messageArrayList.add(message);
+                final Conversation conversation = fromJson(jsonArray.getJSONObject(i));
+                if (null != conversation) conversationArrayList.add(conversation);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return messageArrayList;
+        return conversationArrayList;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
     ;

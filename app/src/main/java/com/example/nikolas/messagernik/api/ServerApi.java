@@ -8,8 +8,7 @@ import android.widget.ProgressBar;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
-import com.example.nikolas.messagernik.entity.Message;
-import com.example.nikolas.messagernik.entity.SecretTocken;
+import com.example.nikolas.messagernik.entity.Conversation;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseList;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Created by User on 23.09.2015.
@@ -70,17 +68,32 @@ public class ServerApi {
 //            }
 //        }
 //    };
+private static Response.Listener getMessagesListener = new Response.Listener() {
+    @Override
+    public void onResponse(Object object) {
+        ResponseList responseObject = null;
+        ArrayList<Conversation> conversationArrayList;
+        try {
+            JSONObject jsonObject = new JSONObject((String) object);
+            responseObject = ResponseList.fromJson(jsonObject);
+            conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
+            onUpdateListenerInterface.onUpdate(conversationArrayList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+    }
+};
     private static Response.Listener getConversationListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
             ResponseList responseObject = null;
-             ArrayList<Message> messageArrayList;
+             ArrayList<Conversation> conversationArrayList;
             try {
                 JSONObject jsonObject = new JSONObject((String) object);
                  responseObject = ResponseList.fromJson(jsonObject);
-                messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
-                onUpdateListenerInterface.onUpdate(messageArrayList);
+                conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
+                onUpdateListenerInterface.onUpdate(conversationArrayList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -129,7 +142,13 @@ public class ServerApi {
         values.put("userId", userId.toString());
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
-
+    public static void getConversationMessages(Fragment listenerFragment, Integer userId) {
+        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("userId", userId.toString());
+        values.put("conversation_id", "3");
+        receiver.sendPostRequest(values, Config.USER_GET_NEW_MESSAGE, getMessagesListener, erroreResponse);
+    }
     public static void getAllUsers(Fragment listenerFragment) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);

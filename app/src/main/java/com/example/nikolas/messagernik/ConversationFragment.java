@@ -7,47 +7,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.nikolas.messagernik.adapter.MessageAdapter;
+import com.example.nikolas.messagernik.adapter.ConversationAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
+import com.example.nikolas.messagernik.entity.Conversation;
 import com.example.nikolas.messagernik.entity.User;
-import com.example.nikolas.messagernik.entity.response.ResponseList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.nikolas.messagernik.listeners.ConversationItemClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class Message extends Fragment implements ServerApi.onUpdateListener {
+public class ConversationFragment extends Fragment implements ServerApi.onUpdateListener {
 
     public static final String ARG_USER_KEY = "message_fragment_arg_user_key";
 
     private User user;
     private Fragment fragment;
-    private MessageAdapter messageAdapter;
+    private ConversationAdapter conversationAdapter;
     private ListView listView;
-    private ArrayList<com.example.nikolas.messagernik.entity.Message> messageArrayList;
+    private ArrayList<Conversation> conversationArrayList;
 
     private LoginFragment.OnFragmentInteractionListener mListener;
 
 
-    public static Message newInstance(User user) {
-        Message fragment = new Message();
+    public static ConversationFragment newInstance(User user) {
+        ConversationFragment fragment = new ConversationFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER_KEY, user);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static Message newInstance() {
-        return new Message();
+    public static ConversationFragment newInstance() {
+        return new ConversationFragment();
     }
 
     ;
 
-    public Message() {
+    public ConversationFragment() {
         // Required empty public constructor
         fragment = this;
     }
@@ -59,8 +55,9 @@ public class Message extends Fragment implements ServerApi.onUpdateListener {
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER_KEY);
         }
-        messageArrayList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(getActivity(), messageArrayList);
+        conversationArrayList = new ArrayList<>();
+        conversationAdapter = new ConversationAdapter(getActivity(), conversationArrayList);
+
         //ServerApi.getRecieveMessage(fragment, user.getId());
         ServerApi.getConversation(fragment, user.getId());
     }
@@ -70,16 +67,17 @@ public class Message extends Fragment implements ServerApi.onUpdateListener {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_message, container, false);
         listView = (ListView) rootView.findViewById(R.id.fragment_message_listview);
-        listView.setAdapter(messageAdapter);
+        listView.setAdapter(conversationAdapter);
+        listView.setOnItemClickListener(new ConversationItemClickListener());
         return rootView;
     }
 
     @Override
     public void onUpdate(Object object) {
         try {
-            messageArrayList = (ArrayList<com.example.nikolas.messagernik.entity.Message>) object;
-            messageAdapter.updateMessageArrayList(messageArrayList);
-            messageAdapter.notifyDataSetChanged();
+            conversationArrayList = (ArrayList<Conversation>) object;
+            conversationAdapter.updateMessageArrayList(conversationArrayList);
+            conversationAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,9 +85,9 @@ public class Message extends Fragment implements ServerApi.onUpdateListener {
 //        ResponseList responseObject = null;
 //        try {
 //            responseObject = ResponseList.fromJson(new JSONObject(response));
-//            messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
-//            messageAdapter.updateMessageArrayList(messageArrayList);
-//            messageAdapter.notifyDataSetChanged();
+//            conversationArrayList = com.example.nikolas.messagernik.entity.Conversation.fromJson((JSONArray) responseObject.getResponseList());
+//            conversationAdapter.updateMessageArrayList(conversationArrayList);
+//            conversationAdapter.notifyDataSetChanged();
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }

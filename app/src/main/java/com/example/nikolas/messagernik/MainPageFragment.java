@@ -1,8 +1,6 @@
 package com.example.nikolas.messagernik;
 
-import android.app.Activity;
 import android.app.FragmentManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -80,11 +78,12 @@ public class MainPageFragment extends Fragment {
             selectItem(position);
         }
 
+
         private void selectItem(int position) {
             Fragment fragment = FragmentGetter.getFragment(position);
             if (null != fragment) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(Message.ARG_USER_KEY, profileUser);
+                bundle.putParcelable(ConversationFragment.ARG_USER_KEY, profileUser);
                 fragment.setArguments(bundle);
             }
             FragmentManager fragmentManager = getFragmentManager();
