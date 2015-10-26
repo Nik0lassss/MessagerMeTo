@@ -12,6 +12,7 @@ public class Config {
     public static final String USER_GET_NEW_MESSAGE=SERVER_URL+GET_USER_URL+"message/getNew";
     public static final String CONVERSATION_GET_URL=SERVER_URL+GET_CONVERSATION_URL+"get";
     public static final String IMAGE_PATH="rest/image/";
+    public static final String PUT_MESSAGE_URL=SERVER_URL+GET_USER_URL+"message";
     public static final String GET_IMAGE_URL=SERVER_URL+IMAGE_PATH;
     public static final String CREATE_ACCOUNT =SERVER_URL+"rest/account/create";
     public static final String GET_ALL_USERS=SERVER_URL+GET_USER_URL+"all";

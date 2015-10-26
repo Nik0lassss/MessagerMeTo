@@ -50,7 +50,7 @@ public class ServerApi {
         }
     };
 
-//    private static Response.Listener loginListener = new Response.Listener() {
+    //    private static Response.Listener loginListener = new Response.Listener() {
 //        @Override
 //        public void onResponse(Object object) {
 //            String response = (String) object;
@@ -68,30 +68,30 @@ public class ServerApi {
 //            }
 //        }
 //    };
-private static Response.Listener getMessagesListener = new Response.Listener() {
-    @Override
-    public void onResponse(Object object) {
-        ResponseList responseObject = null;
-        ArrayList<Conversation> conversationArrayList;
-        try {
-            JSONObject jsonObject = new JSONObject((String) object);
-            responseObject = ResponseList.fromJson(jsonObject);
-            conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
-            onUpdateListenerInterface.onUpdate(conversationArrayList);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private static Response.Listener getMessagesListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            ResponseList responseObject = null;
+            ArrayList<Conversation> conversationArrayList;
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                responseObject = ResponseList.fromJson(jsonObject);
+                conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
+                onUpdateListenerInterface.onUpdate(conversationArrayList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-    }
-};
+        }
+    };
     private static Response.Listener getConversationListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
             ResponseList responseObject = null;
-             ArrayList<Conversation> conversationArrayList;
+            ArrayList<Conversation> conversationArrayList;
             try {
                 JSONObject jsonObject = new JSONObject((String) object);
-                 responseObject = ResponseList.fromJson(jsonObject);
+                responseObject = ResponseList.fromJson(jsonObject);
                 conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
                 onUpdateListenerInterface.onUpdate(conversationArrayList);
             } catch (JSONException e) {
@@ -130,25 +130,38 @@ private static Response.Listener getMessagesListener = new Response.Listener() {
         }
     };
 
+    public static void putMessage(Fragment listenerFragment,Integer from_id, Integer to_id, Integer conversation_id, String message) {
+        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("from_id", from_id.toString());
+        values.put("to_id", to_id.toString());
+        values.put("conversation_id", conversation_id.toString());
+        values.put("message_text", message);
+        receiver.sendPutRequest(values, Config.PUT_MESSAGE_URL, response, erroreResponse);
+    }
+
     public static void getUser(Activity listenerFragment, String tocken) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("secretTocken", tocken);
         receiver.sendPostRequest(values, Config.USER_GET_URL, getUserListener, erroreResponse);
     }
+
     public static void getConversation(Fragment listenerFragment, Integer userId) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("userId", userId.toString());
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
+
     public static void getConversationMessages(Fragment listenerFragment, Integer userId) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("userId", userId.toString());
-        values.put("conversation_id", "3");
+        values.put("conversation_id", userId.toString());
         receiver.sendPostRequest(values, Config.USER_GET_NEW_MESSAGE, getMessagesListener, erroreResponse);
     }
+
     public static void getAllUsers(Fragment listenerFragment) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);

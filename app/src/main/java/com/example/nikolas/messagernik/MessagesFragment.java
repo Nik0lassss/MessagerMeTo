@@ -8,6 +8,8 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.nikolas.messagernik.adapter.ConversationAdapter;
@@ -27,7 +29,10 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
     private static String KEY_USER = "KEY_USER";
     private static String KEY_CONVERSATION = "KEY_CONVERSATION";
     private User user;
+    private Button btnSendMessage;
+    private EditText edtMessage;
     private Conversation conversation;
+    private Fragment fragment;
 
     public static MessagesFragment newInstance(User user, Conversation conversation) {
         MessagesFragment fragment = new MessagesFragment();
@@ -39,7 +44,7 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
     }
 
     public MessagesFragment() {
-
+        fragment = this;
     }
 
     @Override
@@ -61,9 +66,20 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
         View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
         messagesListView = (ListView) rootView.findViewById(R.id.fragment_messages_list_view);
         messagesListView.setAdapter(conversationAdapter);
+        btnSendMessage = (Button) rootView.findViewById(R.id.fragment_message_lin_layout_button_send_message);
+        edtMessage = (EditText)rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
         return rootView;
     }
 
+    Button.OnClickListener onClickListenener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Integer toUserId;
+            if(!conversation.getToUser().getId().equals(user.getId())) toUserId=conversation.getToUser().getId();
+            else toUserId=user.getId();
+            ServerApi.putMessage(fragment, user.getId(),toUserId,conversation.getId(),edtMessage.getText().toString());
+        }
+    };
 
     @Override
     public void onUpdate(Object object) {
