@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
 
     @Override
     public void onFragmentInteraction(User meUser) {
+        Helper.setMeUser(meUser);
         getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance(meUser)).commit();
     }
 
@@ -56,6 +57,7 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
         }
         if(object.getClass().getName().equals(User.class.getName()))
         {
+            Helper.setMeUser((User)object);
             getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User)object)).commit();
         }
     }

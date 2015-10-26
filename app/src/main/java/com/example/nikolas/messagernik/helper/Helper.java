@@ -5,11 +5,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.example.nikolas.messagernik.entity.User;
+
 /**
  * Created by User on 08.10.2015.
  */
 public class Helper {
     private static Context context;
+    private static User meUser;
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
@@ -36,5 +39,14 @@ public class Helper {
 
     public static void setContext(Context context) {
         Helper.context = context;
+    }
+
+
+    public static User getMeUser() {
+        return meUser;
+    }
+
+    public static void setMeUser(User meUser) {
+        Helper.meUser = meUser;
     }
 }

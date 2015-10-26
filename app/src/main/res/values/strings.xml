@@ -23,4 +23,5 @@
     <string name="fragment_create_account_edt_confirm_password_string">Confirm Password</string>
     <string name="fragment_create_account_btn_create_account_string">Create Account</string>
     <string name="login_layout_btn_create_account_string">Create Account</string>
+    <string name="fragment_message_button_name">SEND</string>
 </resources>

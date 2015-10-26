@@ -16,6 +16,6 @@ import com.example.nikolas.messagernik.helper.Helper;
 public class ConversationItemClickListener implements AdapterView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ((Activity)Helper.getContext()).getFragmentManager().beginTransaction().add(R.id.additional_content_frame, MessagesFragment.newInstance()).commit();
+        ((Activity)Helper.getContext()).getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance()).addToBackStack("").commit();
     }
 }
