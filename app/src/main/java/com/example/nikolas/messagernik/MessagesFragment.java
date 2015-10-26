@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.example.nikolas.messagernik.adapter.ConversationAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Conversation;
+import com.example.nikolas.messagernik.entity.User;
 
 import java.util.ArrayList;
 
@@ -23,10 +24,17 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
     private ArrayList<Conversation> messageArrayList;
     private ListView messagesListView;
     private ConversationAdapter conversationAdapter;
+    private static String KEY_USER = "KEY_USER";
+    private static String KEY_CONVERSATION = "KEY_CONVERSATION";
+    private User user;
+    private Conversation conversation;
 
-    public static MessagesFragment newInstance() {
+    public static MessagesFragment newInstance(User user, Conversation conversation) {
         MessagesFragment fragment = new MessagesFragment();
-
+        Bundle args = new Bundle();
+        args.putParcelable(KEY_USER, user);
+        args.putParcelable(KEY_CONVERSATION, conversation);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -37,9 +45,13 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            user = getArguments().getParcelable(KEY_USER);
+            conversation = getArguments().getParcelable(KEY_CONVERSATION);
+        }
         messageArrayList = new ArrayList<Conversation>();
-        conversationAdapter = new ConversationAdapter(getActivity(),messageArrayList);
-        ServerApi.getConversationMessages(this, 3);
+        conversationAdapter = new ConversationAdapter(getActivity(), messageArrayList);
+        ServerApi.getConversationMessages(this, user.getId());
 
     }
 
