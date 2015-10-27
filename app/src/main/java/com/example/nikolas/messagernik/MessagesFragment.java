@@ -1,10 +1,7 @@
 package com.example.nikolas.messagernik;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,7 @@ import android.widget.ListView;
 
 import com.example.nikolas.messagernik.adapter.ConversationAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
-import com.example.nikolas.messagernik.entity.Conversation;
+import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.User;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
 public class MessagesFragment extends Fragment implements ServerApi.onUpdateListener {
 
 
-    private ArrayList<Conversation> messageArrayList;
+    private ArrayList<Message> messageArrayList;
     private ListView messagesListView;
     private ConversationAdapter conversationAdapter;
     private static String KEY_USER = "KEY_USER";
@@ -31,14 +28,14 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
     private User user;
     private Button btnSendMessage;
     private EditText edtMessage;
-    private Conversation conversation;
+    private Message message;
     private Fragment fragment;
 
-    public static MessagesFragment newInstance(User user, Conversation conversation) {
+    public static MessagesFragment newInstance(User user, Message message) {
         MessagesFragment fragment = new MessagesFragment();
         Bundle args = new Bundle();
         args.putParcelable(KEY_USER, user);
-        args.putParcelable(KEY_CONVERSATION, conversation);
+        args.putParcelable(KEY_CONVERSATION, message);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,11 +49,11 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(KEY_USER);
-            conversation = getArguments().getParcelable(KEY_CONVERSATION);
+            message = getArguments().getParcelable(KEY_CONVERSATION);
         }
-        messageArrayList = new ArrayList<Conversation>();
+        messageArrayList = new ArrayList<Message>();
         conversationAdapter = new ConversationAdapter(getActivity(), messageArrayList);
-        ServerApi.getConversationMessages(this, user.getId());
+        ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
 
     }
 
@@ -75,16 +72,16 @@ public class MessagesFragment extends Fragment implements ServerApi.onUpdateList
         @Override
         public void onClick(View v) {
             Integer toUserId;
-            if(!conversation.getToUser().getId().equals(user.getId())) toUserId=conversation.getToUser().getId();
+            if(!message.getToUser().getId().equals(user.getId())) toUserId= message.getToUser().getId();
             else toUserId=user.getId();
-            ServerApi.putMessage(fragment, user.getId(),toUserId,conversation.getId(),edtMessage.getText().toString());
+            ServerApi.putMessage(fragment, user.getId(),toUserId, message.getConversation().getId(),edtMessage.getText().toString());
         }
     };
 
     @Override
     public void onUpdate(Object object) {
         try {
-            messageArrayList = (ArrayList<Conversation>) object;
+            messageArrayList = (ArrayList<Message>) object;
             conversationAdapter.updateMessageArrayList(messageArrayList);
             conversationAdapter.notifyDataSetChanged();
         } catch (Exception e) {

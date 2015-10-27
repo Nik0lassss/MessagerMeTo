@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.R;
-import com.example.nikolas.messagernik.entity.Conversation;
+import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 
 import java.util.ArrayList;
@@ -17,25 +17,25 @@ import java.util.ArrayList;
  * Created by User on 12.10.2015.
  */
 public class ConversationAdapter extends BaseAdapter {
-    ArrayList<Conversation> conversationArrayList = new ArrayList<>();
+    ArrayList<Message> messageArrayList = new ArrayList<>();
     LayoutInflater lInflater;
     public ConversationAdapter() {
 
     }
 
-    public ConversationAdapter(Context context, ArrayList<Conversation> conversationArrayList) {
+    public ConversationAdapter(Context context, ArrayList<Message> messageArrayList) {
         lInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.conversationArrayList = conversationArrayList;
+        this.messageArrayList = messageArrayList;
     }
 
-    public void updateMessageArrayList(ArrayList<Conversation> conversationArrayList) {
-        this.conversationArrayList = conversationArrayList;
+    public void updateMessageArrayList(ArrayList<Message> messageArrayList) {
+        this.messageArrayList = messageArrayList;
     };
 
     @Override
     public int getCount() {
-        return conversationArrayList.size();
+        return messageArrayList.size();
     }
 
     @Override
@@ -55,16 +55,16 @@ public class ConversationAdapter extends BaseAdapter {
             //view = lInflater.inflate(R.layout.message_item_layout, parent, false);
             view = lInflater.inflate(R.layout.message_item, parent, false);
         }
-        ((TextView)view.findViewById(R.id.message_last_content)).setText(conversationArrayList.get(position).getMessage());
-        ((TextView)view.findViewById(R.id.message_sender_info)).setText(conversationArrayList.get(position).getFromUser().getFirst_name()+" "+ conversationArrayList.get(position).getFromUser().getLast_name());
-        ((TextView) view.findViewById(R.id.message_date)).setText(conversationArrayList.get(position).getTime().toString());
-        ((ImageProgressViewScale)view.findViewById(R.id.message_image_sender)).setImageUrl(conversationArrayList.get(position).getFromUser().getPhotoAvatar());
-        ((ImageProgressViewScale)view.findViewById(R.id.message_image_reciever)).setImageUrl(conversationArrayList.get(position).getToUser().getPhotoAvatar());
-//        ((TextView)view.findViewById(R.id.message_item_text_view)).setText(conversationArrayList.get(position).getMessage());
-//        ((TextView)view.findViewById(R.id.message_item_text_view_from)).setText(conversationArrayList.get(position).getFromUser().getFirst_name());
-//        ((TextView)view.findViewById(R.id.message_item_text_view_to)).setText(conversationArrayList.get(position).getToUser().getFirst_name());
-//        ((ImageProgressViewScale)view.findViewById(R.id.message_item_imageview_avatart_from)).setImageUrl(conversationArrayList.get(position).getFromUser().getPhotoAvatar());
-//        ((ImageProgressViewScale)view.findViewById(R.id.message_item_imageview_avatart_to)).setImageUrl(conversationArrayList.get(position).getToUser().getPhotoAvatar());
+        ((TextView)view.findViewById(R.id.message_last_content)).setText(messageArrayList.get(position).getMessage());
+        ((TextView)view.findViewById(R.id.message_sender_info)).setText(messageArrayList.get(position).getFromUser().getFirst_name()+" "+ messageArrayList.get(position).getFromUser().getLast_name());
+        ((TextView) view.findViewById(R.id.message_date)).setText(messageArrayList.get(position).getTime().toString());
+        ((ImageProgressViewScale)view.findViewById(R.id.message_image_sender)).setImageUrl(messageArrayList.get(position).getFromUser().getPhotoAvatar());
+        ((ImageProgressViewScale)view.findViewById(R.id.message_image_reciever)).setImageUrl(messageArrayList.get(position).getToUser().getPhotoAvatar());
+//        ((TextView)view.findViewById(R.id.message_item_text_view)).setText(messageArrayList.get(position).getMessage());
+//        ((TextView)view.findViewById(R.id.message_item_text_view_from)).setText(messageArrayList.get(position).getFromUser().getFirst_name());
+//        ((TextView)view.findViewById(R.id.message_item_text_view_to)).setText(messageArrayList.get(position).getToUser().getFirst_name());
+//        ((ImageProgressViewScale)view.findViewById(R.id.message_item_imageview_avatart_from)).setImageUrl(messageArrayList.get(position).getFromUser().getPhotoAvatar());
+//        ((ImageProgressViewScale)view.findViewById(R.id.message_item_imageview_avatart_to)).setImageUrl(messageArrayList.get(position).getToUser().getPhotoAvatar());
         return view;
     }
 }

@@ -3,37 +3,32 @@ package com.example.nikolas.messagernik.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.nikolas.messagernik.entity.User;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
- * Created by User on 12.10.2015.
+ * Created by User on 27.10.2015.
  */
 public class Conversation implements Parcelable {
-    private Integer id;
-    private User fromUser;
-    private User toUser;
-    private String message;
-    private Timestamp time;
+    Integer id;
+    User user_first;
+    User user_second;
 
-    public Conversation(Integer id, User fromUser, User toUser, String message) {
+    public Conversation(Integer id, User user_first, User user_second) {
         this.id = id;
-        this.fromUser = fromUser;
-        this.toUser = toUser;
-        this.message = message;
+        this.user_first = user_first;
+        this.user_second = user_second;
     }
 
     protected Conversation(Parcel in) {
-
-        fromUser = in.readParcelable(User.class.getClassLoader());
-        toUser = in.readParcelable(User.class.getClassLoader());
-        message = in.readString();
-        time =Timestamp.valueOf(in.readString());
+        id = in.readInt();
+        user_first = in.readParcelable(User.class.getClassLoader());
+        user_second = in.readParcelable(User.class.getClassLoader());
     }
 
     public static final Creator<Conversation> CREATOR = new Creator<Conversation>() {
@@ -48,18 +43,6 @@ public class Conversation implements Parcelable {
         }
     };
 
-    public Conversation() {
-    }
-
-    public Conversation(Integer id, User fromUser, User toUser, String message, Timestamp time) {
-        this.id = id;
-        this.fromUser = fromUser;
-        this.toUser = toUser;
-        this.message = message;
-        this.time = time;
-    }
-
-
     public Integer getId() {
         return id;
     }
@@ -68,28 +51,20 @@ public class Conversation implements Parcelable {
         this.id = id;
     }
 
-    public User getFromUser() {
-        return fromUser;
+    public User getUser_first() {
+        return user_first;
     }
 
-    public void setFromUser(User fromUser) {
-        this.fromUser = fromUser;
+    public void setUser_first(User user_first) {
+        this.user_first = user_first;
     }
 
-    public User getToUser() {
-        return toUser;
+    public User getUser_second() {
+        return user_second;
     }
 
-    public void setToUser(User toUser) {
-        this.toUser = toUser;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setUser_second(User user_second) {
+        this.user_second = user_second;
     }
 
     @Override
@@ -100,38 +75,29 @@ public class Conversation implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeParcelable(fromUser, flags);
-        dest.writeParcelable(toUser, flags);
-        dest.writeString(message);
-        dest.writeString(time.toString());
+        dest.writeParcelable(user_first, flags);
+        dest.writeParcelable(user_second, flags);
     }
 
-    public static Conversation fromJson(final JSONObject jsonObject) {
-        final Integer userId = jsonObject.optInt("id", 0);
-        String message = jsonObject.optString("message", "");
-        User userFrom = null;
-        User userTo = null;
-        Timestamp timestamp=null;
-        Date dateObj;
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+    public static Conversation fromJson(JSONObject jsonObject) {
+        Integer id;
+        User user_first = null;
+        User user_second = null;
+        id = jsonObject.optInt("id", 0);
         try {
-            userFrom = (User) User.fromJson(jsonObject.getJSONObject("user_from"));
-            userTo = (User) User.fromJson(jsonObject.getJSONObject("user_to"));
-            String time= jsonObject.optString("time","");
-            long timeLong = Long.parseLong(time);
-            dateObj = new Date(timeLong);
-            timestamp= new Timestamp(dateObj.getTime());
+            user_first = (User) User.fromJson(jsonObject.getJSONObject("toUser"));
+            user_second = (User) User.fromJson(jsonObject.getJSONObject("fromUser"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return new Conversation(userId, userFrom, userTo, message,timestamp);
+        return new Conversation(id, user_first, user_second);
     }
 
-    public static ArrayList<Conversation> fromJson(final JSONArray jsonArray) {
+    public static ArrayList<Conversation> fromJson(JSONArray jsonArray) {
         ArrayList<Conversation> conversationArrayList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                final Conversation conversation = fromJson(jsonArray.getJSONObject(i));
+                Conversation conversation = Conversation.fromJson(jsonArray.getJSONObject(i));
                 if (null != conversation) conversationArrayList.add(conversation);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -139,14 +105,4 @@ public class Conversation implements Parcelable {
         }
         return conversationArrayList;
     }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    ;
 }

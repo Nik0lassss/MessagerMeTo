@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.example.nikolas.messagernik.adapter.ConversationAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
-import com.example.nikolas.messagernik.entity.Conversation;
+import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.helper.Helper;
 
@@ -26,7 +26,7 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
     private Fragment fragment;
     private ConversationAdapter conversationAdapter;
     private ListView listView;
-    private ArrayList<Conversation> conversationArrayList;
+    private ArrayList<Message> messageArrayList;
     private LoginFragment.OnFragmentInteractionListener mListener;
 
 
@@ -56,8 +56,8 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER_KEY);
         }
-        conversationArrayList = new ArrayList<>();
-        conversationAdapter = new ConversationAdapter(getActivity(), conversationArrayList);
+        messageArrayList = new ArrayList<>();
+        conversationAdapter = new ConversationAdapter(getActivity(), messageArrayList);
 
         //ServerApi.getRecieveMessage(fragment, user.getId());
         ServerApi.getConversation(fragment, user.getId());
@@ -77,15 +77,15 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ((Activity) Helper.getContext()).getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user,conversationArrayList.get(position))).addToBackStack("").commit();
+            ((Activity) Helper.getContext()).getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
         }
     };
 
     @Override
     public void onUpdate(Object object) {
         try {
-            conversationArrayList = (ArrayList<Conversation>) object;
-            conversationAdapter.updateMessageArrayList(conversationArrayList);
+            messageArrayList = (ArrayList<Message>) object;
+            conversationAdapter.updateMessageArrayList(messageArrayList);
             conversationAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,8 +94,8 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
 //        ResponseList responseObject = null;
 //        try {
 //            responseObject = ResponseList.fromJson(new JSONObject(response));
-//            conversationArrayList = com.example.nikolas.messagernik.entity.Conversation.fromJson((JSONArray) responseObject.getResponseList());
-//            conversationAdapter.updateMessageArrayList(conversationArrayList);
+//            messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
+//            conversationAdapter.updateMessageArrayList(messageArrayList);
 //            conversationAdapter.notifyDataSetChanged();
 //        } catch (JSONException e) {
 //            e.printStackTrace();

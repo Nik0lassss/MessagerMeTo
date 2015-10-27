@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
-import com.example.nikolas.messagernik.entity.Conversation;
+import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseList;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
@@ -72,12 +72,12 @@ public class ServerApi {
         @Override
         public void onResponse(Object object) {
             ResponseList responseObject = null;
-            ArrayList<Conversation> conversationArrayList;
+            ArrayList<Message> messageArrayList;
             try {
                 JSONObject jsonObject = new JSONObject((String) object);
                 responseObject = ResponseList.fromJson(jsonObject);
-                conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
-                onUpdateListenerInterface.onUpdate(conversationArrayList);
+                messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
+                onUpdateListenerInterface.onUpdate(messageArrayList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -88,12 +88,12 @@ public class ServerApi {
         @Override
         public void onResponse(Object object) {
             ResponseList responseObject = null;
-            ArrayList<Conversation> conversationArrayList;
+            ArrayList<Message> messageArrayList;
             try {
                 JSONObject jsonObject = new JSONObject((String) object);
                 responseObject = ResponseList.fromJson(jsonObject);
-                conversationArrayList = Conversation.fromJson((JSONArray) responseObject.getResponseList());
-                onUpdateListenerInterface.onUpdate(conversationArrayList);
+                messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
+                onUpdateListenerInterface.onUpdate(messageArrayList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -154,11 +154,11 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
 
-    public static void getConversationMessages(Fragment listenerFragment, Integer userId) {
+    public static void getConversationMessages(Fragment listenerFragment, Integer userId,Integer conversationId) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("userId", userId.toString());
-        values.put("conversation_id", userId.toString());
+        values.put("conversation_id", conversationId.toString());
         receiver.sendPostRequest(values, Config.USER_GET_NEW_MESSAGE, getMessagesListener, erroreResponse);
     }
 
