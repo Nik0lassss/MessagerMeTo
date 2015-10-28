@@ -1,20 +1,46 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.nikolas.messagernik.ConversationFragment">
-
-    <ListView
-        android:id="@+id/fragment_message_expandable_contacnt_list_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
-
-    <ListView
-        android:id="@+id/fragment_message_listview"
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ListView>
+        <LinearLayout
+            android:id="@+id/fragment_message_lin_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#222222"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <EditText
+                android:id="@+id/fragment_message_lin_layout_edit_text"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/fragment_message_lin_layout_button_send_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="#000000"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/fragment_message_button_name"
+                android:textColor="#FFFFFF" />
 
+        </LinearLayout>
+        <ListView
+            android:id="@+id/fragment_message_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:layout_above="@id/fragment_message_lin_layout">
 
+        </ListView>
+</RelativeLayout>
 </FrameLayout>

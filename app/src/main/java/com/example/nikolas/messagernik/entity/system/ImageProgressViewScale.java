@@ -30,8 +30,8 @@ public class ImageProgressViewScale extends LinearLayout {
     private void Init(Context context,AttributeSet attributeSet)
     {
         LayoutInflater.from(context).inflate(R.layout.image_progress_bar_view_scale_center_crop, this);
-        imageView = (ImageView) this.findViewById(R.id.image_progress_bar_view_image_view_avatar);
-        progressBar = (ProgressBar) this.findViewById(R.id.image_progress_bar_view_pr_bar);
+        imageView = (ImageView) this.findViewById(R.id.image_progress_bar_view_scale_image_view_avatar);
+        progressBar = (ProgressBar) this.findViewById(R.id.image_progress_bar_view_scale_pr_bar);
     }
     public void setImageUrl(String url)
     {

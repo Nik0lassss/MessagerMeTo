@@ -1,6 +1,5 @@
 package com.example.nikolas.messagernik;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import com.example.nikolas.messagernik.adapter.ConversationAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.User;
-import com.example.nikolas.messagernik.helper.Helper;
 
 import java.util.ArrayList;
 
@@ -66,8 +64,8 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_message, container, false);
-        listView = (ListView) rootView.findViewById(R.id.fragment_message_listview);
+        View rootView = inflater.inflate(R.layout.fragment_conversation, container, false);
+        listView = (ListView) rootView.findViewById(R.id.fragment_conversation_listview);
         listView.setAdapter(conversationAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
         return rootView;
@@ -78,7 +76,9 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //((Activity) Helper.getContext()).getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
-            fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
+            //fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
+            fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessageFragment.newInstance(user,messageArrayList.get(position))).addToBackStack("").commit();
+
         }
     };
 

@@ -16,14 +16,14 @@ import java.util.ArrayList;
 /**
  * Created by User on 12.10.2015.
  */
-public class ConversationAdapter extends BaseAdapter {
+public class MessageAdapter extends BaseAdapter {
     ArrayList<Message> messageArrayList = new ArrayList<>();
     LayoutInflater lInflater;
-    public ConversationAdapter() {
+    public MessageAdapter() {
 
     }
 
-    public ConversationAdapter(Context context, ArrayList<Message> messageArrayList) {
+    public MessageAdapter(Context context, ArrayList<Message> messageArrayList) {
         lInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.messageArrayList = messageArrayList;
