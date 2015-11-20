@@ -9,11 +9,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Message;
+import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.response.ResponseObject;
 
 import java.util.ArrayList;
 
@@ -41,7 +44,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
         args.putParcelable(KEY_USER, user);
         args.putParcelable(KEY_CONVERSATION, message);
         fragment.setArguments(args);
-
+        ServerApi.getNotifyNewMessage(fragment);
         return fragment;
     }
 
@@ -75,7 +78,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
         View rootView = inflater.inflate(R.layout.fragment_message, container, false);
         listView = (ListView) rootView.findViewById(R.id.fragment_message_listview);
         btnSendMessage = (Button) rootView.findViewById(R.id.fragment_message_lin_layout_button_send_message);
-        btnSendMessage.setOnClickListener(btnOnClickListener);
+        btnSendMessage.setOnClickListener(btnOnClickListenerSendMessage);
         edtTextMessage = (EditText) rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
         listView.setAdapter(messageAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
@@ -92,13 +95,14 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
         }
     };
 
-    Button.OnClickListener btnOnClickListener = new View.OnClickListener() {
+    Button.OnClickListener btnOnClickListenerSendMessage = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Integer toUserId;
-            if(!message.getToUser().getId().equals(user.getId())) toUserId= message.getToUser().getId();
-            else toUserId=user.getId();
-            ServerApi.putMessage(fragment, user.getId(),toUserId, message.getConversation().getId(),edtTextMessage.getText().toString());
+            if (message.getConversation().getUser_first().getId().equals(user.getId()))
+                toUserId = message.getConversation().getUser_second().getId();
+            else toUserId = message.getConversation().getUser_first().getId();
+            ServerApi.putMessage(fragment, user.getId(), toUserId, message.getConversation().getId(), edtTextMessage.getText().toString());
         }
     };
 
@@ -106,9 +110,16 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
     @Override
     public void onUpdate(Object object) {
         try {
-            messageArrayList = (ArrayList<Message>) object;
-            messageAdapter.updateMessageArrayList(messageArrayList);
-            messageAdapter.notifyDataSetChanged();
+            if (object.getClass().getName().equals(NotifyMessage.class.getName())) {
+                NotifyMessage notifyMessage = (NotifyMessage)object;
+                Toast.makeText(fragment.getActivity(),"Code: "+notifyMessage.getNotifyMessageString(),Toast.LENGTH_LONG).show();
+                ServerApi.getNotifyNewMessage(fragment);
+            } else {
+                messageArrayList = (ArrayList<Message>) object;
+                messageAdapter.updateMessageArrayList(messageArrayList);
+                messageAdapter.notifyDataSetChanged();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

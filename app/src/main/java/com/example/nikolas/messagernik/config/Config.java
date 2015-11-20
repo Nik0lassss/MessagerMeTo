@@ -18,6 +18,7 @@ public class Config {
     public static final String GET_ALL_USERS=SERVER_URL+GET_USER_URL+"all";
     public static final String VALIDATE_SECRET_TOCKEN=SERVER_URL+GET_USER_URL+"validateTocken";
     public static final String GET_RECIEVED_MESSAGE=SERVER_URL+"rest/user/message/received/";
+    public static final String GET_NOTIFY_NEW_MESSAGE ="http://messagserver-chirkevich.rhcloud.com/server/name/get/100";
 	// Directory name to store captured images and videos
     public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
 }

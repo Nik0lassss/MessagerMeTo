@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.Message;
+import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseList;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
@@ -78,6 +79,25 @@ public class ServerApi {
                 responseObject = ResponseList.fromJson(jsonObject);
                 messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
                 onUpdateListenerInterface.onUpdate(messageArrayList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+    private static Response.Listener getNotifyNewMessagesListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            ResponseObject responseObject = null;
+            ArrayList<Message> messageArrayList;
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                responseObject = ResponseObject.fromJson(jsonObject);
+                NotifyMessage notifyMessage = NotifyMessage.fromJson((JSONObject)responseObject.getResponseObject());
+//                responseObject = ResponseList.fromJson(jsonObject);
+//                messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
+                onUpdateListenerInterface.onUpdate(notifyMessage);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -166,7 +186,10 @@ public class ServerApi {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);
     }
-
+    public static void getNotifyNewMessage(Fragment listenerFragment) {
+        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+        receiver.sendGetRequest(Config.GET_NOTIFY_NEW_MESSAGE, getNotifyNewMessagesListener, erroreResponse);
+    }
     public static void validateSecretTocken(Activity listenerFragment, String tocken) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
