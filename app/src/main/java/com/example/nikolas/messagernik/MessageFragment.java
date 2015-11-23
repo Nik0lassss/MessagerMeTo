@@ -103,6 +103,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
                 toUserId = message.getConversation().getUser_second().getId();
             else toUserId = message.getConversation().getUser_first().getId();
             ServerApi.putMessage(fragment, user.getId(), toUserId, message.getConversation().getId(), edtTextMessage.getText().toString());
+            ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId());
         }
     };
 
@@ -112,7 +113,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
         try {
             if (object.getClass().getName().equals(NotifyMessage.class.getName())) {
                 NotifyMessage notifyMessage = (NotifyMessage)object;
-                Toast.makeText(fragment.getActivity(),"Code: "+notifyMessage.getNotifyMessageString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(fragment.getActivity(),"Code: "+notifyMessage.getStatus() +"NotifyMessage:"+notifyMessage.getNotifyMessageString(),Toast.LENGTH_LONG).show();
+                if(0==notifyMessage.getStatus())  ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
                 ServerApi.getNotifyNewMessage(fragment);
             } else {
                 messageArrayList = (ArrayList<Message>) object;
