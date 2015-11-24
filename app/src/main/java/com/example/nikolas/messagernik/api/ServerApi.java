@@ -150,13 +150,14 @@ public class ServerApi {
         }
     };
 
-    public static void putMessage(Fragment listenerFragment,Integer from_id, Integer to_id, Integer conversation_id, String message) {
+    public static void putMessage(Fragment listenerFragment,Integer from_id, Integer to_id, Integer conversation_id, String message,String secretTockenString) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("from_id", from_id.toString());
         values.put("to_id", to_id.toString());
         values.put("conversation_id", conversation_id.toString());
         values.put("message_text", message);
+        values.put("secretTockenString",secretTockenString);
         receiver.sendPutRequest(values, Config.PUT_MESSAGE_URL, response, erroreResponse);
     }
 

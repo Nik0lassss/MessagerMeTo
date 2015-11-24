@@ -15,6 +15,7 @@ import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
+import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
 
@@ -102,7 +103,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
             if (message.getConversation().getUser_first().getId().equals(user.getId()))
                 toUserId = message.getConversation().getUser_second().getId();
             else toUserId = message.getConversation().getUser_first().getId();
-            ServerApi.putMessage(fragment, user.getId(), toUserId, message.getConversation().getId(), edtTextMessage.getText().toString());
+            ServerApi.putMessage(fragment, user.getId(), toUserId, message.getConversation().getId(), edtTextMessage.getText().toString(), SecretTocken.getSecretTockenString());
             ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId());
         }
     };
