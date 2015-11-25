@@ -45,7 +45,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
         args.putParcelable(KEY_USER, user);
         args.putParcelable(KEY_CONVERSATION, message);
         fragment.setArguments(args);
-        ServerApi.getNotifyNewMessage(fragment);
+        ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(),SecretTocken.getSecretTockenString());
         return fragment;
     }
 
@@ -116,7 +116,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
                 NotifyMessage notifyMessage = (NotifyMessage)object;
                 Toast.makeText(fragment.getActivity(),"Code: "+notifyMessage.getStatus() +"NotifyMessage:"+notifyMessage.getNotifyMessageString(),Toast.LENGTH_LONG).show();
                 if(0==notifyMessage.getStatus())  ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
-                ServerApi.getNotifyNewMessage(fragment);
+                ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(), SecretTocken.getSecretTockenString());
             } else {
                 messageArrayList = (ArrayList<Message>) object;
                 messageAdapter.updateMessageArrayList(messageArrayList);

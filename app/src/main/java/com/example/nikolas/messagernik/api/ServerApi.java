@@ -187,9 +187,11 @@ public class ServerApi {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);
     }
-    public static void getNotifyNewMessage(Fragment listenerFragment) {
+    public static void getNotifyNewMessage(Fragment listenerFragment,Integer conversationId, String secretTockenString) {
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("secretTockenString",secretTockenString);
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
-        receiver.sendGetRequest(Config.GET_NOTIFY_NEW_MESSAGE, getNotifyNewMessagesListener, erroreResponse);
+        receiver.sendPostRequest(values,Config.POST_NOTIFY_NEW_MESSAGE+conversationId, getNotifyNewMessagesListener, erroreResponse);
     }
     public static void validateSecretTocken(Activity listenerFragment, String tocken) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
