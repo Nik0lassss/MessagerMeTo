@@ -32,6 +32,7 @@ public class ServerApi {
     private static Receiver receiver;
 
     private static onUpdateListener onUpdateListenerInterface;
+    private static onUpdateMessageFragmentMessageList onUpdateMessageFragmentMessageListInterface;
     private static UpdateLoginFragmentInterface.onUpdateLoginFragmentListener onUpdateLoginFragmenyListenerInterface;
 
     public static void setUpReciever(Context context) {
@@ -78,7 +79,7 @@ public class ServerApi {
                 JSONObject jsonObject = new JSONObject((String) object);
                 responseObject = ResponseList.fromJson(jsonObject);
                 messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
-                onUpdateListenerInterface.onUpdate(messageArrayList);
+                onUpdateMessageFragmentMessageListInterface.onUpdate(messageArrayList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -94,13 +95,31 @@ public class ServerApi {
             try {
                 JSONObject jsonObject = new JSONObject((String) object);
                 responseObject = ResponseObject.fromJson(jsonObject);
-                NotifyMessage notifyMessage = NotifyMessage.fromJson((JSONObject)responseObject.getResponseObject());
+                NotifyMessage notifyMessage = NotifyMessage.fromJson((JSONObject) responseObject.getResponseObject());
 //                responseObject = ResponseList.fromJson(jsonObject);
 //                messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
-                onUpdateListenerInterface.onUpdate(notifyMessage);
+                onUpdateMessageFragmentMessageListInterface.onUpdate(notifyMessage);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        }
+    };
+    private static Response.Listener getResponsePutMessageListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            ResponseObject responseObject = null;
+            Message message = null;
+            ArrayList<Message> messageArrayList;
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                responseObject = ResponseObject.fromJson(jsonObject);
+                message = Message.fromJson((JSONObject) responseObject.getResponseObject());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            onUpdateMessageFragmentMessageListInterface.onUpdate(message);
+
 
         }
     };
@@ -150,15 +169,15 @@ public class ServerApi {
         }
     };
 
-    public static void putMessage(Fragment listenerFragment,Integer from_id, Integer to_id, Integer conversation_id, String message,String secretTockenString) {
-        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+    public static void putMessage(Fragment listenerFragment, Integer from_id, Integer to_id, Integer conversation_id, String message, String secretTockenString) {
+        onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("from_id", from_id.toString());
         values.put("to_id", to_id.toString());
         values.put("conversation_id", conversation_id.toString());
         values.put("message_text", message);
-        values.put("secretTockenString",secretTockenString);
-        receiver.sendPutRequest(values, Config.PUT_MESSAGE_URL, response, erroreResponse);
+        values.put("secretTockenString", secretTockenString);
+        receiver.sendPutRequest(values, Config.PUT_MESSAGE_URL, getResponsePutMessageListener, erroreResponse);
     }
 
     public static void getUser(Activity listenerFragment, String tocken) {
@@ -175,8 +194,8 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
 
-    public static void getConversationMessages(Fragment listenerFragment, Integer userId,Integer conversationId) {
-        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
+    public static void getConversationMessages(Fragment listenerFragment, Integer userId, Integer conversationId) {
+        onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("userId", userId.toString());
         values.put("conversation_id", conversationId.toString());
@@ -187,12 +206,14 @@ public class ServerApi {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);
     }
-    public static void getNotifyNewMessage(Fragment listenerFragment,Integer conversationId, String secretTockenString) {
+
+    public static void getNotifyNewMessage(Fragment listenerFragment, Integer conversationId, String secretTockenString) {
         HashMap<String, String> values = new HashMap<String, String>();
-        values.put("secretTockenString",secretTockenString);
-        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
-        receiver.sendPostRequest(values,Config.POST_NOTIFY_NEW_MESSAGE+conversationId, getNotifyNewMessagesListener, erroreResponse);
+        values.put("secretTockenString", secretTockenString);
+        onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
+        receiver.sendPostRequest(values, Config.POST_NOTIFY_NEW_MESSAGE + conversationId, getNotifyNewMessagesListener, erroreResponse);
     }
+
     public static void validateSecretTocken(Activity listenerFragment, String tocken) {
         onUpdateListenerInterface = (onUpdateListener) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
@@ -220,6 +241,14 @@ public class ServerApi {
 
     public interface onUpdateListener {
         public void onUpdate(Object object);
+    }
+
+
+    public interface onUpdateMessageFragmentMessageList
+    {
+        public void onUpdate(ArrayList<Message> messageList);
+        public void onUpdate(Message message);
+        public void onUpdate(NotifyMessage notifyMessage);
     }
 
     public static int getRecieveMessage(Fragment listenerFragment, Integer id) {

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by User on 12.10.2015.
  */
 public class MessageAdapter extends BaseAdapter {
-    ArrayList<Message> messageArrayList = new ArrayList<>();
+    private ArrayList<Message> messageArrayList = new ArrayList<>();
     LayoutInflater lInflater;
     public MessageAdapter() {
 
@@ -32,7 +32,9 @@ public class MessageAdapter extends BaseAdapter {
     public void updateMessageArrayList(ArrayList<Message> messageArrayList) {
         this.messageArrayList = messageArrayList;
     };
-
+    public void addMessageArrayList(Message message) {
+        this.messageArrayList.add(message);
+    };
     @Override
     public int getCount() {
         return messageArrayList.size();

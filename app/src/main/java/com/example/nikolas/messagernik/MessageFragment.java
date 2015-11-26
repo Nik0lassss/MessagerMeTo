@@ -22,7 +22,7 @@ import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import java.util.ArrayList;
 
 
-public class MessageFragment extends Fragment implements ServerApi.onUpdateListener {
+public class MessageFragment extends Fragment implements ServerApi.onUpdateMessageFragmentMessageList {
 
     public static final String ARG_USER_KEY = "message_fragment_arg_user_key";
 
@@ -45,7 +45,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
         args.putParcelable(KEY_USER, user);
         args.putParcelable(KEY_CONVERSATION, message);
         fragment.setArguments(args);
-        ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(),SecretTocken.getSecretTockenString());
+        ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
         return fragment;
     }
 
@@ -105,40 +105,67 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
             else toUserId = message.getConversation().getUser_first().getId();
             ServerApi.putMessage(fragment, user.getId(), toUserId, message.getConversation().getId(), edtTextMessage.getText().toString(), SecretTocken.getSecretTockenString());
             //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId());
-            ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(), SecretTocken.getSecretTockenString());
+            // ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(), SecretTocken.getSecretTockenString());
         }
     };
 
 
-    @Override
-    public void onUpdate(Object object) {
-        try {
-            if (object.getClass().getName().equals(NotifyMessage.class.getName())) {
-                NotifyMessage notifyMessage = (NotifyMessage)object;
-                Toast.makeText(fragment.getActivity(),"Code: "+notifyMessage.getStatus() +"NotifyMessage:"+notifyMessage.getNotifyMessageString(),Toast.LENGTH_LONG).show();
-                if(0==notifyMessage.getStatus())  ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
-                ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(), SecretTocken.getSecretTockenString());
-            } else {
-                messageArrayList = (ArrayList<Message>) object;
-                messageAdapter.updateMessageArrayList(messageArrayList);
-                messageAdapter.notifyDataSetChanged();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        String response = (String) object;
-//        ResponseList responseObject = null;
+//    @Override
+//    public void onUpdate(Object object) {
 //        try {
-//            responseObject = ResponseList.fromJson(new JSONObject(response));
-//            messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
-//            conversationAdapter.updateMessageArrayList(messageArrayList);
-//            conversationAdapter.notifyDataSetChanged();
-//        } catch (JSONException e) {
+//            if (object.getClass().getName().equals(NotifyMessage.class.getName())) {
+////                NotifyMessage notifyMessage = (NotifyMessage)object;
+////                Toast.makeText(fragment.getActivity(),"Code: "+notifyMessage.getStatus() +"NotifyMessage:"+notifyMessage.getNotifyMessageString(),Toast.LENGTH_LONG).show();
+////                if(0==notifyMessage.getStatus())  ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
+////                ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(), SecretTocken.getSecretTockenString());
+//            }
+//            if (object.getClass().getName().equals(Message.class.getName()))
+//            {
+//                messageArrayList.add((Message)object);
+//                messageAdapter.updateMessageArrayList(messageArrayList);
+//                messageAdapter.notifyDataSetChanged();
+//            }
+//            else {
+//
+//                messageArrayList = (ArrayList<Message>) object;
+//                messageAdapter.updateMessageArrayList(messageArrayList);
+//                messageAdapter.notifyDataSetChanged();
+//            }
+//
+//        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+////        String response = (String) object;
+////        ResponseList responseObject = null;
+////        try {
+////            responseObject = ResponseList.fromJson(new JSONObject(response));
+////            messageArrayList = com.example.nikolas.messagernik.entity.Message.fromJson((JSONArray) responseObject.getResponseList());
+////            conversationAdapter.updateMessageArrayList(messageArrayList);
+////            conversationAdapter.notifyDataSetChanged();
+////        } catch (JSONException e) {
+////            e.printStackTrace();
+////        }
+//
+//    }
 
+
+    @Override
+    public void onUpdate(ArrayList<Message> messageList) {
+        messageAdapter.updateMessageArrayList(messageList);
+        messageAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onUpdate(Message message) {
+        messageAdapter.addMessageArrayList(message);
+        messageAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void onUpdate(NotifyMessage notifyMessage) {
+        Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
+        if (0 == notifyMessage.getStatus())
+            ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
+        ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
+    }
 }
