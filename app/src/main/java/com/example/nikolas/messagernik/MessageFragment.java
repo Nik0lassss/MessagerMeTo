@@ -104,7 +104,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateListe
                 toUserId = message.getConversation().getUser_second().getId();
             else toUserId = message.getConversation().getUser_first().getId();
             ServerApi.putMessage(fragment, user.getId(), toUserId, message.getConversation().getId(), edtTextMessage.getText().toString(), SecretTocken.getSecretTockenString());
-            ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId());
+            //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId());
+            ServerApi.getNotifyNewMessage(fragment,message.getConversation().getId(), SecretTocken.getSecretTockenString());
         }
     };
 
