@@ -11,10 +11,12 @@ import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.nikolas.messagernik.activity.MainActivity;
@@ -46,7 +48,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private Button btnSendMessage;
     private EditText edtTextMessage;
     private Cursor cursor;
-
+    View footer;
 
 
     public static MessageFragment newInstance(User user, Message message) {
@@ -64,7 +66,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         return new MessageFragment();
     }
 
-    public int createInfoNotification(String message){
+    public int createInfoNotification(String message) {
         Intent notificationIntent = new Intent(Helper.getContext(), MainActivity.class); // по клику на уведомлении откроется HomeActivity
         NotificationCompat.Builder nb = new NotificationCompat.Builder(Helper.getContext())
 //NotificationCompat.Builder nb = new NotificationBuilder(context) //для версии Android > 3.0
@@ -76,7 +78,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
                 .setWhen(System.currentTimeMillis()) //отображаемое время уведомления
                 .setContentTitle("AppName") //заголовок уведомления
                 .setDefaults(Notification.DEFAULT_ALL); // звук, вибро и диодный индикатор выставляются по умолчанию
-NotificationManager manager= manager = (NotificationManager) fragment.getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager manager = manager = (NotificationManager) fragment.getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = nb.getNotification(); //генерируем уведомление
         manager.notify(1, notification); // отображаем его пользователю.
         //notifications.put(1, notification); //теперь мы можем обращаться к нему по id
@@ -86,7 +88,7 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
     public MessageFragment() {
         // Required empty public constructor
         fragment = this;
-        cursor= new Cursor(0,3);
+        cursor = new Cursor(0, 10);
 
     }
 
@@ -100,7 +102,7 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
         }
         messageArrayList = new ArrayList<>();
         messageAdapter = new MessageAdapter(getActivity(), messageArrayList);
-        ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(),cursor);
+        ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(), cursor);
     }
 
     @Override
@@ -113,6 +115,9 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
         edtTextMessage = (EditText) rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
         listView.setAdapter(messageAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
+        listView.setOnScrollListener(onScrollListener);
+        footer = ((LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.progress_bar_layout, null, false);
+        listView.addFooterView(footer);
         return rootView;
     }
 
@@ -123,6 +128,22 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
 
             fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessageFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
 
+        }
+    };
+
+    ListView.OnScrollListener onScrollListener = new AbsListView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            int total = firstVisibleItem + visibleItemCount;
+            if(total==totalItemCount)
+            {
+                ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
+            }
         }
     };
 
@@ -180,7 +201,7 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
 
 
     @Override
-    public void onUpdate(ArrayList<Message> messageList,Cursor cursor) {
+    public void onUpdate(ArrayList<Message> messageList, Cursor cursor) {
         messageAdapter.updateMessageArrayList(messageList);
         messageAdapter.notifyDataSetChanged();
         this.cursor = cursor;
@@ -197,11 +218,11 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
 
     @Override
     public void onUpdate(NotifyMessage notifyMessage) {
-        if(null!=fragment && null!=notifyMessage) Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
-        if (0 == notifyMessage.getStatus())
-        {
+        if (null != fragment && null != notifyMessage)
+            Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
+        if (0 == notifyMessage.getStatus()) {
             createInfoNotification("ok");
-            ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(),cursor);
+            ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(), cursor);
         }
 
         ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
