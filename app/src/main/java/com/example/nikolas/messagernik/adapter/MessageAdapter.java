@@ -33,7 +33,7 @@ public class MessageAdapter extends BaseAdapter {
         this.messageArrayList = messageArrayList;
     };
     public void addMessageArrayList(Message message) {
-        this.messageArrayList.add(message);
+        this.messageArrayList.add(0,message);
     };
     @Override
     public int getCount() {

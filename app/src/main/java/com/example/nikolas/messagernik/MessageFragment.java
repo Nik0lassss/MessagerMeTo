@@ -1,7 +1,15 @@
 package com.example.nikolas.messagernik;
 
 import android.app.Fragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.nikolas.messagernik.activity.MainActivity;
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Message;
@@ -18,6 +27,7 @@ import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
+import com.example.nikolas.messagernik.helper.Helper;
 
 import java.util.ArrayList;
 
@@ -39,6 +49,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private EditText edtTextMessage;
 
 
+
     public static MessageFragment newInstance(User user, Message message) {
         MessageFragment fragment = new MessageFragment();
         Bundle args = new Bundle();
@@ -46,6 +57,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         args.putParcelable(KEY_CONVERSATION, message);
         fragment.setArguments(args);
         ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
+
         return fragment;
     }
 
@@ -53,11 +65,29 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         return new MessageFragment();
     }
 
-    ;
+    public int createInfoNotification(String message){
+        Intent notificationIntent = new Intent(Helper.getContext(), MainActivity.class); // по клику на уведомлении откроется HomeActivity
+        NotificationCompat.Builder nb = new NotificationCompat.Builder(Helper.getContext())
+//NotificationCompat.Builder nb = new NotificationBuilder(context) //для версии Android > 3.0
+                .setSmallIcon(R.drawable.avatar_img) //иконка уведомления
+                .setAutoCancel(true) //уведомление закроется по клику на него
+                .setTicker(message) //текст, который отобразится вверху статус-бара при создании уведомления
+                .setContentText(message) // Основной текст уведомления
+                .setContentIntent(PendingIntent.getActivity(Helper.getContext(), 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT))
+                .setWhen(System.currentTimeMillis()) //отображаемое время уведомления
+                .setContentTitle("AppName") //заголовок уведомления
+                .setDefaults(Notification.DEFAULT_ALL); // звук, вибро и диодный индикатор выставляются по умолчанию
+NotificationManager manager= manager = (NotificationManager) fragment.getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = nb.getNotification(); //генерируем уведомление
+        manager.notify(1, notification); // отображаем его пользователю.
+        //notifications.put(1, notification); //теперь мы можем обращаться к нему по id
+        return 2;
+    }
 
     public MessageFragment() {
         // Required empty public constructor
         fragment = this;
+
     }
 
 
@@ -153,12 +183,15 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     public void onUpdate(ArrayList<Message> messageList) {
         messageAdapter.updateMessageArrayList(messageList);
         messageAdapter.notifyDataSetChanged();
+        createInfoNotification("ok");
     }
 
     @Override
     public void onUpdate(Message message) {
         messageAdapter.addMessageArrayList(message);
         messageAdapter.notifyDataSetChanged();
+        edtTextMessage.setText("");
+
     }
 
     @Override
