@@ -8,10 +8,12 @@ import android.widget.ProgressBar;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
+import com.example.nikolas.messagernik.entity.Cursor;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseList;
+import com.example.nikolas.messagernik.entity.response.ResponseListCursors;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.interfaces.UpdateLoginFragmentInterface;
 import com.example.nikolas.messagernik.listeners.LoginFragmentListener;
@@ -73,13 +75,15 @@ public class ServerApi {
     private static Response.Listener getMessagesListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
-            ResponseList responseObject = null;
+            ResponseListCursors responseListCursor = null;
             ArrayList<Message> messageArrayList;
+            Cursor cursor;
             try {
                 JSONObject jsonObject = new JSONObject((String) object);
-                responseObject = ResponseList.fromJson(jsonObject);
-                messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
-                onUpdateMessageFragmentMessageListInterface.onUpdate(messageArrayList);
+                responseListCursor = ResponseListCursors.fromJson(jsonObject);
+                messageArrayList = Message.fromJson((JSONArray) responseListCursor.getResponseList());
+                cursor = responseListCursor.getCursor();
+                onUpdateMessageFragmentMessageListInterface.onUpdate(messageArrayList,cursor);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -194,11 +198,13 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
 
-    public static void getConversationMessages(Fragment listenerFragment, Integer userId, Integer conversationId) {
+    public static void getConversationMessages(Fragment listenerFragment, Integer userId, Integer conversationId,Cursor cursor) {
         onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("userId", userId.toString());
         values.put("conversation_id", conversationId.toString());
+        values.put("cursorFrom",cursor.getFromId().toString());
+        values.put("cursorTo",cursor.getCount().toString());
         receiver.sendPostRequest(values, Config.USER_GET_NEW_MESSAGE, getMessagesListener, erroreResponse);
     }
 
@@ -246,7 +252,7 @@ public class ServerApi {
 
     public interface onUpdateMessageFragmentMessageList
     {
-        public void onUpdate(ArrayList<Message> messageList);
+        public void onUpdate(ArrayList<Message> messageList,Cursor cursor);
         public void onUpdate(Message message);
         public void onUpdate(NotifyMessage notifyMessage);
     }

@@ -4,10 +4,8 @@ import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
@@ -22,11 +20,11 @@ import android.widget.Toast;
 import com.example.nikolas.messagernik.activity.MainActivity;
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
+import com.example.nikolas.messagernik.entity.Cursor;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
-import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.helper.Helper;
 
 import java.util.ArrayList;
@@ -47,6 +45,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private Message message;
     private Button btnSendMessage;
     private EditText edtTextMessage;
+    private Cursor cursor;
 
 
 
@@ -87,6 +86,7 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
     public MessageFragment() {
         // Required empty public constructor
         fragment = this;
+        cursor= new Cursor(0,3);
 
     }
 
@@ -100,7 +100,7 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
         }
         messageArrayList = new ArrayList<>();
         messageAdapter = new MessageAdapter(getActivity(), messageArrayList);
-        ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
+        ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(),cursor);
     }
 
     @Override
@@ -180,10 +180,11 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
 
 
     @Override
-    public void onUpdate(ArrayList<Message> messageList) {
+    public void onUpdate(ArrayList<Message> messageList,Cursor cursor) {
         messageAdapter.updateMessageArrayList(messageList);
         messageAdapter.notifyDataSetChanged();
-        createInfoNotification("ok");
+        this.cursor = cursor;
+
     }
 
     @Override
@@ -196,9 +197,13 @@ NotificationManager manager= manager = (NotificationManager) fragment.getActivit
 
     @Override
     public void onUpdate(NotifyMessage notifyMessage) {
-        Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
+        if(null!=fragment && null!=notifyMessage) Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
         if (0 == notifyMessage.getStatus())
-            ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId());
+        {
+            createInfoNotification("ok");
+            ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(),cursor);
+        }
+
         ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
     }
 }
