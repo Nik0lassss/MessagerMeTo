@@ -33,31 +33,38 @@
 
         <Button
             android:id="@+id/login_layout_btn_login"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#222222"
+            android:textColor="#E0F7FA"
             android:text="@string/login_lyout_btn_login" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#E0F7FA"
             android:text="@string/or" />
 
         <Button
             android:id="@+id/login_layout_btn_create_account"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#222222"
+            android:textColor="#E0F7FA"
             android:text="@string/login_layout_btn_create_account_string" />
 
         <Button
             android:id="@+id/login_layout_btn_test"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="Test" />
 
         <Button
             android:id="@+id/login_layout_btn_test_select_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="TestSelectImage" />
 
     </LinearLayout>

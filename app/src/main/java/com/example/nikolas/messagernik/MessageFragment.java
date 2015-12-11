@@ -88,7 +88,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     public MessageFragment() {
         // Required empty public constructor
         fragment = this;
-        cursor = new Cursor(0, 10);
+        cursor = new Cursor(0, 20);
 
     }
 
@@ -142,7 +142,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
             int total = firstVisibleItem + visibleItemCount;
             if(total==totalItemCount)
             {
-                ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
+                //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
             }
         }
     };
