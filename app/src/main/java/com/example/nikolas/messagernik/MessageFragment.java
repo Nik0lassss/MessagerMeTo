@@ -219,7 +219,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     @Override
     public void onUpdate(NotifyMessage notifyMessage) {
         if (null != fragment && null != notifyMessage)
-            Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
         if (0 == notifyMessage.getStatus()) {
             createInfoNotification("ok");
             ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(), cursor);
