@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private Button btnSendMessage;
     private EditText edtTextMessage;
     private Cursor cursor;
+    private LinearLayout inputMessageLinearLayout;
     View footer;
 
 
@@ -115,6 +117,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         btnSendMessage = (Button) rootView.findViewById(R.id.fragment_message_lin_layout_button_send_message);
         btnSendMessage.setOnClickListener(btnOnClickListenerSendMessage);
         edtTextMessage = (EditText) rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
+        inputMessageLinearLayout = (LinearLayout) rootView.findViewById(R.id.fragment_message_lin_layout);
         listView.setAdapter(messageAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
         listView.setOnScrollListener(onScrollListener);
@@ -124,6 +127,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                inputMessageLinearLayout.setVerticalGravity(View.GONE);
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
