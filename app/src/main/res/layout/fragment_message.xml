@@ -15,7 +15,8 @@
             android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:visibility="gone">
             <EditText
                 android:id="@+id/fragment_message_lin_layout_edit_text"
                 android:layout_weight="1"
