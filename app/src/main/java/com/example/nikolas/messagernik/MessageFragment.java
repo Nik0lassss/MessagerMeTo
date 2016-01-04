@@ -127,7 +127,9 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputMessageLinearLayout.setVisibility(View.GONE);
+                if (inputMessageLinearLayout.getVisibility() != View.GONE)
+                    inputMessageLinearLayout.setVisibility(View.GONE);
+                else inputMessageLinearLayout.setVisibility(View.VISIBLE);
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
@@ -154,8 +156,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             int total = firstVisibleItem + visibleItemCount;
-            if(total==totalItemCount)
-            {
+            if (total == totalItemCount) {
                 //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
             }
         }
@@ -234,10 +235,10 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     public void onUpdate(NotifyMessage notifyMessage) {
         if (null != fragment && null != notifyMessage)
 //            Toast.makeText(fragment.getActivity(), "Code: " + notifyMessage.getStatus() + "NotifyMessage:" + notifyMessage.getNotifyMessageString(), Toast.LENGTH_LONG).show();
-        if (0 == notifyMessage.getStatus()) {
-            createInfoNotification("ok");
-            ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(), cursor);
-        }
+            if (0 == notifyMessage.getStatus()) {
+                createInfoNotification("ok");
+                ServerApi.getConversationMessages(this, user.getId(), message.getConversation().getId(), cursor);
+            }
 
         ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
     }
