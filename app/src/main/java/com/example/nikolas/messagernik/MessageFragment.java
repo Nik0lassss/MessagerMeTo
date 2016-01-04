@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -52,6 +53,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private EditText edtTextMessage;
     private Cursor cursor;
     private LinearLayout inputMessageLinearLayout;
+    private FloatingActionButton fab;
     View footer;
 
 
@@ -123,13 +125,19 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         listView.setOnScrollListener(onScrollListener);
         footer = ((LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.progress_bar_layout, null, false);
         listView.addFooterView(footer);
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inputMessageLinearLayout.getVisibility() != View.GONE)
+
+                if (inputMessageLinearLayout.getVisibility() != View.GONE && fab.getVisibility()==View.VISIBLE) {
                     inputMessageLinearLayout.setVisibility(View.GONE);
-                else inputMessageLinearLayout.setVisibility(View.VISIBLE);
+                    fab.setVisibility(View.VISIBLE);
+                } else {
+                    inputMessageLinearLayout.setVisibility(View.VISIBLE);
+                    fab.setVisibility(View.INVISIBLE);
+
+                }
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
@@ -150,7 +158,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     ListView.OnScrollListener onScrollListener = new AbsListView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+            inputMessageLinearLayout.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
         }
 
         @Override
