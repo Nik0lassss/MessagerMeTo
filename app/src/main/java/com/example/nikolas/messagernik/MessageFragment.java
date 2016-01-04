@@ -127,7 +127,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputMessageLinearLayout.setVerticalGravity(View.GONE);
+                inputMessageLinearLayout.setVisibility(View.GONE);
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
