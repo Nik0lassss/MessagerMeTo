@@ -6,22 +6,20 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.example.nikolas.messagernik.activity.MainActivity;
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
@@ -54,7 +52,9 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private Cursor cursor;
     private LinearLayout inputMessageLinearLayout;
     private FloatingActionButton fab;
-    View footer;
+    private View footer;
+    private Boolean isFabOpen = true;
+    private Animation fab_open, fab_close;
 
 
     public static MessageFragment newInstance(User user, Message message) {
@@ -123,13 +123,15 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         listView.setAdapter(messageAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
         listView.setOnScrollListener(onScrollListener);
-        footer = ((LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.progress_bar_layout, null, false);
+        footer = ((LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.button_layout, null, false);
         listView.addFooterView(footer);
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab_open = AnimationUtils.loadAnimation(fragment.getActivity(),R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(fragment.getActivity(),R.anim.fab_close);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                animationFab();
                 if (inputMessageLinearLayout.getVisibility() != View.GONE && fab.getVisibility()==View.VISIBLE) {
                     inputMessageLinearLayout.setVisibility(View.GONE);
                     fab.setVisibility(View.VISIBLE);
@@ -145,6 +147,24 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         return rootView;
     }
 
+
+    public void animationFab()
+    {
+        if(fab!=null)
+        {
+            if(isFabOpen)
+            {
+                fab.startAnimation(fab_close);
+                isFabOpen=false;
+            }
+            else {
+                fab.startAnimation(fab_open);
+                isFabOpen=true;
+            }
+        }
+
+    }
+
     ListView.OnItemClickListener onConversationItemClickListener = new ListView.OnItemClickListener() {
 
         @Override
@@ -158,14 +178,21 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     ListView.OnScrollListener onScrollListener = new AbsListView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-            inputMessageLinearLayout.setVisibility(View.GONE);
-            fab.setVisibility(View.VISIBLE);
+            if(inputMessageLinearLayout.getVisibility()!=View.GONE)
+            {
+                inputMessageLinearLayout.setVisibility(View.GONE);
+                fab.setVisibility(View.VISIBLE);
+                animationFab();
+            }
+
+
         }
 
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             int total = firstVisibleItem + visibleItemCount;
             if (total == totalItemCount) {
+
                 //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
             }
         }
