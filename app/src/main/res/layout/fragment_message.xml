@@ -2,11 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
 
+            <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+                android:background="#FFB3F5E5" app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
         <LinearLayout
             android:id="@+id/fragment_message_lin_layout"
             android:layout_width="match_parent"
@@ -38,6 +48,7 @@
         </LinearLayout>
         <ListView
             android:id="@+id/fragment_message_listview"
+            android:layout_below="@id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="5dp"

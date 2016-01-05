@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toolbar;
 
 import com.example.nikolas.messagernik.activity.MainActivity;
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
@@ -55,7 +56,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private View footer;
     private Boolean isFabOpen = true;
     private Animation fab_open, fab_close;
-
+    private Button loadMessagesButton;
+    private Toolbar toolbar;
 
     public static MessageFragment newInstance(User user, Message message) {
         MessageFragment fragment = new MessageFragment();
@@ -120,24 +122,36 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         btnSendMessage.setOnClickListener(btnOnClickListenerSendMessage);
         edtTextMessage = (EditText) rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
         inputMessageLinearLayout = (LinearLayout) rootView.findViewById(R.id.fragment_message_lin_layout);
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+    
         listView.setAdapter(messageAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
         listView.setOnScrollListener(onScrollListener);
         footer = ((LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.button_layout, null, false);
         listView.addFooterView(footer);
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab_open = AnimationUtils.loadAnimation(fragment.getActivity(),R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(fragment.getActivity(),R.anim.fab_close);
+        fab_open = AnimationUtils.loadAnimation(fragment.getActivity(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(fragment.getActivity(), R.anim.fab_close);
+        loadMessagesButton = (Button) footer.findViewById(R.id.buttonLoadMessage);
+        loadMessagesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 animationFab();
-                if (inputMessageLinearLayout.getVisibility() != View.GONE && fab.getVisibility()==View.VISIBLE) {
+                if (inputMessageLinearLayout.getVisibility() != View.GONE && fab.getVisibility() == View.VISIBLE) {
                     inputMessageLinearLayout.setVisibility(View.GONE);
                     fab.setVisibility(View.VISIBLE);
+                    fab.setClickable(true);
                 } else {
+
                     inputMessageLinearLayout.setVisibility(View.VISIBLE);
-                    fab.setVisibility(View.INVISIBLE);
+                    fab.setVisibility(View.GONE);
+                    fab.setClickable(false);
 
                 }
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -148,18 +162,14 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     }
 
 
-    public void animationFab()
-    {
-        if(fab!=null)
-        {
-            if(isFabOpen)
-            {
+    public void animationFab() {
+        if (fab != null) {
+            if (isFabOpen) {
                 fab.startAnimation(fab_close);
-                isFabOpen=false;
-            }
-            else {
+                isFabOpen = false;
+            } else {
                 fab.startAnimation(fab_open);
-                isFabOpen=true;
+                isFabOpen = true;
             }
         }
 
@@ -178,10 +188,10 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     ListView.OnScrollListener onScrollListener = new AbsListView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if(inputMessageLinearLayout.getVisibility()!=View.GONE)
-            {
+            if (inputMessageLinearLayout.getVisibility() != View.GONE) {
                 inputMessageLinearLayout.setVisibility(View.GONE);
                 fab.setVisibility(View.VISIBLE);
+                fab.setClickable(true);
                 animationFab();
             }
 
@@ -256,7 +266,6 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         messageAdapter.updateMessageArrayList(messageList);
         messageAdapter.notifyDataSetChanged();
         this.cursor = cursor;
-
     }
 
     @Override
