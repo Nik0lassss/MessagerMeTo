@@ -57,7 +57,6 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private Boolean isFabOpen = true;
     private Animation fab_open, fab_close;
     private Button loadMessagesButton;
-    private Toolbar toolbar;
 
     public static MessageFragment newInstance(User user, Message message) {
         MessageFragment fragment = new MessageFragment();
@@ -122,8 +121,6 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         btnSendMessage.setOnClickListener(btnOnClickListenerSendMessage);
         edtTextMessage = (EditText) rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
         inputMessageLinearLayout = (LinearLayout) rootView.findViewById(R.id.fragment_message_lin_layout);
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-    
         listView.setAdapter(messageAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
         listView.setOnScrollListener(onScrollListener);

@@ -1,8 +1,9 @@
 package com.example.nikolas.messagernik.activity;
 
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 
 import com.example.nikolas.messagernik.LoginFragment;
@@ -15,7 +16,7 @@ import com.example.nikolas.messagernik.helper.FileHelper;
 import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.SharedPreferencesHelper;
 
-public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, ServerApi.onUpdateListener {
+public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener, ServerApi.onUpdateListener {
 
 
     @Override
@@ -27,6 +28,13 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
         ServerApi.setUpReciever(getApplicationContext());
         SecretTocken.initialSecretTocken();
         Helper.initHelper(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        toolbar.setTitle("Messager");
+//        toolbar.setTitleTextColor(getResources().getColor(R.color.teal_50));
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         if (null == savedInstanceState) {
 
         }
@@ -55,10 +63,9 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
             } else
                 getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
         }
-        if(object.getClass().getName().equals(User.class.getName()))
-        {
-            Helper.setMeUser((User)object);
-            getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User)object)).commit();
+        if (object.getClass().getName().equals(User.class.getName())) {
+            Helper.setMeUser((User) object);
+            getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User) object)).commit();
         }
     }
 }
