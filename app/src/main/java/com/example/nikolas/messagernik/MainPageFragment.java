@@ -1,8 +1,8 @@
 package com.example.nikolas.messagernik;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +61,7 @@ public class MainPageFragment extends Fragment {
         drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
         NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(), navigationDrawerListViewArrayList);
         navigationDrawerListView.setAdapter(navAdapter);
-        getFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).addToBackStack("").commit();
         navigationDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
         return rootView;
     }

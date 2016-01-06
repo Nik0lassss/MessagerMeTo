@@ -1,7 +1,7 @@
 package com.example.nikolas.messagernik;
 
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +77,7 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //((Activity) Helper.getContext()).getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
             //fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
-            fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessageFragment.newInstance(user,messageArrayList.get(position))).addToBackStack("").commit();
+            fragment.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessageFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
 
         }
     };

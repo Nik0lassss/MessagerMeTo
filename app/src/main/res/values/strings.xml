@@ -25,4 +25,5 @@
     <string name="login_layout_btn_create_account_string">Create Account</string>
     <string name="fragment_message_button_name">SEND</string>
     <string name="AppBarTitle">Messager</string>
+    <string name="activity_main_toolbar">Messager</string>
 </resources>

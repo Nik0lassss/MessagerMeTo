@@ -1,7 +1,9 @@
 package com.example.nikolas.messagernik.helper;
 
 
-import android.app.Fragment;
+
+
+import android.support.v4.app.Fragment;
 
 import com.example.nikolas.messagernik.ConversationFragment;
 

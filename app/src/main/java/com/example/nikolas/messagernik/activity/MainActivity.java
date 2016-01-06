@@ -4,6 +4,7 @@ package com.example.nikolas.messagernik.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 
 import com.example.nikolas.messagernik.LoginFragment;
@@ -29,19 +30,23 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         SecretTocken.initialSecretTocken();
         Helper.initHelper(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-//        toolbar.setTitle("Messager");
-//        toolbar.setTitleTextColor(getResources().getColor(R.color.teal_50));
         setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         if (null == savedInstanceState) {
 
         }
         if (SecretTocken.isCorrectToken())
             ServerApi.validateSecretTocken(this, SecretTocken.getSecretTockenString());
         else
-            getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
 
     }
 
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
     @Override
     public void onFragmentInteraction(User meUser) {
         Helper.setMeUser(meUser);
-        getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance(meUser)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance(meUser)).commit();
     }
 
 
@@ -61,11 +66,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
             if (isValid) {
                 ServerApi.getUser(this, SecretTocken.getSecretTockenString());
             } else
-                getFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
+              getSupportFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
         }
         if (object.getClass().getName().equals(User.class.getName())) {
             Helper.setMeUser((User) object);
-            getFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User) object)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User) object)).commit();
         }
     }
 }

@@ -1,8 +1,9 @@
 package com.example.nikolas.messagernik.api;
 
 import android.app.Activity;
-import android.app.Fragment;
+
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.widget.ProgressBar;
 
 import com.android.volley.Response;

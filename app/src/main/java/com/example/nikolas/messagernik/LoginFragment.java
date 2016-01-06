@@ -16,10 +16,9 @@ import com.example.nikolas.messagernik.api.UploadFileToServer;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.interfaces.UpdateLoginFragmentInterface;
-import com.example.nikolas.messagernik.listeners.LoginFragmentListener;
 
 
-public class LoginFragment extends android.app.Fragment implements UpdateLoginFragmentInterface.onUpdateLoginFragmentListener{
+public class LoginFragment extends android.support.v4.app.Fragment implements UpdateLoginFragmentInterface.onUpdateLoginFragmentListener{
 
     private OnFragmentInteractionListener mListener;
     private Uri imageUri;
@@ -27,7 +26,7 @@ public class LoginFragment extends android.app.Fragment implements UpdateLoginFr
     private Button btnSend, btnCreateAccount, btnTest, btnTestSelectImage;
     private android.widget.ImageView imageBanner;
     private ProgressBar prBar;
-    private android.app.Fragment fragment;
+    private android.support.v4.app.Fragment fragment;
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
