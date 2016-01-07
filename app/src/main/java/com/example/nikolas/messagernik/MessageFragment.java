@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.helper.Helper;
+import com.example.nikolas.messagernik.helper.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -129,6 +132,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab_open = AnimationUtils.loadAnimation(fragment.getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(fragment.getActivity(), R.anim.fab_close);
+
         loadMessagesButton = (Button) footer.findViewById(R.id.buttonLoadMessage);
         loadMessagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +140,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
                 ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
             }
         });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,10 +156,15 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
                     fab.setClickable(false);
 
                 }
+
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
         });
+        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
+        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+        ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;
     }
 

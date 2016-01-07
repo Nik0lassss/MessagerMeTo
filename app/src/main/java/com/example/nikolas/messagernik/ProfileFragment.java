@@ -3,6 +3,7 @@ package com.example.nikolas.messagernik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,8 @@ public class ProfileFragment extends Fragment {
         textViewLastName.setText(profileUser.getFirst_name());
         textViewFirstName.setText(profileUser.getLast_name());
         imageProgressView.setImageUrl(profileUser.getPhotoAvatar());
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         return rootView;
     }
 

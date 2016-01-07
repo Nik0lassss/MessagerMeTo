@@ -2,6 +2,8 @@ package com.example.nikolas.messagernik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import com.example.nikolas.messagernik.adapter.ConversationAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.helper.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -68,6 +71,12 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         listView = (ListView) rootView.findViewById(R.id.fragment_conversation_listview);
         listView.setAdapter(conversationAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
+        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+        ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;
     }
 

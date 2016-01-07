@@ -26,4 +26,6 @@
     <string name="fragment_message_button_name">SEND</string>
     <string name="AppBarTitle">Messager</string>
     <string name="activity_main_toolbar">Messager</string>
+    <string name="navigation_bar_open">Open</string>
+    <string name="navigation_bar_close">Close</string>
 </resources>
