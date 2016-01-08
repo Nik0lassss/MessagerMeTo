@@ -3,6 +3,7 @@ package com.example.nikolas.messagernik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.system.ImageProgressView;
+import com.example.nikolas.messagernik.helper.ViewHelper;
 
 
 public class ProfileFragment extends Fragment {
@@ -55,8 +57,11 @@ public class ProfileFragment extends Fragment {
         textViewLastName.setText(profileUser.getFirst_name());
         textViewFirstName.setText(profileUser.getLast_name());
         imageProgressView.setImageUrl(profileUser.getPhotoAvatar());
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;
     }
 

@@ -6,10 +6,11 @@
         android:id="@+id/image_progress_bar_view_pr_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         style="?android:attr/progressBarStyleHorizontal"
         />
     <com.example.nikolas.messagernik.entity.system.ImageView
         android:id="@+id/image_progress_bar_view_image_view_avatar"
-        android:layout_width="500px"
-        android:layout_height="500px" />
+        android:layout_width="240px"
+        android:layout_height="240px" />
 </LinearLayout>

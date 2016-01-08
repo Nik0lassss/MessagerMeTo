@@ -69,20 +69,18 @@ public class MainPageFragment extends Fragment {
         ViewHelper.initViewHelperDrawerLayout(drawerLayout);
         NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(), navigationDrawerListViewArrayList);
         navigationDrawerListView.setAdapter(navAdapter);
-        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).addToBackStack("").commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
         navigationDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
 
         drawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Close");
                 ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Open");
                 ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
             }
         };
