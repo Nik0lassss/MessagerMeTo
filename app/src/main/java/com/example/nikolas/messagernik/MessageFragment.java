@@ -1,19 +1,25 @@
 package com.example.nikolas.messagernik;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
@@ -22,11 +28,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toolbar;
+
 
 import com.example.nikolas.messagernik.activity.MainActivity;
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
+import com.example.nikolas.messagernik.debug.DebugValue;
 import com.example.nikolas.messagernik.entity.Cursor;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
@@ -34,11 +41,12 @@ import com.example.nikolas.messagernik.entity.SecretTocken;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.ViewHelper;
+import com.example.nikolas.messagernik.interfaces.ScrollStateChangeListener;
 
 import java.util.ArrayList;
 
 
-public class MessageFragment extends Fragment implements ServerApi.onUpdateMessageFragmentMessageList {
+public class MessageFragment extends Fragment implements ServerApi.onUpdateMessageFragmentMessageList, ScrollStateChangeListener {
 
     public static final String ARG_USER_KEY = "message_fragment_arg_user_key";
 
@@ -60,6 +68,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
     private Boolean isFabOpen = true;
     private Animation fab_open, fab_close;
     private Button loadMessagesButton;
+    private int lastVisiblePositionListView;
 
     public static MessageFragment newInstance(User user, Message message) {
         MessageFragment fragment = new MessageFragment();
@@ -125,8 +134,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         edtTextMessage = (EditText) rootView.findViewById(R.id.fragment_message_lin_layout_edit_text);
         inputMessageLinearLayout = (LinearLayout) rootView.findViewById(R.id.fragment_message_lin_layout);
         listView.setAdapter(messageAdapter);
-        listView.setOnItemClickListener(onConversationItemClickListener);
-        listView.setOnScrollListener(onScrollListener);
+        //listView.setOnItemClickListener(onConversationItemClickListener);
+        //listView.setOnScrollListener(onScrollListener);
         footer = ((LayoutInflater) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.button_layout, null, false);
         listView.addFooterView(footer);
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -201,8 +210,21 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
                 fab.setVisibility(View.VISIBLE);
                 fab.setClickable(true);
                 animationFab();
-            }
 
+            }
+            Log.i(DebugValue.LOG, "scrolling state change");
+//            if (scrollState == 0) {
+//                Log.i(DebugValue.LOG, "scrolling stopped...");
+//                final int currentPosition = listView.getFirstVisiblePosition();
+//                if (currentPosition > lastVisiblePositionListView) {
+//                    onScrollDown();
+//                    Log.d(DebugValue.LOG,"onScrollUp");
+//                } else if (currentPosition < lastVisiblePositionListView) {
+//                    onScrollUp();
+//                    Log.d(DebugValue.LOG, "onScrollDown");
+//                }
+//                lastVisiblePositionListView = currentPosition;
+//            }
 
         }
 
@@ -211,8 +233,20 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
             int total = firstVisibleItem + visibleItemCount;
             if (total == totalItemCount) {
 
+
                 //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
+
             }
+            Log.i(DebugValue.LOG, "scrolling stopped...");
+            final int currentPosition = listView.getFirstVisiblePosition();
+            if (currentPosition > lastVisiblePositionListView) {
+                onScrollDown();
+                Log.d(DebugValue.LOG, "onScrollUp");
+            } else if (currentPosition < lastVisiblePositionListView) {
+                onScrollUp();
+                Log.d(DebugValue.LOG, "onScrollDown");
+            }
+            lastVisiblePositionListView = currentPosition;
         }
     };
 
@@ -294,5 +328,25 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
             }
 
         ServerApi.getNotifyNewMessage(fragment, message.getConversation().getId(), SecretTocken.getSecretTockenString());
+    }
+
+
+    @Override
+    public void onScrollDown() {
+
+        //ViewHelper.getToolbar().animate().translationY(-ViewHelper.getToolbar().getBottom()).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+
+//        if(actionBar.isShowing())
+//        {
+//            actionBar.an
+////            actionBar.setShowHideAnimationEnabled(true);
+////            actionBar.hide();
+//        }
+    }
+
+    @Override
+    public void onScrollUp() {
+        //ViewHelper.getToolbar().animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+
     }
 }

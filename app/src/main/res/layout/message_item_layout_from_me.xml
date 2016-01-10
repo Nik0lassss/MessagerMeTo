@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/conversation_item_template"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/conversation_item_group_message_data_from_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/conversation_sender_info_from_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:paddingLeft="4dp" />
+        <!--android:text="Sender.FistName Sender.LastName" />-->
+        <TextView
+            android:id="@+id/conversation_last_content_from_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:layout_below="@id/conversation_sender_info_from_me"
+            android:text="lastMessage" />
+        <TextView
+            android:id="@+id/conversation_date_from_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/conversation_sender_info_from_me"
+            android:gravity="right"
+            android:text="10-11-2014 09:40:22"
+            android:layout_below="@id/conversation_last_content_from_me" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -8,8 +8,9 @@
         android:id="@+id/conversation_image_sender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:gravity="center"
+        android:background="#E0F2F1"
+        android:padding="5dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
 
     <!--<ImageView-->
@@ -21,19 +22,19 @@
     <!--android:layout_alignParentBottom="true"-->
     <!--android:src="@drawable/FbIcon" />-->
 
-    <com.example.nikolas.messagernik.entity.system.ImageProgressViewScale
-        android:id="@+id/conversation_image_reciever"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:gravity="center"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true" />
+    <!--<com.example.nikolas.messagernik.entity.system.ImageProgressViewScale-->
+        <!--android:id="@+id/conversation_image_reciever"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="#ffffff"-->
+        <!--android:gravity="center"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_alignParentLeft="true" />-->
     <RelativeLayout
         android:id="@+id/conversation_item_group_message_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/conversation_image_sender">
+        >
         <TextView
             android:id="@+id/conversation_sender_info"
             android:layout_width="wrap_content"
@@ -54,7 +55,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/conversation_sender_info"
-            android:gravity="right"
             android:text="10-11-2014 09:40:22"
             android:layout_below="@id/conversation_last_content" />
     </RelativeLayout>
