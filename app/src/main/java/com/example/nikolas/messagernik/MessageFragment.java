@@ -171,8 +171,8 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
             }
         });
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Messages");
-        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
+        //ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
         ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
         ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;

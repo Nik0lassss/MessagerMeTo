@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -54,6 +57,7 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER_KEY);
         }
@@ -74,11 +78,22 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Conversation");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
+//        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
         ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
         ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.conversation_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     ListView.OnItemClickListener onConversationItemClickListener = new ListView.OnItemClickListener() {
