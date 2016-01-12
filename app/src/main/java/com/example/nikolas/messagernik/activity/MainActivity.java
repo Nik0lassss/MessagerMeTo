@@ -2,11 +2,8 @@ package com.example.nikolas.messagernik.activity;
 
 
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.View;
 
 
 import com.example.nikolas.messagernik.LoginFragment;
@@ -19,6 +16,7 @@ import com.example.nikolas.messagernik.helper.FileHelper;
 import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.SharedPreferencesHelper;
 import com.example.nikolas.messagernik.helper.ViewHelper;
+import com.example.nikolas.messagernik.FriendFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener, ServerApi.onUpdateListener {
 
@@ -76,4 +74,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
             getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance((User) object)).commit();
         }
     }
+
+
 }

@@ -65,6 +65,7 @@ public class MainPageFragment extends Fragment {
         navigationDrawerListViewArrayList.add(0, "Messages");
         navigationDrawerListViewArrayList.add(1, "Profile");
         navigationDrawerListViewArrayList.add(2, "Photo");
+        navigationDrawerListViewArrayList.add(3, "Friends");
         drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
         ViewHelper.initViewHelperDrawerLayout(drawerLayout);
         NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(), navigationDrawerListViewArrayList);

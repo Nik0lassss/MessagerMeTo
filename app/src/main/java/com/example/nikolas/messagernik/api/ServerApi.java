@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.Cursor;
+import com.example.nikolas.messagernik.entity.Friend;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.User;
@@ -37,6 +38,7 @@ public class ServerApi {
     private static onUpdateListener onUpdateListenerInterface;
     private static onUpdateMessageFragmentMessageList onUpdateMessageFragmentMessageListInterface;
     private static UpdateLoginFragmentInterface.onUpdateLoginFragmentListener onUpdateLoginFragmenyListenerInterface;
+    private static onUpdateFrinedsList onUpdateFrinedsListInterface;
 
     public static void setUpReciever(Context context) {
         receiver = new Receiver(context);
@@ -84,11 +86,26 @@ public class ServerApi {
                 responseListCursor = ResponseListCursors.fromJson(jsonObject);
                 messageArrayList = Message.fromJson((JSONArray) responseListCursor.getResponseList());
                 cursor = responseListCursor.getCursor();
-                onUpdateMessageFragmentMessageListInterface.onUpdate(messageArrayList,cursor);
+                onUpdateMessageFragmentMessageListInterface.onUpdate(messageArrayList, cursor);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+        }
+    };
+
+    private static Response.Listener getFrinedsListListener = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            ArrayList<Friend> friendArrayList = null;
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                ResponseList responseList = ResponseList.fromJson(jsonObject);
+                friendArrayList = Friend.fromJson((JSONArray) responseList.getResponseList());
+                onUpdateFrinedsListInterface.onUpdate(friendArrayList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -199,14 +216,21 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
 
-    public static void getConversationMessages(Fragment listenerFragment, Integer userId, Integer conversationId,Cursor cursor) {
+    public static void getConversationMessages(Fragment listenerFragment, Integer userId, Integer conversationId, Cursor cursor) {
         onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("userId", userId.toString());
         values.put("conversation_id", conversationId.toString());
-        values.put("cursorFrom",cursor.getFromId().toString());
-        values.put("cursorTo",cursor.getCount().toString());
+        values.put("cursorFrom", cursor.getFromId().toString());
+        values.put("cursorTo", cursor.getCount().toString());
         receiver.sendPostRequest(values, Config.USER_GET_NEW_MESSAGE, getMessagesListener, erroreResponse);
+    }
+
+    public static void getFriendsList(Fragment friendsFragment, Integer myId) {
+        onUpdateFrinedsListInterface = (onUpdateFrinedsList) friendsFragment;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("my_id", myId.toString());
+        receiver.sendPostRequest(values, Config.POST_GET_FRIENDS_LIST, getFrinedsListListener, erroreResponse);
     }
 
     public static void getAllUsers(Fragment listenerFragment) {
@@ -251,11 +275,17 @@ public class ServerApi {
     }
 
 
-    public interface onUpdateMessageFragmentMessageList
-    {
-        public void onUpdate(ArrayList<Message> messageList,Cursor cursor);
+    public interface onUpdateMessageFragmentMessageList {
+        public void onUpdate(ArrayList<Message> messageList, Cursor cursor);
+
         public void onUpdate(Message message);
+
         public void onUpdate(NotifyMessage notifyMessage);
+    }
+
+    public interface onUpdateFrinedsList {
+        public void onUpdate(ArrayList<Friend> frinedsList);
+
     }
 
     public static int getRecieveMessage(Fragment listenerFragment, Integer id) {
