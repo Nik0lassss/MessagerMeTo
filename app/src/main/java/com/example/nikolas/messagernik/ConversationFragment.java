@@ -80,7 +80,7 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
-        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
         ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;
     }

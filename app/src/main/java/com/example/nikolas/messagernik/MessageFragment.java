@@ -33,7 +33,6 @@ import android.widget.ListView;
 import com.example.nikolas.messagernik.activity.MainActivity;
 import com.example.nikolas.messagernik.adapter.MessageAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
-import com.example.nikolas.messagernik.debug.DebugValue;
 import com.example.nikolas.messagernik.entity.Cursor;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
@@ -212,7 +211,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
                 animationFab();
 
             }
-            Log.i(DebugValue.LOG, "scrolling state change");
+           // Log.i(DebugValue.LOG, "scrolling state change");
 //            if (scrollState == 0) {
 //                Log.i(DebugValue.LOG, "scrolling stopped...");
 //                final int currentPosition = listView.getFirstVisiblePosition();
@@ -237,14 +236,14 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
                 //ServerApi.getConversationMessages(fragment, user.getId(), message.getConversation().getId(), cursor);
 
             }
-            Log.i(DebugValue.LOG, "scrolling stopped...");
+          //  Log.i(DebugValue.LOG, "scrolling stopped...");
             final int currentPosition = listView.getFirstVisiblePosition();
             if (currentPosition > lastVisiblePositionListView) {
                 onScrollDown();
-                Log.d(DebugValue.LOG, "onScrollUp");
+            //    Log.d(DebugValue.LOG, "onScrollUp");
             } else if (currentPosition < lastVisiblePositionListView) {
                 onScrollUp();
-                Log.d(DebugValue.LOG, "onScrollDown");
+              //  Log.d(DebugValue.LOG, "onScrollDown");
             }
             lastVisiblePositionListView = currentPosition;
         }

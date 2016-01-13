@@ -2,9 +2,15 @@ package com.example.nikolas.messagernik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.nikolas.messagernik.adapter.FriendsBaseAdapter;
@@ -29,6 +35,7 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             me = getArguments().getParcelable(KEY_USER);
         }
@@ -51,9 +58,32 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         friendsListView = (ListView) view.findViewById(R.id.fragment_friends_listview);
         friendsListView.setAdapter(friendsBaseAdapter);
+        friendsListView.setOnItemClickListener(onFriendsListClickListener);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Friends");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         return view;
     }
 
+    ListView.OnItemClickListener onFriendsListClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ProfileFragment profileFragment = ProfileFragment.newInstance(friendsList.get(position).getFriend());
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.additional_content_frame, profileFragment).addToBackStack(profileFragment.getClass().getName()).commit();
+        }
+    };
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.conversation_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onUpdate(ArrayList<Friend> friendsList) {
