@@ -36,6 +36,7 @@ public class ServerApi {
     private static Receiver receiver;
 
     private static onUpdateListener onUpdateListenerInterface;
+    private static onGetAllUsers onGetAllUsersInterface;
     private static onUpdateMessageFragmentMessageList onUpdateMessageFragmentMessageListInterface;
     private static UpdateLoginFragmentInterface.onUpdateLoginFragmentListener onUpdateLoginFragmenyListenerInterface;
     private static onUpdateFrinedsList onUpdateFrinedsListInterface;
@@ -161,6 +162,22 @@ public class ServerApi {
 
         }
     };
+
+    private static Response.Listener getAllUsers = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            try {
+                ArrayList<User> userArrayList = new ArrayList<>();
+                JSONObject jsonObject = new JSONObject((String) object);
+                ResponseList responseList = ResponseList.fromJson(jsonObject);
+                userArrayList = User.fromJson((JSONArray)responseList.getResponseList());
+                onGetAllUsersInterface.onUpdate(userArrayList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     private static Response.Listener getUserListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
@@ -234,8 +251,8 @@ public class ServerApi {
     }
 
     public static void getAllUsers(Fragment listenerFragment) {
-        onUpdateListenerInterface = (onUpdateListener) listenerFragment;
-        receiver.sendGetRequest(Config.GET_ALL_USERS, response, erroreResponse);
+        onGetAllUsersInterface = (onGetAllUsers) listenerFragment;
+        receiver.sendGetRequest(Config.GET_ALL_USERS, getAllUsers, erroreResponse);
     }
 
     public static void getNotifyNewMessage(Fragment listenerFragment, Integer conversationId, String secretTockenString) {
@@ -274,6 +291,9 @@ public class ServerApi {
         public void onUpdate(Object object);
     }
 
+    public interface onGetAllUsers {
+        public void onUpdate(ArrayList<User> userArrayList);
+    }
 
     public interface onUpdateMessageFragmentMessageList {
         public void onUpdate(ArrayList<Message> messageList, Cursor cursor);

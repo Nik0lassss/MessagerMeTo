@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_friends_item_template"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.example.nikolas.messagernik.entity.system.ImageProgressViewScale
+        android:id="@+id/search_friends_item_image_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="#ffffff"
+        android:gravity="center" />
+
+    <RelativeLayout
+        android:id="@+id/search_friends_item_group_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/search_friends_item_image_friend">
+
+        <TextView
+            android:id="@+id/search_friends_item_text_view_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/search_friends_item_add_to_friends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_friends_item_text_view_info"
+            android:text="Add to friends" />
+
+        <Button
+            android:id="@+id/search_friends_item_delete_from_friends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_friends_item_text_view_info"
+            android:layout_toRightOf="@id/search_friends_item_add_to_friends"
+            android:text="Delete from friends" />
+    </RelativeLayout>
+
+</RelativeLayout>

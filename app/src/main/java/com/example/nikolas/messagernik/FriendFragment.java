@@ -17,6 +17,7 @@ import com.example.nikolas.messagernik.adapter.FriendsBaseAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Friend;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.helper.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
     private User me;
     private static String KEY_USER = "KEY_USER";
     private FriendsBaseAdapter friendsBaseAdapter;
+    FragmentManager fragmentManager;
 
     public FriendFragment() {
     }
@@ -40,7 +42,7 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
             me = getArguments().getParcelable(KEY_USER);
         }
         friendsBaseAdapter = new FriendsBaseAdapter(getActivity(), friendsList);
-
+        fragmentManager = getFragmentManager();
     }
 
     public static Fragment newInstance(User user) {
@@ -62,6 +64,8 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Friends");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        ViewHelper.getActionBarDrawerToggle().syncState();
         return view;
     }
 
@@ -69,7 +73,7 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ProfileFragment profileFragment = ProfileFragment.newInstance(friendsList.get(position).getFriend());
-            FragmentManager fragmentManager = getFragmentManager();
+
             fragmentManager.beginTransaction().replace(R.id.additional_content_frame, profileFragment).addToBackStack(profileFragment.getClass().getName()).commit();
         }
     };
@@ -77,12 +81,22 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.conversation_menu, menu);
+        inflater.inflate(R.menu.friends_menu, menu);
+
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.search_friends_friends_fragment:
+                SearchFriendsFragment searchFriendsFragment = SearchFriendsFragment.newInstance();
+                fragmentManager.beginTransaction().replace(R.id.additional_content_frame, searchFriendsFragment).addToBackStack(searchFriendsFragment.getClass().getName()).commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @Override

@@ -140,12 +140,13 @@ public class MainPageFragment extends Fragment {
 
         private void selectItem(int position) {
             Fragment fragment = FragmentGetter.getFragment(position);
-            if (null != fragment) {
+            if (null != fragment && fragment.getClass().equals(ConversationFragment.class)) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(ConversationFragment.ARG_USER_KEY, profileUser);
                 fragment.setArguments(bundle);
             }
             FragmentManager fragmentManager = getFragmentManager();
+
             fragmentManager.beginTransaction().replace(R.id.additional_content_frame, fragment).addToBackStack(fragment.getClass().getName()).commit();
             navigationDrawerListView.setItemChecked(position, true);
             drawerLayout.closeDrawer(navigationDrawerListView);
