@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
         ViewHelper.getActionBarDrawerToggle().syncState();
+        
         return rootView;
     }
 
