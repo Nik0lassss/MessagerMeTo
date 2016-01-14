@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.example.nikolas.messagernik.ConversationFragment;
 import com.example.nikolas.messagernik.FriendFragment;
+import com.example.nikolas.messagernik.FriendFragmentWithViewPagerFragment;
 import com.example.nikolas.messagernik.ProfileFragment;
 
 /**
@@ -21,7 +22,7 @@ public class FragmentGetter {
             case 1:
                 return ProfileFragment.newInstance(Helper.getMeUser());
             case 3:
-                return FriendFragment.newInstance(Helper.getMeUser());
+                return FriendFragmentWithViewPagerFragment.newInstance();
             default:
                 return null;
         }

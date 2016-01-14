@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.nikolas.messagernik.adapter.FriendFragmentViewPagerAdapter;
 import com.example.nikolas.messagernik.adapter.FriendsBaseAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.Friend;
@@ -29,7 +30,9 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
     private User me;
     private static String KEY_USER = "KEY_USER";
     private FriendsBaseAdapter friendsBaseAdapter;
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
+    private FriendFragmentViewPagerAdapter viewPagerAdapter;
+
 
     public FriendFragment() {
     }
@@ -43,6 +46,10 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
         }
         friendsBaseAdapter = new FriendsBaseAdapter(getActivity(), friendsList);
         fragmentManager = getFragmentManager();
+    }
+
+    public void setFriendsBaseAdapter(FriendFragmentViewPagerAdapter viewPagerAdapter) {
+        this.viewPagerAdapter = viewPagerAdapter;
     }
 
     public static Fragment newInstance(User user) {
