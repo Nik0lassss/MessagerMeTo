@@ -4,7 +4,7 @@
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/search_friends_friends_fragment"
-        android:icon="@mipmap/ic_search_white_48dp"
+        android:icon="@mipmap/ic_search_black_48dp"
         android:title="@string/search_friends_friends_fragment"
         app:showAsAction="ifRoom"/>
 

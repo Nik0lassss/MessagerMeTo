@@ -14,7 +14,7 @@
         android:elevation="4dp"
         app:title="@string/activity_main_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:titleTextColor="@color/teal_50"
+        app:titleTextColor="@color/grey_900"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <FrameLayout
