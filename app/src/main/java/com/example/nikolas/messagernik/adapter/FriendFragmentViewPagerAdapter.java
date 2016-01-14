@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.example.nikolas.messagernik.FriendFragment;
 import com.example.nikolas.messagernik.helper.Helper;
 
+
 /**
  * Created by Nikolas on 14.01.2016.
  */
