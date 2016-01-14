@@ -19,6 +19,7 @@ public class User implements Parcelable {
     private String user_login;
     private String first_name;
     private String last_name;
+    private Integer isFriends;
 
 
     public User(Integer id, String first_name, String last_name, SecurityUser securityUser, String photoAvatar) {
@@ -40,6 +41,25 @@ public class User implements Parcelable {
         last_name = in.readString();
         user_login = in.readString();
         photoAvatar = in.readString();
+        isFriends = in.readInt();
+    }
+
+
+    public User(Integer id, String user_login, String first_name, String last_name, String photoAvatar) {
+        this.id = id;
+        this.user_login = user_login;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.photoAvatar = photoAvatar;
+    }
+
+    public User(Integer id, String user_login, String first_name, String last_name, Integer isFriends, String photoAvatar) {
+        this.id = id;
+        this.user_login = user_login;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.isFriends = isFriends;
+        this.photoAvatar = photoAvatar;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -53,14 +73,6 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
-
-    public User(Integer id, String user_login, String first_name, String last_name, String photoAvatar) {
-        this.id = id;
-        this.user_login = user_login;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.photoAvatar = photoAvatar;
-    }
 
     public Integer getId() {
         return id;
@@ -97,7 +109,8 @@ public class User implements Parcelable {
         final String lastName = object.optString("last_name", "");
         final String photoAvatar = object.optString("photo_avatar", "");
         final String user_login = object.optString("user_login", "");
-        return new User(id, user_login, firstName, lastName, photoAvatar);
+        final Integer isFriends = object.optInt("isFriend", 0);
+        return new User(id, user_login, firstName, lastName,isFriends, photoAvatar);
     }
 
     public static User fromJsonWithToken(final JSONObject object) {
@@ -113,7 +126,8 @@ public class User implements Parcelable {
         final String lastName = userJson.optString("last_name", "");
         final String photoAvatar = userJson.optString("photo_avatar", "");
         final String user_login = userJson.optString("user_login", "");
-        return new User(id, user_login, firstName, lastName, photoAvatar);
+        final Integer isFriends = object.optInt("isFriend", 0);
+        return new User(id, user_login, firstName, lastName,isFriends, photoAvatar);
     }
 
     public static ArrayList<User> fromJson(final JSONArray arrayObject) {
@@ -129,18 +143,6 @@ public class User implements Parcelable {
     }
 
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(first_name);
-        dest.writeString(last_name);
-        dest.writeString(user_login);
-        dest.writeString(photoAvatar);
-    }
 
     public String getUser_login() {
         return user_login;
@@ -152,5 +154,27 @@ public class User implements Parcelable {
 
     public String getPhotoAvatar() {
         return photoAvatar;
+    }
+
+    public Integer getIsFriends() {
+        return isFriends;
+    }
+
+    public void setIsFriends(Integer isFriends) {
+        this.isFriends = isFriends;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(user_login);
+        dest.writeString(first_name);
+        dest.writeString(last_name);
+        dest.writeString(photoAvatar);
+        dest.writeInt(isFriends);
     }
 }

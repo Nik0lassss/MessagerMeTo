@@ -15,7 +15,7 @@ public class Config {
     public static final String PUT_MESSAGE_URL=SERVER_URL+GET_USER_URL+"message";
     public static final String GET_IMAGE_URL=SERVER_URL+IMAGE_PATH;
     public static final String CREATE_ACCOUNT =SERVER_URL+"rest/account/create";
-    public static final String GET_ALL_USERS=SERVER_URL+GET_USER_URL+"all";
+    public static final String GET_ALL_USERS=SERVER_URL+GET_USER_URL+"all/";
     public static final String VALIDATE_SECRET_TOCKEN=SERVER_URL+GET_USER_URL+"validateTocken";
     public static final String GET_RECIEVED_MESSAGE=SERVER_URL+"rest/user/message/received/";
     public static final String POST_NOTIFY_NEW_MESSAGE ="http://messagserver-chirkevich.rhcloud.com/server/name/get/";

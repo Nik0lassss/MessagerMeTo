@@ -16,6 +16,7 @@ import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.response.ResponseList;
 import com.example.nikolas.messagernik.entity.response.ResponseListCursors;
+import com.example.nikolas.messagernik.entity.response.ResponseListUsers;
 import com.example.nikolas.messagernik.entity.response.ResponseObject;
 import com.example.nikolas.messagernik.interfaces.UpdateLoginFragmentInterface;
 import com.example.nikolas.messagernik.listeners.LoginFragmentListener;
@@ -125,7 +126,7 @@ public class ServerApi {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            
+
 
         }
     };
@@ -170,8 +171,8 @@ public class ServerApi {
             try {
                 ArrayList<User> userArrayList = new ArrayList<>();
                 JSONObject jsonObject = new JSONObject((String) object);
-                ResponseList responseList = ResponseList.fromJson(jsonObject);
-                userArrayList = User.fromJson((JSONArray)responseList.getResponseList());
+                ResponseListUsers responseList = ResponseListUsers.fromJson(jsonObject);
+                userArrayList = User.fromJson((JSONArray) responseList.getResponseList());
                 onGetAllUsersInterface.onUpdate(userArrayList);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -251,9 +252,9 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.POST_GET_FRIENDS_LIST, getFrinedsListListener, erroreResponse);
     }
 
-    public static void getAllUsers(Fragment listenerFragment) {
+    public static void getAllUsers(Fragment listenerFragment, Integer myId) {
         onGetAllUsersInterface = (onGetAllUsers) listenerFragment;
-        receiver.sendGetRequest(Config.GET_ALL_USERS, getAllUsers, erroreResponse);
+        receiver.sendGetRequest(Config.GET_ALL_USERS + myId, getAllUsers, erroreResponse);
     }
 
     public static void getNotifyNewMessage(Fragment listenerFragment, Integer conversationId, String secretTockenString) {

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.example.nikolas.messagernik.adapter.SearchFriendsBaseAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.ViewHelper;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class SearchFriendsFragment extends Fragment implements ServerApi.onGetAl
         if (getArguments() != null) {
 
         }
-        ServerApi.getAllUsers(this);
+        ServerApi.getAllUsers(this, Helper.getMeUser().getId());
     }
 
     @Override

@@ -12,18 +12,27 @@
         android:background="#ffffff"
         android:gravity="center" />
 
+    <ImageView
+        android:id="@+id/search_friends_item_is_friends"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="bottom"
+        android:src="@mipmap/ic_done_black_48dp"
+        android:layout_toLeftOf="@id/search_friends_item_image_friend"
+        android:contentDescription="ImageView Is Friends" />
+
     <RelativeLayout
         android:id="@+id/search_friends_item_group_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/search_friends_item_image_friend">
+        android:gravity="left">
 
         <TextView
             android:id="@+id/search_friends_item_text_view_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/search_friends_item_add_to_friends"
