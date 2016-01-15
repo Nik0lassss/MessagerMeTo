@@ -111,5 +111,11 @@ public class FriendFragment extends Fragment implements ServerApi.onUpdateFrined
         this.friendsList = friendsList;
         friendsBaseAdapter.updateFriendsListArray(friendsList);
         friendsBaseAdapter.notifyDataSetChanged();
+        int count;
+        FriendFragmentWithViewPagerFragment friendFragmentWithViewPagerFragment = (FriendFragmentWithViewPagerFragment) getActivity().getSupportFragmentManager().findFragmentByTag(FriendFragmentWithViewPagerFragment.class.getName());
+        if (null != friendFragmentWithViewPagerFragment) {
+              friendFragmentWithViewPagerFragment.fragmentStatePagerAdapter.notifyDataSetChanged();
+
+        }
     }
 }

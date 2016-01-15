@@ -147,7 +147,7 @@ public class MainPageFragment extends Fragment {
             }
             FragmentManager fragmentManager = getFragmentManager();
 
-            fragmentManager.beginTransaction().replace(R.id.additional_content_frame, fragment).addToBackStack(fragment.getClass().getName()).commit();
+            fragmentManager.beginTransaction().replace(R.id.additional_content_frame, fragment,fragment.getClass().getName()).addToBackStack(fragment.getClass().getName()).commit();
             navigationDrawerListView.setItemChecked(position, true);
             drawerLayout.closeDrawer(navigationDrawerListView);
 

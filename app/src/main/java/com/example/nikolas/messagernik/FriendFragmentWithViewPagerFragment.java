@@ -13,7 +13,7 @@ import com.example.nikolas.messagernik.adapter.FriendFragmentViewPagerAdapter;
 public class FriendFragmentWithViewPagerFragment extends Fragment {
 
     private ViewPager friendFragmentViewPager;
-    private FriendFragmentViewPagerAdapter fragmentStatePagerAdapter;
+    protected FriendFragmentViewPagerAdapter fragmentStatePagerAdapter;
 
     public static FriendFragmentWithViewPagerFragment newInstance() {
         FriendFragmentWithViewPagerFragment fragment = new FriendFragmentWithViewPagerFragment();
@@ -40,6 +40,8 @@ public class FriendFragmentWithViewPagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend_fragment_with_view_pager, container, false);
         friendFragmentViewPager = (ViewPager) view.findViewById(R.id.fragment_friend_fragment_with_viewpager);
         friendFragmentViewPager.setAdapter(fragmentStatePagerAdapter);
+        friendFragmentViewPager.setCurrentItem(2);
+
         return view;
     }
 

@@ -19,11 +19,18 @@ public class FriendFragmentViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         return FriendFragment.newInstance(Helper.getMeUser());
     }
 
     @Override
     public int getCount() {
         return 3;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        Object obj = object;
+        return super.getItemPosition(object);
     }
 }
