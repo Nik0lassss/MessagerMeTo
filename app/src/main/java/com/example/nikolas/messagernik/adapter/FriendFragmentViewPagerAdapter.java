@@ -30,7 +30,8 @@ public class FriendFragmentViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        Object obj = object;
         return super.getItemPosition(object);
     }
+
+
 }
