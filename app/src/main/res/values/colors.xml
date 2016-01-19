@@ -2,4 +2,7 @@
 <resources>
     <item name="teal_50" type="color">#E0F2F1</item>
     <item name="grey_900" type="color">#212121</item>
+    <item name="toolbar_color" type="color">#00BFA5</item>
+    <item name="toolbar_color_blue" type="color">#17cddc</item>
+    <item name="background_color" type="color">#E0F2F1</item>
 </resources>

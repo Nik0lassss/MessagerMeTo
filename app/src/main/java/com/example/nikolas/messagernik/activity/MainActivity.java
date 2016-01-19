@@ -2,6 +2,7 @@ package com.example.nikolas.messagernik.activity;
 
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -31,23 +32,26 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         SecretTocken.initialSecretTocken();
         Helper.initHelper(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        ViewHelper.initViewHelperToolbar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        getSupportActionBar().setDisplayShowHomeEnabled(false);
+       // ViewHelper.initViewHelperToolbar(toolbar);
 
 
 
         if (null == savedInstanceState) {
+            if (SecretTocken.isCorrectToken())
+                ServerApi.validateSecretTocken(this, SecretTocken.getSecretTockenString());
+            else
+                getSupportFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
+        }
+        else {
+           getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         }
-        if (SecretTocken.isCorrectToken())
-            ServerApi.validateSecretTocken(this, SecretTocken.getSecretTockenString());
-        else
-            getSupportFragmentManager().beginTransaction().add(R.id.containerMain, LoginFragment.newInstance()).commit();
 
     }
 

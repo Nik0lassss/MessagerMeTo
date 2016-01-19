@@ -14,6 +14,7 @@ import com.example.nikolas.messagernik.R;
 public class ImageProgressView extends LinearLayout{
     ImageView imageView;
     ProgressBar progressBar;
+    Boolean isCircle;
     public ImageProgressView(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.image_progress_bar_view, this);
@@ -21,7 +22,7 @@ public class ImageProgressView extends LinearLayout{
 
     public ImageProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Init(context,attrs);
+        Init(context, attrs);
     }
 
     public ImageProgressView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -37,6 +38,10 @@ public class ImageProgressView extends LinearLayout{
     public void setImageUrl(String url)
     {
         imageView.setImageUrl(url,progressBar);
+    }
+    public void setImageCircleUrl(String url)
+    {
+        imageView.setImageCircleUrl(url,progressBar);
     }
 
 }

@@ -1,38 +1,51 @@
 package com.example.nikolas.messagernik;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.internal.app.ToolbarActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.nikolas.messagernik.adapter.NavigationDrawerBaseAdapter;
 import com.example.nikolas.messagernik.entity.User;
+import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
+import com.example.nikolas.messagernik.entity.system.ImageView;
 import com.example.nikolas.messagernik.helper.FragmentGetter;
-import com.example.nikolas.messagernik.helper.ViewHelper;
+import com.example.nikolas.messagernik.helper.Helper;
+import com.example.nikolas.messagernik.helper.ImageHelper;
+import com.example.nikolas.messagernik.interfaces.OnLoadImageNavigationView;
 
 import java.util.ArrayList;
 
 
-public class MainPageFragment extends Fragment {
+public class MainPageFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String ARG_PARAM_USER = "user_to_profile_fragment";
 
     private User profileUser;
-    private ListView navigationDrawerListView;
+    private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
+    private ViewPager viewPager;
+    private ImageProgressViewScale profileImageView;
+    //private ListView navigationDrawerListView;
+    // private DrawerLayout drawerLayout;
+    //ActionBarDrawerToggle drawerToggle;
 
     public static MainPageFragment newInstance(User user) {
         MainPageFragment fragment = new MainPageFragment();
@@ -46,6 +59,12 @@ public class MainPageFragment extends Fragment {
 
     }
 
+
+//    public void initToolbar(View view) {
+//        toolbar = (Toolbar)view.findViewById(R.id.toolbar);
+//        toolbar.setTitle(R.string.app_name);
+//    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,62 +75,102 @@ public class MainPageFragment extends Fragment {
 
     }
 
+    private void initToolBar(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+
+
+    }
+
+
+    private void initTabs(View view) {
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+        tabLayout.setVisibility(View.GONE);
+    }
+
+    private void initNavigationView(View view) {
+        drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.navigation_bar_open, R.string.navigation_bar_close);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        NavigationView navigationView = (NavigationView) view.findViewById(R.id.navigation);
+        View headerLayout = navigationView.inflateHeaderView(R.layout.navigation_header);
+        TextView textView = (TextView) headerLayout.findViewById(R.id.nameTextView);
+        profileImageView = (ImageProgressViewScale) headerLayout.findViewById(R.id.playerImageView);
+        profileImageView.setImageCircleUrl(profileUser.getPhotoAvatar());
+        textView.setText(profileUser.getFirst_name() + " " + profileUser.getLast_name());
+        navigationView.setNavigationItemSelectedListener(this);
+//        Bitmap profileImageBitmap =  profileImageView.getBitmap();
+//        Bitmap circleBitmap = ImageHelper.getCircularBitmap(profileImageBitmap);
+//        profileImageView.setImageBitmap(circleBitmap);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            imageHeaderView.setImageDrawable(getResources().getDrawable(R.mipmap.androidlollipop_allpapers_very_small,getContext().getTheme()));
+//        }
+//        else  imageHeaderView.setImageDrawable(getResources().getDrawable(R.mipmap.androidlollipop_allpapers_very_small));
+        //ImageView imageView = (ImageView) navigationView.inflateHeaderView(R.layout.navigation_header).findViewById(R.id.playerImageView);
+        //((ImageView)imageHeaderView).setImageBitmap(ImageHelper.getCircularBitmap());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-        navigationDrawerListView = (ListView) rootView.findViewById(R.id.left_drawer);
+        initToolBar(rootView);
+        initNavigationView(rootView);
+        initTabs(rootView);
+        //initToolbar(rootView);
+        //navigationDrawerListView = (ListView) rootView.findViewById(R.id.left_drawer);
         ArrayList<String> navigationDrawerListViewArrayList = new ArrayList<String>();
         navigationDrawerListViewArrayList.add(0, "Messages");
         navigationDrawerListViewArrayList.add(1, "Profile");
         navigationDrawerListViewArrayList.add(2, "Photo");
         navigationDrawerListViewArrayList.add(3, "Friends");
-        drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
-        ViewHelper.initViewHelperDrawerLayout(drawerLayout);
+        //drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawer_layout);
+        //ViewHelper.initViewHelperDrawerLayout(drawerLayout);
         NavigationDrawerBaseAdapter navAdapter = new NavigationDrawerBaseAdapter(getActivity(), navigationDrawerListViewArrayList);
-        navigationDrawerListView.setAdapter(navAdapter);
+        //navigationDrawerListView.setAdapter(navAdapter);
         getActivity().getSupportFragmentManager().beginTransaction().add(R.id.additional_content_frame, ProfileFragment.newInstance(profileUser)).commit();
-        navigationDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
-
-        drawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.app_name, R.string.app_name) {
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
-            }
-        };
-        ViewHelper.initViewHelperActionBarDrawerToggle(drawerToggle);
-        ViewHelper.getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!drawerLayout.isDrawerOpen(GravityCompat.START) && drawerToggle.isDrawerIndicatorEnabled()) {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                } else if(drawerLayout.isDrawerOpen(GravityCompat.START) && drawerToggle.isDrawerIndicatorEnabled()) drawerLayout.closeDrawers();
-                else getActivity().onBackPressed();
-//                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//                drawerToggle.onDrawerStateChanged(DrawerLayout.STATE_IDLE);
-//                drawerToggle.setDrawerIndicatorEnabled(false);
-//                drawerToggle.syncState();
-//else drawerLayout.closeDrawers();
-
-
-//                if (drawerLayout.getDrawableState()) {
-//                    drawerLayout.closeDrawers();
-//                    return;
-//                }
-
-                //getActivity().onBackPressed();
-                //onBackPressed();
-            }
-        });
-        drawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
+        //navigationDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
+        getChildFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        //drawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.app_name, R.string.app_name) {
+//            public void onDrawerClosed(View view) {
+//                super.onDrawerClosed(view);
+//                ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
+//            }
+//
+//            /** Called when a drawer has settled in a completely open state. */
+//            public void onDrawerOpened(View drawerView) {
+//                super.onDrawerOpened(drawerView);
+//                ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
+//            }
+//        };
+        //ViewHelper.initViewHelperActionBarDrawerToggle(drawerToggle);
+//        ViewHelper.getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                if (!drawerLayout.isDrawerOpen(GravityCompat.START) && drawerToggle.isDrawerIndicatorEnabled()) {
+////                    drawerLayout.openDrawer(GravityCompat.START);
+////                } else if (drawerLayout.isDrawerOpen(GravityCompat.START) && drawerToggle.isDrawerIndicatorEnabled())
+////                    drawerLayout.closeDrawers();
+//                //else getActivity().onBackPressed();
+////                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+////                drawerToggle.onDrawerStateChanged(DrawerLayout.STATE_IDLE);
+////                drawerToggle.setDrawerIndicatorEnabled(false);
+////                drawerToggle.syncState();
+////else drawerLayout.closeDrawers();
+//
+//
+////                if (drawerLayout.getDrawableState()) {
+////                    drawerLayout.closeDrawers();
+////                    return;
+////                }
+//
+//                //getActivity().onBackPressed();
+//                //onBackPressed();
+//            }
+//        });
+//        drawerLayout.setDrawerListener(drawerToggle);
+//        drawerToggle.syncState();
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -124,8 +183,37 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        //drawerToggle.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        Fragment fragment = null;
+        drawerLayout.closeDrawers();
+        switch (item.getItemId()) {
+            case R.id.actionMessageItem:
+                fragment = ConversationFragment.newInstance();
+                break;
+            case R.id.actionFriendItem:
+                fragment = FriendFragmentWithViewPagerFragment.newInstance(Helper.getMeUser());
+                break;
+            case R.id.actionProfileItem:
+                fragment = ProfileFragment.newInstance(Helper.getMeUser());
+                break;
+        }
+
+        if (null != fragment && fragment.getClass().equals(ConversationFragment.class)) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(ConversationFragment.ARG_USER_KEY, profileUser);
+            fragment.setArguments(bundle);
+        }
+
+        //getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.additional_content_frame, fragment, fragment.getClass().getName()).addToBackStack(fragment.getClass().getName()).commit();
+        return true;
+    }
+
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
@@ -145,11 +233,12 @@ public class MainPageFragment extends Fragment {
                 bundle.putParcelable(ConversationFragment.ARG_USER_KEY, profileUser);
                 fragment.setArguments(bundle);
             }
-            FragmentManager fragmentManager = getFragmentManager();
 
-            fragmentManager.beginTransaction().replace(R.id.additional_content_frame, fragment,fragment.getClass().getName()).addToBackStack(fragment.getClass().getName()).commit();
-            navigationDrawerListView.setItemChecked(position, true);
-            drawerLayout.closeDrawer(navigationDrawerListView);
+            getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.additional_content_frame, fragment, fragment.getClass().getName()).addToBackStack(fragment.getClass().getName()).commit();
+            //navigationDrawerListView.setItemChecked(position, true);
+            //drawerLayout.closeDrawer(navigationDrawerListView);
 
         }
     }

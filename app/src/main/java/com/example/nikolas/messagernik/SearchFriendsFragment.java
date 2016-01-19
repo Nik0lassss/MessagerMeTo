@@ -46,8 +46,8 @@ public class SearchFriendsFragment extends Fragment implements ServerApi.onGetAl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_friends, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Friends");
-        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
-        ViewHelper.getActionBarDrawerToggle().syncState();
+//        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+//        ViewHelper.getActionBarDrawerToggle().syncState();
         searchFriendListView = (ListView) view.findViewById(R.id.fragment_search_friends_listview);
         searchFriendsBaseAdapter = new SearchFriendsBaseAdapter(getActivity(), userArrayList);
         searchFriendListView.setAdapter(searchFriendsBaseAdapter);

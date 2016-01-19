@@ -120,8 +120,6 @@ public class ServerApi {
                 JSONObject jsonObject = new JSONObject((String) object);
                 responseObject = ResponseObject.fromJson(jsonObject);
                 NotifyMessage notifyMessage = NotifyMessage.fromJson((JSONObject) responseObject.getResponseObject());
-//                responseObject = ResponseList.fromJson(jsonObject);
-//                messageArrayList = Message.fromJson((JSONArray) responseObject.getResponseList());
                 onUpdateMessageFragmentMessageListInterface.onUpdate(notifyMessage);
             } catch (JSONException e) {
                 e.printStackTrace();

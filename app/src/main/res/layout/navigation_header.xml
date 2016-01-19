@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="20dp"
+    android:orientation="vertical"
+    android:layout_height="192dp"
+    android:layout_width="match_parent"
+    android:id="@+id/navigation_header_linear_layout"
+    android:background="@mipmap/androidlollipop_allpapers_small">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="220dp"
+        android:layout_height="83.27dp"
+        android:background="@drawable/image_drawable">
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playerImageView"
+            android:ellipsize="end"
+            android:gravity="left|center_vertical"
+            android:lines="1"
+            android:scrollHorizontally="true"
+            android:textColor="@color/grey_900"
+            android:textSize="15dp" />
+
+        <com.example.nikolas.messagernik.entity.system.ImageProgressViewScale
+            android:id="@+id/playerImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/avatar_img"
+            android:padding="0.5dp" />
+
+    </RelativeLayout>
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@mipmap/androidlollipop_allpapers_small"/>-->
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:layout_width="140dp"-->
+        <!--android:layout_height="55.4dp"-->
+        <!--android:background="@drawable/image_drawable"-->
+        <!--android:id="@+id/rv"-->
+        <!--/>-->
+</LinearLayout>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionMessageItem"
+        android:orderInCategory="1"
+        android:title="Messages"
+        android:icon="@mipmap/ic_action_chat" />
+    <item android:id="@+id/actionFriendItem"
+        android:orderInCategory="1"
+        android:title="Friends"
+        android:icon="@mipmap/ic_action_cc_bcc"/>
+    <item android:id="@+id/actionProfileItem"
+        android:orderInCategory="1"
+        android:title="Profile"
+        android:icon="@mipmap/ic_action_person"/>
+
+</menu>

@@ -58,7 +58,7 @@ public class FriendsBaseAdapter extends BaseAdapter {
         }
         imageView = (ImageProgressViewScale) view.getTag(R.id.fragment_friends_item_friend_image);
         nameFriendsTextView = (TextView) view.getTag(R.id.fragment_friends_item_friend_name_text_view);
-        imageView.setImageUrl(friendArrayList.get(position).getFriend().getPhotoAvatar());
+        imageView.setImageCircleUrl(friendArrayList.get(position).getFriend().getPhotoAvatar());
         nameFriendsTextView.setText(friendArrayList.get(position).getFriend().getFirst_name() + " " + friendArrayList.get(position).getFriend().getLast_name());
         return view;
     }

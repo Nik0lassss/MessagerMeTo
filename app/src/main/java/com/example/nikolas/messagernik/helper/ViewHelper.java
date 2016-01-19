@@ -18,15 +18,15 @@ public class ViewHelper {
     }
     public static void initViewHelperDrawerLayout(DrawerLayout drawerLayout) {ViewHelper.drawerLayout=drawerLayout;}
     public static void initViewHelperActionBarDrawerToggle (ActionBarDrawerToggle actionBarDrawerToggle) {ViewHelper.actionBarDrawerToggle=actionBarDrawerToggle;}
-    public static Toolbar getToolbar() {
-        return toolbar;
-    }
+   // public static Toolbar getToolbar() {
+   //     return toolbar;
+    //}
 
-    public static DrawerLayout getDrawerLayout() {
-        return drawerLayout;
-    }
+//    public static DrawerLayout getDrawerLayout() {
+//        return drawerLayout;
+//    }
 
-    public static ActionBarDrawerToggle getActionBarDrawerToggle() {
-        return actionBarDrawerToggle;
-    }
+//    public static ActionBarDrawerToggle getActionBarDrawerToggle() {
+//        return actionBarDrawerToggle;
+//    }
 }

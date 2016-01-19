@@ -22,7 +22,7 @@ public class FragmentGetter {
             case 1:
                 return ProfileFragment.newInstance(Helper.getMeUser());
             case 3:
-                return FriendFragmentWithViewPagerFragment.newInstance();
+                return FriendFragmentWithViewPagerFragment.newInstance(Helper.getMeUser());
             default:
                 return null;
         }

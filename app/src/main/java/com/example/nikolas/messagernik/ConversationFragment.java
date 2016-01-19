@@ -75,13 +75,13 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         listView = (ListView) rootView.findViewById(R.id.fragment_conversation_listview);
         listView.setAdapter(conversationAdapter);
         listView.setOnItemClickListener(onConversationItemClickListener);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Conversation");
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Conversation");
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        ViewHelper.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //        ViewHelper.getActionBarDrawerToggle().onDrawerStateChanged(DrawerLayout.STATE_IDLE);
-        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-        ViewHelper.getActionBarDrawerToggle().syncState();
+        //ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        //ViewHelper.getActionBarDrawerToggle().syncState();
         return rootView;
     }
 

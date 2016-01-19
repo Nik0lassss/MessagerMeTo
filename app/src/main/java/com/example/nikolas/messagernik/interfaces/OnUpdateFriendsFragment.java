@@ -5,8 +5,8 @@ import com.example.nikolas.messagernik.entity.Friend;
 import java.util.ArrayList;
 
 /**
- * Created by Nikolas on 14.01.2016.
+ * Created by Nikolas on 16.01.2016.
  */
-public interface OnUpdateFriendsFragmentViewPager {
-     void onUpdate();
+public interface OnUpdateFriendsFragment {
+    void onUpdate(ArrayList<Friend> friendArrayList);
 }

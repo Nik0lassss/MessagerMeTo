@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 
 import com.example.nikolas.messagernik.entity.system.ImageCache;
 import com.example.nikolas.messagernik.entity.system.ImageView;
+import com.example.nikolas.messagernik.helper.ImageHelper;
+import com.example.nikolas.messagernik.interfaces.OnLoadImageNavigationView;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,14 +27,18 @@ public class ImageViewAsyncTask extends AsyncTask<String, String, Bitmap> {
 
     ImageView imageView;
     ProgressBar progressBar;
-
+    Boolean isCircle;
 
     public ImageViewAsyncTask(ImageView imageView, ProgressBar progressBar) {
         this.imageView = imageView;
         this.progressBar = progressBar;
-
     }
 
+    public ImageViewAsyncTask(ImageView imageView, ProgressBar progressBar, Boolean isCircle) {
+        this.imageView = imageView;
+        this.progressBar = progressBar;
+        this.isCircle = isCircle;
+    }
 
     @Override
     protected Bitmap doInBackground(String... urls) {
@@ -53,12 +59,13 @@ public class ImageViewAsyncTask extends AsyncTask<String, String, Bitmap> {
 
 
             URL url = new URL(urls[0]);
-            if (url != null)
-            {
+            if (url != null) {
                 iconBitmap = ImageCache.getBitmapFromMemCache(String.valueOf(url));
-                if(iconBitmap!=null) return iconBitmap;
-                else
-                {
+                if (iconBitmap != null) {
+                    if (isCircle == true) return ImageHelper.getCircularBitmap(iconBitmap);
+                    else
+                        return iconBitmap;
+                } else {
                     URLConnection conection = url.openConnection();
                     conection.connect();
                     // this will be useful so that you can show a tipical 0-100% progress
@@ -95,10 +102,11 @@ public class ImageViewAsyncTask extends AsyncTask<String, String, Bitmap> {
 
                     input.close();
                     ImageCache.addBitmapToMemoryCache(String.valueOf(url), iconBitmap);
+                    if (isCircle != null && isCircle == true)
+                        return ImageHelper.getCircularBitmap(iconBitmap);
                     return iconBitmap;
                 }
             }
-
 
 
         } catch (Exception e) {
@@ -115,6 +123,7 @@ public class ImageViewAsyncTask extends AsyncTask<String, String, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+
         imageView.setImageBitmap(bitmap);
     }
 

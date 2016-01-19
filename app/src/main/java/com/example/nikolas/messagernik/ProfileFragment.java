@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.system.ImageProgressView;
+import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 import com.example.nikolas.messagernik.helper.ViewHelper;
 
 
@@ -56,12 +57,12 @@ public class ProfileFragment extends Fragment {
         imageProgressView = (ImageProgressView) rootView.findViewById(R.id.fragment_profile_imageview_with_progressbar_view);
         textViewLastName.setText(profileUser.getFirst_name());
         textViewFirstName.setText(profileUser.getLast_name());
-        imageProgressView.setImageUrl(profileUser.getPhotoAvatar());
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-        ViewHelper.getActionBarDrawerToggle().syncState();
+        imageProgressView.setImageCircleUrl(profileUser.getPhotoAvatar());
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        ViewHelper.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+//        ViewHelper.getActionBarDrawerToggle().syncState();
 
         return rootView;
     }
