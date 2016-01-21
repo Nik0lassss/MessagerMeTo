@@ -196,7 +196,7 @@ public class MessageFragment extends Fragment implements ServerApi.onUpdateMessa
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessageFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
+            fragment.getFragmentManager().beginTransaction().replace(R.id.containerMain, MessageFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
 
         }
     };

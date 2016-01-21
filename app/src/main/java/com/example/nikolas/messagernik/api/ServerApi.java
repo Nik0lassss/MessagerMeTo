@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 
 import com.android.volley.Response;
@@ -41,6 +42,8 @@ public class ServerApi {
     private static onUpdateMessageFragmentMessageList onUpdateMessageFragmentMessageListInterface;
     private static UpdateLoginFragmentInterface.onUpdateLoginFragmentListener onUpdateLoginFragmenyListenerInterface;
     private static onUpdateFrinedsList onUpdateFrinedsListInterface;
+    private static onSubmitAddToFriends onSubmitAddToFriendsInteface;
+    private static onSendRequestToFriend onSendRequestToFriendInterface;
 
     public static void setUpReciever(Context context) {
         receiver = new Receiver(context);
@@ -77,6 +80,22 @@ public class ServerApi {
 //            }
 //        }
 //    };
+
+    private static Response.Listener sendRequestToAddToFriends = new Response.Listener() {
+        @Override
+        public void onResponse(Object o) {
+
+        }
+    };
+
+    private static Response.Listener submitAddToFriendsListener = new Response.Listener() {
+
+        @Override
+        public void onResponse(Object object) {
+
+        }
+    };
+
     private static Response.Listener getMessagesListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
@@ -167,7 +186,7 @@ public class ServerApi {
         @Override
         public void onResponse(Object object) {
             try {
-                ArrayList<User> userArrayList = new ArrayList<>();
+                ArrayList<User> userArrayList;
                 JSONObject jsonObject = new JSONObject((String) object);
                 ResponseListUsers responseList = ResponseListUsers.fromJson(jsonObject);
                 userArrayList = User.fromJson((JSONArray) responseList.getResponseList());
@@ -233,6 +252,21 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
 
+    public static void sendRequestToFriend(Object listener, Integer fromUserId, Integer toUserIdFriendsRequest) {
+        onSendRequestToFriendInterface = (onSendRequestToFriend) listener;
+        HashMap<String, String> values = new HashMap<String, String>();
+        values.put("fromUserId", fromUserId.toString());
+        values.put("toUserIdFriendsRequest", toUserIdFriendsRequest.toString());
+        receiver.sendPostRequest(values, Config.POST_PUT_REQUEST_TO_FRIEND, sendRequestToAddToFriends, erroreResponse);
+    }
+
+    public static void submitAddToFriends(Fragment listenerFragment, Integer requestId) {
+        onSubmitAddToFriendsInteface = (onSubmitAddToFriends) listenerFragment;
+        HashMap<String, String> values = new HashMap<>();
+        values.put("requestId", requestId.toString());
+        receiver.sendPostRequest(values, Config.POST_SUBMIT_ADD_TO_FRIENDS, submitAddToFriendsListener, erroreResponse);
+    }
+
     public static void getConversationMessages(Fragment listenerFragment, Integer userId, Integer conversationId, Cursor cursor) {
         onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
         HashMap<String, String> values = new HashMap<String, String>();
@@ -293,6 +327,15 @@ public class ServerApi {
 
     public interface onGetAllUsers {
         public void onUpdate(ArrayList<User> userArrayList);
+    }
+
+
+    public interface onSubmitAddToFriends {
+        void onUpdateSearchFragmentViewSubmitFriends();
+    }
+
+    public interface onSendRequestToFriend {
+        void onSendRequestToFriend();
     }
 
     public interface onUpdateMessageFragmentMessageList {

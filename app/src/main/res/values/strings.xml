@@ -30,4 +30,6 @@
     <string name="navigation_bar_close">Close</string>
     <string name="conversation_menu_add_conversation">Add conversation</string>
     <string name="search_friends_friends_fragment">Search friends</string>
+    <string name="view_navigation_open">Open</string>
+    <string name="view_navigation_close">Close</string>
 </resources>

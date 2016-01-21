@@ -5,8 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,13 +25,15 @@ import com.example.nikolas.messagernik.entity.User;
 import java.util.ArrayList;
 
 
-public class FriendFragmentWithViewPagerFragment extends Fragment implements ServerApi.onUpdateFrinedsList {
+public class FriendFragmentWithViewPagerFragment extends Fragment implements ServerApi.onUpdateFrinedsList, Toolbar.OnMenuItemClickListener {
 
     private ViewPager friendFragmentViewPager;
     private FriendFragmentViewPagerAdapter fragmentStatePagerAdapter;
     private ArrayList<Friend> friendList = new ArrayList<>();
     private static String KEY_USER = "FriendFragmentWithViewPagerFragment_KEY_USER";
     private User me;
+    private Toolbar toolbar;
+    private DrawerLayout profileFragmentDrawerLayout;
 
     public static FriendFragmentWithViewPagerFragment newInstance(User user) {
         FriendFragmentWithViewPagerFragment fragment = new FriendFragmentWithViewPagerFragment();
@@ -55,6 +60,22 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
 
     }
 
+    private void initToolBar(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.fragment_friend_fragment_with_viewpager_toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), profileFragmentDrawerLayout, toolbar, R.string.view_navigation_open, R.string.view_navigation_close);
+        profileFragmentDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+        toolbar.inflateMenu(R.menu.friends_menu);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.setTitle("Friends");
+    }
+
+
+    private void initTabs(View view) {
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.fragment_friend_fragment_with_viewpager_tabLayout);
+        tabLayout.setupWithViewPager(friendFragmentViewPager);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,11 +83,12 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
         View view = inflater.inflate(R.layout.fragment_friend_fragment_with_view_pager, container, false);
         friendFragmentViewPager = (ViewPager) view.findViewById(R.id.fragment_friend_fragment_with_viewpager);
         fragmentStatePagerAdapter = new FriendFragmentViewPagerAdapter(getChildFragmentManager(), friendList);
-
+        profileFragmentDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         friendFragmentViewPager.setAdapter(fragmentStatePagerAdapter);
+        initTabs(view);
+        initToolBar(view);
         return view;
     }
-
 
 
     @Override
@@ -90,8 +112,21 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
             case R.id.search_friends_friends_fragment:
                 SearchFriendsFragment searchFriendsFragment = SearchFriendsFragment.newInstance();
                 getChildFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.additional_content_frame, searchFriendsFragment).addToBackStack(searchFriendsFragment.getClass().getName()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, searchFriendsFragment).addToBackStack(searchFriendsFragment.getClass().getName()).commit();
 
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_friends_friends_fragment:
+                SearchFriendsFragment searchFriendsFragment = SearchFriendsFragment.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, searchFriendsFragment).addToBackStack(searchFriendsFragment.getClass().getName()).commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

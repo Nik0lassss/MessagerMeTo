@@ -102,7 +102,7 @@ public class ConversationFragment extends Fragment implements ServerApi.onUpdate
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //((Activity) Helper.getContext()).getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
             //fragment.getFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessagesFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
-            fragment.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.additional_content_frame, MessageFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
+            fragment.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, MessageFragment.newInstance(user, messageArrayList.get(position))).addToBackStack("").commit();
 
         }
     };

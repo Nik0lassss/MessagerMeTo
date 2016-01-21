@@ -16,11 +16,15 @@ import java.util.ArrayList;
  */
 public class FriendFragmentViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    ArrayList<Friend> friends = new ArrayList<>();
+    private ArrayList<Friend> friends = new ArrayList<>();
+    private ArrayList<String> titles = new ArrayList<>();
 
     public FriendFragmentViewPagerAdapter(FragmentManager fm, ArrayList<Friend> friendArrayList) {
         super(fm);
         this.friends = friendArrayList;
+        titles.add("Friends");
+        titles.add("Friends request");
+        titles.add("Followers");
     }
 
     public void updateData(ArrayList<Friend> friendArrayList) {
@@ -35,13 +39,18 @@ public class FriendFragmentViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 1;
+        return 3;
     }
 
     @Override
     public int getItemPosition(Object object) {
         ((FriendFragment) object).onUpdate(friends);
         return super.getItemPosition(object);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles.get(position);
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.nikolas.messagernik.adapter;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.R;
+import com.example.nikolas.messagernik.api.ServerApi;
 import com.example.nikolas.messagernik.entity.User;
 import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 
@@ -17,7 +19,7 @@ import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 import java.util.ArrayList;
 
 
-public class SearchFriendsBaseAdapter extends BaseAdapter {
+public class SearchFriendsBaseAdapter extends BaseAdapter  {
     private Button addToFriends, deleteFromFriends;
     private ImageProgressViewScale friendImageView;
     private TextView infoTextView;
@@ -25,9 +27,11 @@ public class SearchFriendsBaseAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ImageView imageViewIsFriends;
 
-    public SearchFriendsBaseAdapter(Context context, ArrayList<User> userArrayList) {
+
+    public SearchFriendsBaseAdapter(Context context,ArrayList<User> userArrayList) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.userArrayList = userArrayList;
+
     }
 
     public void updateSearchFriendList(ArrayList<User> userArrayList) {
@@ -68,6 +72,12 @@ public class SearchFriendsBaseAdapter extends BaseAdapter {
 
         addToFriends = (Button) view.getTag(R.id.search_friends_item_add_to_friends);
         deleteFromFriends = (Button) view.getTag(R.id.search_friends_item_delete_from_friends);
+        deleteFromFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         friendImageView = (ImageProgressViewScale) view.getTag(R.id.search_friends_item_image_friend);
         infoTextView = (TextView) view.getTag(R.id.search_friends_item_text_view_info);
         imageViewIsFriends = (ImageView) view.getTag(R.id.search_friends_item_is_friends);
@@ -84,4 +94,5 @@ public class SearchFriendsBaseAdapter extends BaseAdapter {
         }
         return view;
     }
+
 }

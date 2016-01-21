@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.support.v7.widget.Toolbar;
 
 import com.example.nikolas.messagernik.adapter.FriendsBaseAdapter;
 import com.example.nikolas.messagernik.entity.Friend;
@@ -26,7 +28,7 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
     private User me;
     private static String KEY_FRIENDS = "KEY_FRIENDS_USER_KEYS";
     private FriendsBaseAdapter friendsBaseAdapter;
-
+    private Toolbar toolbar;
 
     public FriendFragment() {
     }
@@ -34,6 +36,7 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             friendsList = getArguments().getParcelableArrayList(KEY_FRIENDS);
         }
@@ -57,6 +60,8 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
         friendsListView = (ListView) view.findViewById(R.id.fragment_friends_listview);
         friendsListView.setAdapter(friendsBaseAdapter);
         friendsListView.setOnItemClickListener(onFriendsListClickListener);
+
+
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Friends");
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -66,13 +71,12 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
     }
 
 
-
     ListView.OnItemClickListener onFriendsListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ProfileFragment profileFragment = ProfileFragment.newInstance(friendsList.get(position).getFriend());
 
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.additional_content_frame, profileFragment).addToBackStack(profileFragment.getClass().getName()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, profileFragment).addToBackStack(profileFragment.getClass().getName()).commit();
         }
     };
 
@@ -92,18 +96,18 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
 //
 //    }
 //
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.search_friends_friends_fragment:
-//                SearchFriendsFragment searchFriendsFragment = SearchFriendsFragment.newInstance();
-//                fragmentManager.beginTransaction().replace(R.id.additional_content_frame, searchFriendsFragment).addToBackStack(searchFriendsFragment.getClass().getName()).commit();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_friends_friends_fragment:
+                SearchFriendsFragment searchFriendsFragment = SearchFriendsFragment.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, searchFriendsFragment).addToBackStack(searchFriendsFragment.getClass().getName()).commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
 
 }
