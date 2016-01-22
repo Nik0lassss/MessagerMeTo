@@ -44,6 +44,7 @@ public class ServerApi {
     private static onUpdateFrinedsList onUpdateFrinedsListInterface;
     private static onSubmitAddToFriends onSubmitAddToFriendsInteface;
     private static onSendRequestToFriend onSendRequestToFriendInterface;
+    private static getFriendsRequestToMe getFriendsRequestToMeInterface;
 
     public static void setUpReciever(Context context) {
         receiver = new Receiver(context);
@@ -147,6 +148,29 @@ public class ServerApi {
 
         }
     };
+
+    private static Response.Listener getFriendsRequestToMe = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            ArrayList<Friend> friendArrayList = new ArrayList<>();
+
+            try {
+//                jsonObject = new JSONObject((String) object);
+//
+//                ResponseList responseList = ResponseList.fromJson(jsonObject);
+//                userArrayList = User.fromJson((JSONArray) responseList.getResponseList());
+                JSONObject jsonObject = new JSONObject((String) object);
+                ResponseList responseList = ResponseList.fromJson(jsonObject);
+                friendArrayList = Friend.fromJson((JSONArray) responseList.getResponseList());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            getFriendsRequestToMeInterface.onGetFriendsRequestToMe(friendArrayList);
+        }
+    };
+
     private static Response.Listener getResponsePutMessageListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
@@ -252,6 +276,12 @@ public class ServerApi {
         receiver.sendPostRequest(values, Config.CONVERSATION_GET_URL, getConversationListener, erroreResponse);
     }
 
+    public static void getFriendsRequestToMe(Object listener, Integer id) {
+        getFriendsRequestToMeInterface = (getFriendsRequestToMe) listener;
+        receiver.sendGetRequest(Config.GET_FRIENDS_REQUEST_TO_ME + id, getFriendsRequestToMe, erroreResponse);
+
+    }
+
     public static void sendRequestToFriend(Object listener, Integer fromUserId, Integer toUserIdFriendsRequest) {
         onSendRequestToFriendInterface = (onSendRequestToFriend) listener;
         HashMap<String, String> values = new HashMap<String, String>();
@@ -336,6 +366,10 @@ public class ServerApi {
 
     public interface onSendRequestToFriend {
         void onSendRequestToFriend();
+    }
+
+    public interface getFriendsRequestToMe {
+        void onGetFriendsRequestToMe(ArrayList<Friend> userArrayList);
     }
 
     public interface onUpdateMessageFragmentMessageList {

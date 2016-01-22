@@ -7,6 +7,6 @@ import java.util.ArrayList;
 /**
  * Created by Nikolas on 16.01.2016.
  */
-public interface OnUpdateFriendsFragment {
-    void onUpdate(ArrayList<Friend> friendArrayList);
+public interface OnUpdateFriendsFragmentViewPagerFragment {
+    void onUpdateFriends(ArrayList<Friend> friendArrayList);
 }

@@ -2,8 +2,6 @@ package com.example.nikolas.messagernik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,13 +13,12 @@ import android.support.v7.widget.Toolbar;
 import com.example.nikolas.messagernik.adapter.FriendsBaseAdapter;
 import com.example.nikolas.messagernik.entity.Friend;
 import com.example.nikolas.messagernik.entity.User;
-import com.example.nikolas.messagernik.helper.ViewHelper;
-import com.example.nikolas.messagernik.interfaces.OnUpdateFriendsFragment;
+import com.example.nikolas.messagernik.interfaces.OnUpdateFriendsFragmentViewPagerFragment;
 
 import java.util.ArrayList;
 
 
-public class FriendFragment extends Fragment implements OnUpdateFriendsFragment {
+public class FriendFragment extends Fragment implements OnUpdateFriendsFragmentViewPagerFragment {
 
     private ListView friendsListView;
     private ArrayList<Friend> friendsList = new ArrayList<>();
@@ -80,12 +77,7 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
         }
     };
 
-    @Override
-    public void onUpdate(ArrayList<Friend> friendArrayList) {
-        this.friendsList = friendArrayList;
-        friendsBaseAdapter.updateFriendsListArray(friendsList);
-        friendsBaseAdapter.notifyDataSetChanged();
-    }
+
 
 
 //    @Override
@@ -110,4 +102,10 @@ public class FriendFragment extends Fragment implements OnUpdateFriendsFragment 
     }
 
 
+    @Override
+    public void onUpdateFriends(ArrayList<Friend> friendArrayList) {
+        this.friendsList = friendArrayList;
+        friendsBaseAdapter.updateFriendsListArray(friendsList);
+        friendsBaseAdapter.notifyDataSetChanged();
+    }
 }

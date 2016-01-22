@@ -3,7 +3,6 @@ package com.example.nikolas.messagernik.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -11,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import com.example.nikolas.messagernik.ConversationFragment;
 import com.example.nikolas.messagernik.FriendFragmentWithViewPagerFragment;
 import com.example.nikolas.messagernik.LoginFragment;
-import com.example.nikolas.messagernik.MainPageFragment;
 import com.example.nikolas.messagernik.ProfileFragment;
 import com.example.nikolas.messagernik.R;
 import com.example.nikolas.messagernik.api.ServerApi;
@@ -30,8 +27,6 @@ import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 import com.example.nikolas.messagernik.helper.FileHelper;
 import com.example.nikolas.messagernik.helper.Helper;
 import com.example.nikolas.messagernik.helper.SharedPreferencesHelper;
-import com.example.nikolas.messagernik.helper.ViewHelper;
-import com.example.nikolas.messagernik.FriendFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener, ServerApi.onUpdateListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -111,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
     @Override
     public void onFragmentInteraction(User meUser) {
         Helper.setMeUser(meUser);
-        getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, MainPageFragment.newInstance(meUser)).commit();
+        initNavigationView();
+        getSupportFragmentManager().beginTransaction().replace(R.id.containerMain, ProfileFragment.newInstance(meUser)).commit();
     }
 
 

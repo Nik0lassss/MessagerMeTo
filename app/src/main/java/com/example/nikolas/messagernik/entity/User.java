@@ -132,12 +132,14 @@ public class User implements Parcelable {
 
     public static ArrayList<User> fromJson(final JSONArray arrayObject) {
         final ArrayList<User> userArrayList = new ArrayList<User>();
+        try {
         for (int i = 0; i < arrayObject.length(); i++) {
-            try {
+
                 final User user = fromJson(arrayObject.getJSONObject(i));
                 if (null != user) userArrayList.add(user);
-            } catch (JSONException e) {
-            }
+
+        }
+        } catch (JSONException e) {
         }
         return userArrayList;
     }

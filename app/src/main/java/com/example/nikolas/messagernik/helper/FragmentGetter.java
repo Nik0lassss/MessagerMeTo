@@ -6,7 +6,6 @@ package com.example.nikolas.messagernik.helper;
 import android.support.v4.app.Fragment;
 
 import com.example.nikolas.messagernik.ConversationFragment;
-import com.example.nikolas.messagernik.FriendFragment;
 import com.example.nikolas.messagernik.FriendFragmentWithViewPagerFragment;
 import com.example.nikolas.messagernik.ProfileFragment;
 

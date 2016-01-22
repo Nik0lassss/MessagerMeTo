@@ -43,7 +43,7 @@ public class ResponseListUsers {
     public static ResponseListUsers fromJson(final JSONObject objectResponse)
     {
         final Integer code = objectResponse.optInt("code");
-        final JSONArray object = objectResponse.optJSONArray("userArrayList");
+        final JSONArray object = objectResponse.optJSONArray("responseList");
         return new ResponseListUsers(code,object);
     }
 }

@@ -16,12 +16,14 @@
         <EditText
             android:id="@+id/login_layout_edit_text_login_or_email"
             android:layout_width="match_parent"
+            android:lines="1"
             android:layout_height="65dp"
             android:hint="@string/login_lyout_edit_text_login_or_email_text" />
 
         <EditText
             android:id="@+id/login_layout_edit_text_password"
             android:layout_width="match_parent"
+            android:lines="1"
             android:layout_height="65dp"
             android:hint="@string/login_lyout_edit_text_password" />
 

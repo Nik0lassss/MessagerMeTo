@@ -25,12 +25,14 @@ import com.example.nikolas.messagernik.entity.User;
 import java.util.ArrayList;
 
 
-public class FriendFragmentWithViewPagerFragment extends Fragment implements ServerApi.onUpdateFrinedsList, Toolbar.OnMenuItemClickListener {
+public class FriendFragmentWithViewPagerFragment extends Fragment implements ServerApi.onUpdateFrinedsList, Toolbar.OnMenuItemClickListener, ServerApi.getFriendsRequestToMe {
 
     private ViewPager friendFragmentViewPager;
     private FriendFragmentViewPagerAdapter fragmentStatePagerAdapter;
     private ArrayList<Friend> friendList = new ArrayList<>();
+    private ArrayList<Friend> followersList = new ArrayList<>();
     private static String KEY_USER = "FriendFragmentWithViewPagerFragment_KEY_USER";
+    private static String KEY_FOLLOWERS = "KEY_FOLLOWERS_FRAGMENT";
     private User me;
     private Toolbar toolbar;
     private DrawerLayout profileFragmentDrawerLayout;
@@ -57,6 +59,7 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
         }
 
         ServerApi.getFriendsList(this, me.getId());
+        ServerApi.getFriendsRequestToMe(this, me.getId());
 
     }
 
@@ -82,7 +85,7 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
 
         View view = inflater.inflate(R.layout.fragment_friend_fragment_with_view_pager, container, false);
         friendFragmentViewPager = (ViewPager) view.findViewById(R.id.fragment_friend_fragment_with_viewpager);
-        fragmentStatePagerAdapter = new FriendFragmentViewPagerAdapter(getChildFragmentManager(), friendList);
+        fragmentStatePagerAdapter = new FriendFragmentViewPagerAdapter(getChildFragmentManager(), friendList, followersList);
         profileFragmentDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         friendFragmentViewPager.setAdapter(fragmentStatePagerAdapter);
         initTabs(view);
@@ -94,7 +97,7 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
     @Override
     public void onUpdate(ArrayList<Friend> frinedsList) {
         this.friendList = frinedsList;
-        fragmentStatePagerAdapter.updateData(frinedsList);
+        fragmentStatePagerAdapter.updateDataFriends(frinedsList);
         fragmentStatePagerAdapter.notifyDataSetChanged();
     }
 
@@ -132,5 +135,13 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+
+    @Override
+    public void onGetFriendsRequestToMe(ArrayList<Friend> followersArrayList) {
+        this.followersList = followersArrayList;
+        fragmentStatePagerAdapter.updateDataFollowers(followersList);
+        fragmentStatePagerAdapter.notifyDataSetChanged();
     }
 }
