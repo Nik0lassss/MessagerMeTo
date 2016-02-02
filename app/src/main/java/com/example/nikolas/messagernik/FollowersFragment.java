@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.nikolas.messagernik.adapter.FollowersBaseAdapter;
+import com.example.nikolas.messagernik.entity.Follower;
 import com.example.nikolas.messagernik.entity.Friend;
 import com.example.nikolas.messagernik.interfaces.OnUpdateFollowersFragmentViewPagerFragment;
 
@@ -18,11 +19,11 @@ import java.util.ArrayList;
 public class FollowersFragment extends Fragment implements OnUpdateFollowersFragmentViewPagerFragment{
 
     private FollowersBaseAdapter followersBaseAdapter;
-    private ArrayList<Friend> friendArrayList = new ArrayList<>();
+    private ArrayList<Follower> friendArrayList = new ArrayList<>();
     private ListView followersListView;
     private static String KEY_FOLLOWERS = "KEY_FOLLOWERS_USER_KEYS";
 
-    public static FollowersFragment newInstance(ArrayList<Friend> followers) {
+    public static FollowersFragment newInstance(ArrayList<Follower> followers) {
         FollowersFragment fragment = new FollowersFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(KEY_FOLLOWERS, followers);
@@ -53,8 +54,10 @@ public class FollowersFragment extends Fragment implements OnUpdateFollowersFrag
     }
 
     @Override
-    public void onUpdateFollowers(ArrayList<Friend> friendArrayList) {
-
+    public void onUpdateFollowers(ArrayList<Follower> friendArrayList) {
+        this.friendArrayList = friendArrayList;
+        followersBaseAdapter.updateFollowersListArray(friendArrayList);
+        followersBaseAdapter.notifyDataSetChanged();
     }
 
 

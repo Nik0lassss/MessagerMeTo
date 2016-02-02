@@ -39,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/search_friends_item_text_view_info"
+            android:visibility="invisible"
             android:text="Add to friends" />
 
         <Button
@@ -47,7 +48,24 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/search_friends_item_text_view_info"
             android:layout_toRightOf="@id/search_friends_item_add_to_friends"
+            android:visibility="invisible"
             android:text="Delete from friends" />
+        <Button
+            android:id="@+id/search_friends_item_submit_friends_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_friends_item_text_view_info"
+            android:layout_toRightOf="@id/search_friends_item_add_to_friends"
+            android:visibility="invisible"
+            android:text="Submit" />
+        <Button
+            android:id="@+id/search_friends_item_cancel_friend_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_friends_item_text_view_info"
+            android:layout_toRightOf="@id/search_friends_item_add_to_friends"
+
+            android:text="Cancel" />
     </RelativeLayout>
 
 </RelativeLayout>

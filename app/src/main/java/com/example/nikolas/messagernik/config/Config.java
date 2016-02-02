@@ -23,6 +23,8 @@ public class Config {
     public static final String POST_SUBMIT_ADD_TO_FRIENDS=SERVER_URL+"rest/user/submitAddToFriends";
     public static final String POST_PUT_REQUEST_TO_FRIEND=SERVER_URL+"rest/user/putFriendsRequest";
     public static final String GET_FRIENDS_REQUEST_TO_ME=SERVER_URL+"rest/user/getFriendsRequestToMe/";
+    public static final String POST_DELETE_FRIEND=SERVER_URL+"rest/user/deleteFromFriends";
+    public static final String POST_CANCEL_FRIEND_REQUEST=SERVER_URL+"rest/user/deleteFriendRequest";
 	// Directory name to store captured images and videos
     public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
 }

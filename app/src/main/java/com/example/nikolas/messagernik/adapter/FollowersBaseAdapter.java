@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.nikolas.messagernik.R;
+import com.example.nikolas.messagernik.entity.Follower;
 import com.example.nikolas.messagernik.entity.Friend;
 import com.example.nikolas.messagernik.entity.system.ImageProgressViewScale;
 
@@ -20,14 +21,14 @@ public class FollowersBaseAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ImageProgressViewScale imageView;
     private TextView nameFriendTextView;
-    private ArrayList<Friend> followersArrayList = new ArrayList<>();
+    private ArrayList<Follower> followersArrayList = new ArrayList<>();
 
-    public FollowersBaseAdapter(Context context, ArrayList<Friend> followersArrayList) {
+    public FollowersBaseAdapter(Context context, ArrayList<Follower> followersArrayList) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.followersArrayList = followersArrayList;
     }
 
-    public void updateFollowersListArray(ArrayList<Friend> friendArrayList) {
+    public void updateFollowersListArray(ArrayList<Follower> friendArrayList) {
         this.followersArrayList = friendArrayList;
     }
 
@@ -53,8 +54,8 @@ public class FollowersBaseAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.follower_item_layout, parent, false);
             imageView = (ImageProgressViewScale) view.findViewById(R.id.follower_item_layout_follower_image);
             nameFriendTextView = (TextView) view.findViewById(R.id.follower_item_layout_follower_name_text_view);
-            view.setTag(R.id.fragment_friends_item_friend_image, imageView);
-            view.setTag(R.id.fragment_friends_item_friend_name_text_view, nameFriendTextView);
+            view.setTag(R.id.follower_item_layout_follower_image, imageView);
+            view.setTag(R.id.follower_item_layout_follower_name_text_view, nameFriendTextView);
         }
         imageView = (ImageProgressViewScale) view.getTag(R.id.follower_item_layout_follower_image);
         nameFriendTextView = (TextView) view.getTag(R.id.follower_item_layout_follower_name_text_view);

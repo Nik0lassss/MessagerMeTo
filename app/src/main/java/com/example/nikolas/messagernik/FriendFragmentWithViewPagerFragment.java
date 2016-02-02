@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.example.nikolas.messagernik.adapter.FriendFragmentViewPagerAdapter;
 import com.example.nikolas.messagernik.api.ServerApi;
+import com.example.nikolas.messagernik.entity.Follower;
 import com.example.nikolas.messagernik.entity.Friend;
 import com.example.nikolas.messagernik.entity.User;
 
@@ -30,7 +31,7 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
     private ViewPager friendFragmentViewPager;
     private FriendFragmentViewPagerAdapter fragmentStatePagerAdapter;
     private ArrayList<Friend> friendList = new ArrayList<>();
-    private ArrayList<Friend> followersList = new ArrayList<>();
+    private ArrayList<Follower> followersList = new ArrayList<>();
     private static String KEY_USER = "FriendFragmentWithViewPagerFragment_KEY_USER";
     private static String KEY_FOLLOWERS = "KEY_FOLLOWERS_FRAGMENT";
     private User me;
@@ -139,7 +140,7 @@ public class FriendFragmentWithViewPagerFragment extends Fragment implements Ser
 
 
     @Override
-    public void onGetFriendsRequestToMe(ArrayList<Friend> followersArrayList) {
+    public void onGetFriendsRequestToMe(ArrayList<Follower> followersArrayList) {
         this.followersList = followersArrayList;
         fragmentStatePagerAdapter.updateDataFollowers(followersList);
         fragmentStatePagerAdapter.notifyDataSetChanged();

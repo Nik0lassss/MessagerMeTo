@@ -4,14 +4,18 @@ import android.app.Activity;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.nikolas.messagernik.adapter.SearchFriendsBaseAdapter;
 import com.example.nikolas.messagernik.config.Config;
 import com.example.nikolas.messagernik.entity.Cursor;
+import com.example.nikolas.messagernik.entity.Follower;
 import com.example.nikolas.messagernik.entity.Friend;
+import com.example.nikolas.messagernik.entity.FriendRequest;
 import com.example.nikolas.messagernik.entity.Message;
 import com.example.nikolas.messagernik.entity.NotifyMessage;
 import com.example.nikolas.messagernik.entity.User;
@@ -45,6 +49,8 @@ public class ServerApi {
     private static onSubmitAddToFriends onSubmitAddToFriendsInteface;
     private static onSendRequestToFriend onSendRequestToFriendInterface;
     private static getFriendsRequestToMe getFriendsRequestToMeInterface;
+    private static onDeleteFriend onDeleteFriendInterface;
+    private static onCancelFriendRequest onCancelFriendRequestInterface;
 
     public static void setUpReciever(Context context) {
         receiver = new Receiver(context);
@@ -84,7 +90,15 @@ public class ServerApi {
 
     private static Response.Listener sendRequestToAddToFriends = new Response.Listener() {
         @Override
-        public void onResponse(Object o) {
+        public void onResponse(Object object) {
+            User user = new User();
+            try {
+                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject((String) object));
+                user = User.fromJson((JSONObject) responseObject.getResponseObject());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            onSendRequestToFriendInterface.onSendRequestToFriend(user);
 
         }
     };
@@ -93,10 +107,50 @@ public class ServerApi {
 
         @Override
         public void onResponse(Object object) {
-
+            User user = new User();
+            try {
+                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject((String) object));
+                user = User.fromJson((JSONObject) responseObject.getResponseObject());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            onSubmitAddToFriendsInteface.onUpdateSearchFragmentViewSubmitFriends(user);
         }
+
     };
 
+
+    private static Response.Listener deleteFriend = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            User user = new User();
+            try {
+                ResponseObject responseObject = ResponseObject.fromJson(new JSONObject((String) object));
+                user = User.fromJson((JSONObject) responseObject.getResponseObject());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            onDeleteFriendInterface.onDeleteFriend(user);
+        }
+
+    };
+
+    private static Response.Listener cancelFriendRequest = new Response.Listener() {
+        @Override
+        public void onResponse(Object object) {
+            FriendRequest friendRequest =new FriendRequest();
+            try {
+                JSONObject jsonObject = new JSONObject((String) object);
+                ResponseObject responseObject = ResponseObject.fromJson(jsonObject);
+                 friendRequest = FriendRequest.fromJson((JSONObject)responseObject.getResponseObject());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            onCancelFriendRequestInterface.onCancelFriend(friendRequest.getFriend());
+        }
+
+    };
     private static Response.Listener getMessagesListener = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
@@ -152,7 +206,7 @@ public class ServerApi {
     private static Response.Listener getFriendsRequestToMe = new Response.Listener() {
         @Override
         public void onResponse(Object object) {
-            ArrayList<Friend> friendArrayList = new ArrayList<>();
+            ArrayList<Follower> friendArrayList = new ArrayList<>();
 
             try {
 //                jsonObject = new JSONObject((String) object);
@@ -161,7 +215,7 @@ public class ServerApi {
 //                userArrayList = User.fromJson((JSONArray) responseList.getResponseList());
                 JSONObject jsonObject = new JSONObject((String) object);
                 ResponseList responseList = ResponseList.fromJson(jsonObject);
-                friendArrayList = Friend.fromJson((JSONArray) responseList.getResponseList());
+                friendArrayList = Follower.fromJson((JSONArray) responseList.getResponseList());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -287,10 +341,26 @@ public class ServerApi {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("fromUserId", fromUserId.toString());
         values.put("toUserIdFriendsRequest", toUserIdFriendsRequest.toString());
-        receiver.sendPostRequest(values, Config.POST_PUT_REQUEST_TO_FRIEND, sendRequestToAddToFriends, erroreResponse);
+        receiver.sendPutRequest(values, Config.POST_PUT_REQUEST_TO_FRIEND, sendRequestToAddToFriends, erroreResponse);
     }
 
-    public static void submitAddToFriends(Fragment listenerFragment, Integer requestId) {
+
+    public static void deleteFriend(Object listener, Integer myId, Integer friendId) {
+        onDeleteFriendInterface = (onDeleteFriend) listener;
+        HashMap<String, String> values = new HashMap<>();
+        values.put("myId", myId.toString());
+        values.put("deleteFriendId", friendId.toString());
+        receiver.sendPostRequest(values, Config.POST_DELETE_FRIEND, deleteFriend, erroreResponse);
+    }
+
+    public static void cancelFriendRequest(Object listener, Integer friendRequest) {
+        onCancelFriendRequestInterface = (onCancelFriendRequest) listener;
+        HashMap<String, String> values = new HashMap<>();
+        values.put("friendReuqest", friendRequest.toString());
+        receiver.sendPostRequest(values, Config.POST_CANCEL_FRIEND_REQUEST, cancelFriendRequest, erroreResponse);
+    }
+
+    public static void submitAddToFriends(Object listenerFragment, Integer requestId) {
         onSubmitAddToFriendsInteface = (onSubmitAddToFriends) listenerFragment;
         HashMap<String, String> values = new HashMap<>();
         values.put("requestId", requestId.toString());
@@ -319,7 +389,7 @@ public class ServerApi {
         receiver.sendGetRequest(Config.GET_ALL_USERS + myId, getAllUsers, erroreResponse);
     }
 
-    public static void getNotifyNewMessage(Fragment listenerFragment, Integer conversationId, String secretTockenString) {
+    public static void getNotifyNewMessage(Object listenerFragment, Integer conversationId, String secretTockenString) {
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("secretTockenString", secretTockenString);
         onUpdateMessageFragmentMessageListInterface = (onUpdateMessageFragmentMessageList) listenerFragment;
@@ -361,15 +431,23 @@ public class ServerApi {
 
 
     public interface onSubmitAddToFriends {
-        void onUpdateSearchFragmentViewSubmitFriends();
+        void onUpdateSearchFragmentViewSubmitFriends(User user);
     }
 
     public interface onSendRequestToFriend {
-        void onSendRequestToFriend();
+        void onSendRequestToFriend(User user);
+    }
+
+    public interface onDeleteFriend {
+        void onDeleteFriend(User user);
+    }
+
+    public interface onCancelFriendRequest {
+        void onCancelFriend(User user);
     }
 
     public interface getFriendsRequestToMe {
-        void onGetFriendsRequestToMe(ArrayList<Friend> userArrayList);
+        void onGetFriendsRequestToMe(ArrayList<Follower> userArrayList);
     }
 
     public interface onUpdateMessageFragmentMessageList {

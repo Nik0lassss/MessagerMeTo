@@ -21,7 +21,7 @@ import com.example.nikolas.messagernik.helper.ViewHelper;
 import java.util.ArrayList;
 
 
-public class SearchFriendsFragment extends Fragment implements ServerApi.onGetAllUsers,ServerApi.onSubmitAddToFriends {
+public class SearchFriendsFragment extends Fragment implements ServerApi.onGetAllUsers {
     private SearchFriendsBaseAdapter searchFriendsBaseAdapter;
     private ArrayList<User> userArrayList = new ArrayList<>();
     private ListView searchFriendListView;
@@ -90,8 +90,7 @@ public class SearchFriendsFragment extends Fragment implements ServerApi.onGetAl
         searchFriendsBaseAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onUpdateSearchFragmentViewSubmitFriends() {
 
-    }
+
+
 }

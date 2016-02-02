@@ -20,6 +20,9 @@ public class User implements Parcelable {
     private String first_name;
     private String last_name;
     private Integer isFriends;
+    private Integer isFollower;
+    private Integer iFollow;
+    private Integer friendRequestId;
 
 
     public User(Integer id, String first_name, String last_name, SecurityUser securityUser, String photoAvatar) {
@@ -35,6 +38,14 @@ public class User implements Parcelable {
     public User() {
     }
 
+    @Override
+    public boolean equals(Object o) {
+        User user = (User) o;
+        if (this.getId().equals(user.getId()))
+            return true;
+        return false;
+    }
+
 
     protected User(Parcel in) {
         first_name = in.readString();
@@ -42,6 +53,9 @@ public class User implements Parcelable {
         user_login = in.readString();
         photoAvatar = in.readString();
         isFriends = in.readInt();
+        isFollower = in.readInt();
+        iFollow = in.readInt();
+        friendRequestId = in.readInt();
     }
 
 
@@ -73,6 +87,29 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public User(Integer id, String user_login, String first_name, String last_name, Integer isFriends, Integer isFollower, Integer iFollow, String photoAvatar) {
+        this.id = id;
+        this.user_login = user_login;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.isFriends = isFriends;
+        this.isFollower = isFollower;
+        this.iFollow = iFollow;
+        this.photoAvatar = photoAvatar;
+    }
+
+    public User(Integer id, String user_login, String first_name, String last_name, Integer isFriends, Integer isFollower, Integer iFollow, Integer friendRequestId, String photoAvatar) {
+        this.id = id;
+        this.user_login = user_login;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.isFriends = isFriends;
+        this.isFollower = isFollower;
+        this.iFollow = iFollow;
+        this.friendRequestId = friendRequestId;
+        this.photoAvatar = photoAvatar;
+    }
 
     public Integer getId() {
         return id;
@@ -110,13 +147,16 @@ public class User implements Parcelable {
         final String photoAvatar = object.optString("photo_avatar", "");
         final String user_login = object.optString("user_login", "");
         final Integer isFriends = object.optInt("isFriend", 0);
-        return new User(id, user_login, firstName, lastName,isFriends, photoAvatar);
+        final Integer isFollower = object.optInt("isFollower", 0);
+        final Integer iFollow = object.optInt("iFollow", 0);
+        final Integer friendRequestId = object.optInt("friendRequestId", 0);
+        return new User(id, user_login, firstName, lastName, isFriends, isFollower, iFollow, friendRequestId, photoAvatar);
     }
 
     public static User fromJsonWithToken(final JSONObject object) {
-        JSONObject userJson=null;
+        JSONObject userJson = null;
         try {
-             userJson = object.getJSONObject("user");
+            userJson = object.getJSONObject("user");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -127,23 +167,25 @@ public class User implements Parcelable {
         final String photoAvatar = userJson.optString("photo_avatar", "");
         final String user_login = userJson.optString("user_login", "");
         final Integer isFriends = object.optInt("isFriend", 0);
-        return new User(id, user_login, firstName, lastName,isFriends, photoAvatar);
+        final Integer isFollower = object.optInt("isFollower", 0);
+        final Integer iFollow = object.optInt("iFollow", 0);
+        final Integer friendRequestId = object.optInt("friendRequestId", 0);
+        return new User(id, user_login, firstName, lastName, isFriends, isFollower, iFollow, friendRequestId,photoAvatar);
     }
 
     public static ArrayList<User> fromJson(final JSONArray arrayObject) {
         final ArrayList<User> userArrayList = new ArrayList<User>();
         try {
-        for (int i = 0; i < arrayObject.length(); i++) {
+            for (int i = 0; i < arrayObject.length(); i++) {
 
                 final User user = fromJson(arrayObject.getJSONObject(i));
                 if (null != user) userArrayList.add(user);
 
-        }
+            }
         } catch (JSONException e) {
         }
         return userArrayList;
     }
-
 
 
     public String getUser_login() {
@@ -178,5 +220,36 @@ public class User implements Parcelable {
         dest.writeString(last_name);
         dest.writeString(photoAvatar);
         dest.writeInt(isFriends);
+        dest.writeInt(isFollower);
+        dest.writeInt(iFollow);
+        dest.writeInt(friendRequestId);
+    }
+
+    public Integer getIsFollower() {
+        return isFollower;
+    }
+
+    public void setIsFollower(Integer isFollower) {
+        this.isFollower = isFollower;
+    }
+
+    public Integer getiFollow() {
+        return iFollow;
+    }
+
+    public void setiFollow(Integer iFollow) {
+        this.iFollow = iFollow;
+    }
+
+    public static Creator<User> getCREATOR() {
+        return CREATOR;
+    }
+
+    public Integer getFriendRequestId() {
+        return friendRequestId;
+    }
+
+    public void setFriendRequestId(Integer friendRequestId) {
+        this.friendRequestId = friendRequestId;
     }
 }

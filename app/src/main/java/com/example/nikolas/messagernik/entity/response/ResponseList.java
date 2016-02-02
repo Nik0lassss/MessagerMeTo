@@ -48,4 +48,5 @@ public class ResponseList {
         final JSONArray object = objectResponse.optJSONArray("responseList");
         return new ResponseList(code,object);
     }
+
 }
